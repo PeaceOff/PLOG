@@ -34,9 +34,8 @@ desenharB(''):-     write('\\     /').
 desenharB([Id,A,B,C]):-write('\\'), desenharMember(C,'L'), desenharResto(C), write('/').
 
 desenharS(#):-      write('       ').
-desenharS(''):-     write('-------').
-desenharS([Id,A,B,C]):-write('-------').
-
+desenharS(''):-     write(' ¯¯¯¯¯ ').
+desenharS([Id,A,B,C]):-write(' ¯¯¯¯¯ ').
 
 desenharLinhaC([X|Xs]):- desenharC(X), desenharLinhaC(Xs).
 desenharLinhaC([]):- nl.
@@ -46,9 +45,6 @@ desenharLinhaB([X|Xs]):- desenharB(X), desenharLinhaB(Xs).
 desenharLinhaB([]):- nl.
 desenharLinhaS([X|Xs]):- desenharS(X), desenharLinhaS(Xs).
 desenharLinhaS([]):- nl.
-
-
-
 
 desenharLinha(A):- desenharLinhaC(A) , desenharLinhaM(A) , desenharLinhaB(A), desenharLinhaS(A).
 desenharLinha([]):- write('').
