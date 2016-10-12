@@ -39,8 +39,8 @@ desenharB(''):-     write('\\     /').
 desenharB([A,B,C]):-write('\\'), desenharMember(C,'L'), desenharResto(C), write('/').
 
 desenharS(#):-      write('       ').
-desenharS(''):-     write('-------').
-desenharS([A,B,C]):-write('-------').
+desenharS(''):-     write(' ¯¯¯¯¯ ').
+desenharS([A,B,C]):-write(' ¯¯¯¯¯ ').
 
 
 desenharLinhaC([X|Xs]):- desenharC(X), desenharLinhaC(Xs).
