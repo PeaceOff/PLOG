@@ -1,11 +1,11 @@
 tabuleiro( [
-            [a,'',[0,'W',3,3],'',''],
-      			[b,'','','','',''],
-      			[c,'','','','','',''],
-      			[#,'','','',[0,'B',2,3],'','',''],
-      			[c,#,'','','','','',''],
-      			[b,#,#,'','','','',''],
-      			[a,#,#,#,'','','','']
+            [a,'','','',''],
+      		[b,'','','','',''],
+      		[c,'','','','','',''],
+      		[#,'',[0,'W',0,0],'','','',[0,'B',0,0],''],
+			[c,#,'','','','','',''],
+      		[b,#,#,'','','','',''],
+      		[a,#,#,#,'','','','']
            ]
           ).
 
@@ -21,7 +21,6 @@ desenharEspaco(N):- N > 0, N < 6, write(' '), N1 is N - 1, desenharEspaco(N1).
 desenharEspaco(N):- write('').
 desenharResto(N):-  R is 5-N, desenharEspaco(R).
 
-
 desenharC(a):-      write('           ').
 desenharC(b):-      write('       ').
 desenharC(c):-      write('    ').
@@ -32,21 +31,21 @@ desenharC([Id,A,B,C]):-validaPeca(B,C), write('/'), desenharMember(B,'Y'), desen
 desenharM(a):-      desenharC(a).
 desenharM(b):-      desenharC(b).
 desenharM(c):-      desenharC(c).
-desenharM(#):-      write('').
+desenharM(#):-      desenharC(#).
 desenharM(''):-     write('|     |').
 desenharM([Id,A,B,C]):-write('|'), desenharMemberC(B,'Y') ,write(Id), write(A) , write(Id) ,  desenharMemberC(C,'L'), write('|').
 
 desenharB(a):-      desenharC(a).
 desenharB(b):-      desenharC(b).
 desenharB(c):-      desenharC(c).
-desenharB(#):-      write('').
+desenharB(#):-      desenharC(#).
 desenharB(''):-     write('\\     /').
 desenharB([Id,A,B,C]):-write('\\'), desenharMember(C,'L'), desenharResto(C), write('/').
 
 desenharS(a):-      desenharC(a).
 desenharS(b):-      desenharC(b).
 desenharS(c):-      desenharC(c).
-desenharS(#):-      write('').
+desenharS(#):-      desenharC(#).
 desenharS(''):-     write(' ¯¯¯¯¯ ').
 desenharS([Id,A,B,C]):-write(' ¯¯¯¯¯ ').
 
