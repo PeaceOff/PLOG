@@ -20,7 +20,7 @@ tabuleiro2( [
     		[c,vazio,vazio,vazio,vazio,vazio,vazio,#],
     		[#,vazio,[0,branco,0,0],vazio,vazio,vazio,[0,preto,0,0],vazio,#],
 			[c,#,vazio,vazio,vazio,vazio,vazio,vazio,#],
-    		[b,#,#,vazio,vazio,vazio,vazio,[1,preto,2,2],#],
+    		[b,#,#,vazio,vazio,vazio,vazio,[1,preto,3,2],#],
     		[a,#,#,#,vazio,vazio,vazio,vazio,#],
           [#,#,#,#,#,#,#,#,#,#,#,#,#,#,#,#,#]
          ]
@@ -143,13 +143,18 @@ contaVazios(T,X,Y,Res) :-   vizinhoVazio(T,X,Y,-1,-1,R1), vizinhoVazio(T,X,Y,0,-
 
 
 
-esfomeado(T,A,Cor,B,C) :- Max is B + C, getSimboloXY(T,[A,Cor,B,C],X,Y), contaVazios(T,X,Y,Res), Res < Max.
+esfomeado(T,A,Cor,B,C) :- Max is B + C,!, getSimboloXY(T,[A,Cor,B,C],X,Y), contaVazios(T,X,Y,Res), !, Res < Max.
 
-esfomeadosAux(_,[],_,_,_,[]).
-esfomeadosAux(Tab,[[A,Cor,B,C] | Ls], Cor, N, Nr, Tr) :- esfomeado(Tab,A,Cor,B,C), !, N is Nr + 1, esfomeadosAux(Tab, Ls, Cor, N, N, Tr).
-esfomeadosAux(Tab,[A|Ls],Cor,_, Nr, [A|Tr]) :- esfomeadosAux(Tab,Ls,Cor,Nr,Nr,Tr).
+
+esfomeadosAux(_,[],_,0,[]).
+
+esfomeadosAux(Tab,[[A,Cor,B,C] | Ls], Cor, N, Tr) :- esfomeado(Tab,A,Cor,B,C), !, esfomeadosAux(Tab, Ls, Cor, Nr, Tm), N is Nr + 1, Tr = [vazio | Tm ] .
+
+esfomeadosAux(Tab,[A|Ls],Cor,N, [A|Tr]) :- esfomeadosAux(Tab,Ls,Cor,N,Tr).
+
 esfomeados(_,[],_,0,[]).
-esfomeados(Tab,[L|T], Cor, N, Tr):- esfomeadosAux(Tab, L, Cor, N1, 0, Lr), esfomeados(Tab,T, Cor, N2, T1), N is N1 + N2, Tr = [Lr | T1].
+esfomeados(Tab,[L|T], Cor, N, Tr):- esfomeadosAux(Tab, L, Cor, N1, Lr), esfomeados(Tab,T, Cor, N2, T1), N is N1 + N2, Tr = [Lr | T1].
+
 removeEsfomeados(Tab,Cor,N,Tr) :- esfomeados(Tab,Tab,Cor,N,Tr).
 
 jogando(hh,Jogo) :- retract(jogo(A,B,Tab)), jogadaBranco(jogo(A,B,Tab),jogo(A1,B1,T1)), jogadaPreto(jogo(A1,B1,T1),jogo(A2,B2,T2)), asserta(jogo(A2,B2,T2)), Jogo = jogo(A2,B2,T2).
@@ -166,5 +171,5 @@ testAddGarra :- tabuleiro(A), addGarra(A,branco,0,B), addGarra(B,preto,0,C), des
 
 testAddPerna :- tabuleiro(A), addPerna(A,branco,0,B), addPerna(B,preto,0,C), desenharTabuleiro(C).
 
-testEsfomeados :-   tabuleiro2(A), removeEsfomeados(A,branco,X,B), desenharTabuleiro(B),
-                    nl, removeEsfomeados(B,preto,Y,C), desenharTabuleiro(C).
+testEsfomeados :-   tabuleiro2(A), removeEsfomeados(A,branco,Removidos,B), desenharTabuleiro(B), write('Removidos:'), write(Removidos),
+                    nl, removeEsfomeados(B,preto,R2,C), desenharTabuleiro(C) , write('Removidos:'), write(R2).
