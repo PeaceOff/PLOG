@@ -9,4 +9,10 @@ testEsfomeados :-   tabuleiro2(A), removeEsfomeados(A,branco,Removidos,B), desen
 
 testMove :- tabuleiro2(A), desenharTabuleiro(A), moverPeca(A,1,branco,2,B), desenharTabuleiro(B), nl, removeEsfomeados(B,branco,Rem,C),  desenharTabuleiro(C), write('Removidos:'), write(Rem),nl, removeEsfomeados(C,preto,Remo,D), desenharTabuleiro(D) , write('Removidos:'), write(Remo).
 
+testCapturar :- tabuleiro2(A), moverPeca(A,1,branco,2,B), capturar(B,1,branco,1,C), desenharTabuleiro(C).
+
+testM :- tabuleiro2(A), moverPeca(A,1,branco,2,B), moverPeca(B,1,branco,1,C), desenharTabuleiro(C).
+
+
+
 testDica :- dica.
