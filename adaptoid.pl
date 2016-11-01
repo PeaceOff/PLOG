@@ -1,6 +1,7 @@
 :- use_module(library(lists)).
 :- include('tabuleiro.pl').
 :- include('testes.pl').
+:- include('input.pl').
 
 init :- write('Comecando o jogo!'),tabuleiro(Tab), asserta(jogo(0,0,Tab)), nl.
 
@@ -24,7 +25,7 @@ imprimeVencedor(empate):- write('Ninguem Ganhou! Empate!'), nl.
 jogadaBranco(jogo(A,B,Tab),jogo(A1,B1,T1)) :- desenharJogo(A,B,Tab), write('E a vez de branco jogar!'), read(X), write(X), nl, A1 = A, B1 = B, T1 = Tab.
 jogadaPreto(jogo(A,B,Tab),jogo(A1,B1,T1)) :- desenharJogo(A,B,Tab), write('E a vez de preto jogar!'), read(X), write(X), nl, A1 = A, B1 = B, T1 = Tab.
 
-getSimboloXY(T,Simbolo,Row,Col) :- nth0(Col,T,L) , nth0(Row,L,Simbolo).
+getSimboloXY(T,Simbolo,X,Y) :- nth0(Y,T,L) , nth0(X,L,Simbolo).
 %getElemID([[ID,Cor,A,B]|_],Cor,ID,Elem) :- Elem = [ID,Cor,A,B].%quando encontra acaba a execu��o.
 %getElemID([_|T],Cor,ID,Elem) :- getElemID(T,Cor,ID,Elem).
 
@@ -47,8 +48,15 @@ somarLista([Head|Tail],Result) :-
 
 isVazio(vazio,1) :- !.
 isVazio(_,0).
-vizinhoVazio(T,X,Y,OffSetX,OffSetY,Res) :- X1 is X + OffSetX, Y1 is Y + OffSetY, length(T,NL), Y1 < NL, nth0(Y1,T,LTemp), length(LTemp,CL), X1 < CL, !, getSimboloXY(T,Simb,X1,Y1), isVazio(Simb, Res), !.
+
+vizinhoVazio(T,X,Y,OffSetX,OffSetY,Res) :-  X1 is X + OffSetX, Y1 is Y + OffSetY,
+                                            length(T,NL), Y1 < NL, nth0(Y1,T,LTemp),
+                                            length(LTemp,CL), X1 < CL, !,
+                                            getSimboloXY(T,Simb,X1,Y1),
+                                            isVazio(Simb, Res), !.
+
 vizinhoVazio(_,_,_,_,_,0).
+
 contaVazios(T,X,Y,Res) :-   vizinhoVazio(T,X,Y,-1,-1,R1), vizinhoVazio(T,X,Y,0,-1,R2),
                             vizinhoVazio(T,X,Y,-1,0,R3), vizinhoVazio(T,X,Y,1,0,R4),
                             vizinhoVazio(T,X,Y,0,1,R5), vizinhoVazio(T,X,Y,1,1,R6),
@@ -70,6 +78,42 @@ esfomeados(Tab,[L|T], Cor, N, Tr):- esfomeadosAux(Tab, L, Cor, N1, Lr),
                                     N is N1 + N2, Tr = [Lr | T1].
 removeEsfomeados(Tab,Cor,N,Tr) :- esfomeados(Tab,Tab,Cor,N,Tr).
 
+oriDic(0,0,-1).
+oriDic(1,1,0).
+oriDic(2,1,1).
+oriDic(3,0,1).
+oriDic(4,-1,0).
+oriDic(5,-1,-1).
+
+checkMov(Tab,ID,Cor,Ori,X,Y,Peca):-  oriDic(Ori,Ox,Oy),
+                                getSimboloXY(Tab,[ID,Cor,_,_],Xatual,Yatual), !,
+                                vizinhoVazio(Tab,Xatual,Yatual,Ox,Oy,Res), Res is 1, !,
+                                getSimboloXY(Tab,Peca,Xatual,Yatual),
+                                X is Xatual + Ox, Y is Yatual + Oy.
+
+removePecaAux([],_,_,[]).
+removePecaAux([[ID,Cor,_,_]|Line],ID,Cor,[vazio|Res]):- removePecaAux(Line,ID,Cor,Res), !.
+removePecaAux([Elem|Line],ID,Cor,[Elem|Res]):- removePecaAux(Line,ID,Cor,Res).
+removePeca([],_,_,[]).
+removePeca([Line|Tab],ID,Cor,Res):- removePecaAux(Line,ID,Cor,LineRes),
+                                    removePeca(Tab,ID,Cor,LineRes2),
+                                    Res = [LineRes|LineRes2].
+
+inserePecaAux([],_,_,[]).
+inserePecaAux([_|Line],Peca,CoordX,LineRes) :-  CoordX is 0,
+                                                    LineRes = [Peca|Line].
+inserePecaAux([Elem|Line],Peca,CoordX,[Elem|LineRes]) :-   NewX is CoordX - 1,
+                                                    inserePecaAux(Line,Peca,NewX,LineRes).
+inserePeca([],_,_,_,[]).
+inserePeca([Line|Res],Peca,CoordX,CoordY,TabRes) :- CoordY is 0,
+                                                    inserePecaAux(Line,Peca,CoordX,NewLine), !,
+                                                    TabRes = [NewLine|Res].
+inserePeca([Line|Res],Peca,CoordX,CoordY,[Line|TabRes]):-   NewY is CoordY - 1,
+                                                            inserePeca(Res,Peca,CoordX,NewY,TabRes).
+
+moverPeca(Tab,ID,Cor,Ori,TabRes) :- checkMov(Tab,ID,Cor,Ori,CoordX,CoordY,Peca), !,
+                                    removePeca(Tab,ID,Cor,Res),
+                                    inserePeca(Res,Peca,CoordX,CoordY,TabRes).
 
 jogando(hh,Jogo) :- retract(jogo(A,B,Tab)),
                     jogadaBranco(jogo(A,B,Tab),jogo(A1,B1,T1)),
