@@ -30,12 +30,29 @@ jogando(hh,Jogo) :- retract(jogo(A,B,Tab)), !,
                     asserta(jogo(A2,B2,T2)), Jogo = jogo(A2,B2,T2).
 jogando(hh,_).
 
+%CPU
+jogando(hc,Jogo) :- retract(jogo(A,B,Tab)), !,
+                    jogadaBranco(jogo(A,B,Tab),jogo(A1,B1,T1)), !,
+                    jogadaComputador(preto,jogo(A1,B1,T1),jogo(A2,B2,T2)),
+                    asserta(jogo(A2,B2,T2)), Jogo = jogo(A2,B2,T2).
+jogando(hc,_).
+%Fim CPU
+
 jogar(Modo) :- init, repeat, once(jogando(Modo,Jogo)), ganhou(Jogador,Jogo), imprimeVencedor(Jogador), end.
 
 jogada(jogo(A,B,Tab),Cor,jogo(A3,B3,T3)):-  imprimeVez(Cor), !,
                                             movimento(jogo(A,B,Tab),Cor,jogo(A1,B1,T1)), !,
                                             evoluir(jogo(A1,B1,T1),Cor,jogo(A2,B2,T2)), !,
                                             famintos(jogo(A2,B2,T2),Cor,jogo(A3,B3,T3)).
+
+%CPU
+jogadaComputador(Cor, jogo(A,B,Tab),JogoF) :- desenharJogo(A,B,Tab), nl,
+                                              jogadaC(jogo(A,B,Tab), Cor, JogoF).
+
+jogadaC(JogoI, Cor, JogoF):-imprimeVez(Cor), !,
+                            lerRegraM(Cor,mover(_,_,_),JogoI,J1),
+                            lerRegraE(Cor,aG(_,_),J1,JogoF).
+%Fim CPU
 
 movimento(JI,Cor,JF) :- write('Escolha uma opcao - Mover : m | Capturar : c | Skip : s'), nl, !,
                         read(X), acao1(X,Regra), !, lerRegraM(Cor,Regra,JI,JF).
