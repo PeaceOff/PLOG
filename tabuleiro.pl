@@ -103,8 +103,8 @@ desenharS(f):-      desenharC(f).
 desenharS(g):-      desenharC(g).
 desenharS(#):-      desenharC(#).
 desenharS(zero):-   desenharC(a).
-desenharS(vazio):-      write(' ï¿½ï¿½ï¿½ï¿½ï¿½  ').
-desenharS([_,_,_,_]):-  write(' ï¿½ï¿½ï¿½ï¿½ï¿½  ').
+desenharS(vazio):-      write(' ¯¯¯¯¯  ').
+desenharS([_,_,_,_]):-  write(' ¯¯¯¯¯  ').
 desenharS(um):-     write('      / ').
 desenharS(dois):-   write('      / ').
 desenharS(tres):-   write('      / ').

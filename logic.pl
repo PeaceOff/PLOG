@@ -90,3 +90,18 @@ capturar(Tab,ID,Cor,Ori,TabRes):-   getSimboloXY(Tab,[ID,Cor,_,_],X,Y),
                                     getSimboloXY(Tab,[IDinimigo,CorInimigo,_,_],NewX,NewY),
                                     atacar(Tab,ID,Cor,IDinimigo,CorInimigo,Ori,TabRes).
 /*-----------------------------------------*/
+/*Adicionar um corpo de um adaptoid*/
+vizinho(Tab,Cor,CoordX,CoordY) :- Y is CoordY - 1, getSimboloXY(Tab,[_,Cor,_,_],CoordX,Y).
+vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX + 1, getSimboloXY(Tab,[_,Cor,_,_],X,CoordY).
+vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX + 1, Y is CoordY + 1, getSimboloXY(Tab,[_,Cor,_,_],X,Y).
+vizinho(Tab,Cor,CoordX,CoordY) :- Y is CoordY + 1, getSimboloXY(Tab,[_,Cor,_,_],CoordX,Y).
+vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, getSimboloXY(Tab,[_,Cor,_,_],X,CoordY).
+vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, Y is CoordY - 1, getSimboloXY(Tab,[_,Cor,_,_],X,Y).
+
+canPlaceBoss(Tab,Cor,CoordX,CoordY):-   getSimboloXY(Tab,vazio,CoordX,CoordY), !,
+                                        vizinho(Tab,Cor,CoordX,CoordY).
+
+addCorpo(Tab,Cor,CoordX,CoordY,TabRes):-    getNewIndex(Tab,Cor,0,ID), !,
+                                            canPlaceBoss(Tab,Cor,CoordX,CoordY),
+                                            inserePeca(Tab,[ID,Cor,0,0],CoordX,CoordY,TabRes).
+/*---------------------------------*/

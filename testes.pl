@@ -16,4 +16,6 @@ testM :- tabuleiro2(A), moverPeca(A,1,branco,2,B), moverPeca(B,1,branco,1,C), de
 testIDs :-  tabuleiro(A), getNewIndex(A,branco,0,X), write('Next id is : '), write(X), tabuleiro2(B),
             getNewIndex(B,branco,0,Y), write(' Next id is : '), write(Y).
 
+testAddPeca :- tabuleiro(A), addCorpo(A,branco,2,3,B), desenharTabuleiro(B), write('Oi oi'), ! ,addCorpo(B,preto,1,3,_).
+
 testDica :- dica.
