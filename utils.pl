@@ -15,3 +15,7 @@ somarLista([],0).
 somarLista([Head|Tail],Result) :-
     somarLista(Tail,SumOfTail),
     Result is Head + SumOfTail.
+
+getNewIndex(Tab,Cor,CurrID,NextID) :-   getSimboloXY(Tab,[CurrID,Cor,_,_],_,_), NID is CurrID + 1, !,
+                                        getNewIndex(Tab,Cor,NID,NextID).
+getNewIndex(_,_,ID,ID).

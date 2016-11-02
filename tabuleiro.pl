@@ -13,7 +13,7 @@ tabuleiro( [
 tabuleiro2( [
             [zero,um,dois,tres,quatro],
             [a,[1,branco,3,2],vazio,vazio,vazio,cinco],
-    		[b,vazio,vazio,[1,preto,3,2],vazio,vazio,seis],
+    		[b,vazio,vazio,[2,preto,3,2],vazio,vazio,seis],
     		[c,vazio,vazio,vazio,vazio,vazio,vazio,sete],
     		[d,vazio,[0,branco,0,0],vazio,vazio,vazio,[0,preto,0,0],vazio],
 			[e,#,vazio,vazio,vazio,vazio,vazio,vazio],
@@ -103,8 +103,8 @@ desenharS(f):-      desenharC(f).
 desenharS(g):-      desenharC(g).
 desenharS(#):-      desenharC(#).
 desenharS(zero):-   desenharC(a).
-desenharS(vazio):-      write(' ¯¯¯¯¯  ').
-desenharS([_,_,_,_]):-  write(' ¯¯¯¯¯  ').
+desenharS(vazio):-      write(' ï¿½ï¿½ï¿½ï¿½ï¿½  ').
+desenharS([_,_,_,_]):-  write(' ï¿½ï¿½ï¿½ï¿½ï¿½  ').
 desenharS(um):-     write('      / ').
 desenharS(dois):-   write('      / ').
 desenharS(tres):-   write('      / ').
