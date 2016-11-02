@@ -5,5 +5,5 @@ This project was made for the Logic Programming class of the Masters in Informat
 
 Developed by :
 
-[David Azevedo](https://github.com/PeaceOff)
+[David Azevedo](https://github.com/PeaceOff)<br>
 [João Ferreira](https://github.com/joaocsf)
