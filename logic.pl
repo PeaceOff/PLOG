@@ -74,21 +74,27 @@ moverPeca(Tab,ID,Cor,Ori,TabRes) :- checkMov(Tab,ID,Cor,Ori,CoordX,CoordY,Peca),
                                     inserePeca(Res,Peca,CoordX,CoordY,TabRes).
 /*--------------*/
 /*Funcoes para atacar e capturar um inimigo*/
-%addPontos(Cor,Pontos).
-maisGarras(Tab,G1,G2,ID1,Cor1,ID2,Cor2,Ori,TabRes):-G1 > G2, !, removePeca(Tab,ID2,Cor2,Res), moverPeca(Res,ID1,Cor1,Ori,TabRes).%adicionar os pontos ao jogador.
-maisGarras(Tab,G1,G2,ID1,Cor1,_,_,_,TabRes):-G2 > G1, !, removePeca(Tab,ID1,Cor1,TabRes).%adicionar os pontos ao jogador.
-maisGarras(Tab,G1,G2,ID1,Cor1,ID2,Cor2,_,TabRes):-  G1 is G2, G1 > 0, !,
-                                                    removePeca(Tab,ID1,Cor1,Res),
-                                                    removePeca(Res,ID2,Cor2,TabRes).%adicionar pontos
+maisGarras(jogo(A,B,Tab),G1,G2,ID1,Cor1,ID2,Cor2,Ori,jogo(A1,B1,TabRes)):-  G1 > G2, !,
+                                                                            removePeca(Tab,ID2,Cor2,Res),
+                                                                            moverPeca(Res,ID1,Cor1,Ori,TabRes),
+                                                                            somarPontos(Cor1,A,B,A1,B1,1).
+maisGarras(jogo(A,B,Tab),G1,G2,ID1,Cor1,_,Cor2,_,jogo(A1,B1,TabRes)):-         G2 > G1, !,
+                                                                            removePeca(Tab,ID1,Cor1,TabRes),
+                                                                            somarPontos(Cor2,A,B,A1,B1,1).
+maisGarras(jogo(A,B,Tab),G1,G2,ID1,Cor1,ID2,Cor2,_,jogo(A1,B1,TabRes)):-    G1 is G2, G1 > 0, !,
+                                                                            removePeca(Tab,ID1,Cor1,Res),
+                                                                            removePeca(Res,ID2,Cor2,TabRes),
+                                                                            somarPontos(Cor1,A,B,A2,B2,1),
+                                                                            somarPontos(Cor2,A2,B2,A1,B1,1).
 
-atacar(Tab,ID1,Cor1,ID2,Cor2,Ori,TabRes) :- getSimboloXY(Tab,[ID1,Cor1,G1,_],_,_),
-                                            getSimboloXY(Tab,[ID2,Cor2,G2,_],_,_), !,
-                                            maisGarras(Tab,G1,G2,ID1,Cor1,ID2,Cor2,Ori,TabRes).
+atacar(jogo(A,B,Tab),ID1,Cor1,ID2,Cor2,Ori,jogo(A1,B1,TabRes)) :-   getSimboloXY(Tab,[ID1,Cor1,G1,_],_,_),
+                                                                    getSimboloXY(Tab,[ID2,Cor2,G2,_],_,_), !,
+                                                                    maisGarras(jogo(A,B,Tab),G1,G2,ID1,Cor1,ID2,Cor2,Ori,jogo(A1,B1,TabRes)).
 
-capturar(Tab,ID,Cor,Ori,TabRes):-   getSimboloXY(Tab,[ID,Cor,_,_],X,Y),
-                                    oriDic(Ori,Ox,Oy), NewX is X + Ox, NewY is Y + Oy, !,
-                                    getSimboloXY(Tab,[IDinimigo,CorInimigo,_,_],NewX,NewY),
-                                    atacar(Tab,ID,Cor,IDinimigo,CorInimigo,Ori,TabRes).
+capturar(jogo(A,B,Tab),ID,Cor,Ori,jogo(A1,B1,TabRes)):-     getSimboloXY(Tab,[ID,Cor,_,_],X,Y),
+                                                            oriDic(Ori,Ox,Oy), NewX is X + Ox, NewY is Y + Oy, !,
+                                                            getSimboloXY(Tab,[IDinimigo,CorInimigo,_,_],NewX,NewY),
+                                                            atacar(jogo(A,B,Tab),ID,Cor,IDinimigo,CorInimigo,Ori,jogo(A1,B1,TabRes)).
 /*-----------------------------------------*/
 /*Adicionar um corpo de um adaptoid*/
 vizinho(Tab,Cor,CoordX,CoordY) :- Y is CoordY - 1, getSimboloXY(Tab,[_,Cor,_,_],CoordX,Y).
@@ -98,10 +104,10 @@ vizinho(Tab,Cor,CoordX,CoordY) :- Y is CoordY + 1, getSimboloXY(Tab,[_,Cor,_,_],
 vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, getSimboloXY(Tab,[_,Cor,_,_],X,CoordY).
 vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, Y is CoordY - 1, getSimboloXY(Tab,[_,Cor,_,_],X,Y).
 
-canPlaceBoss(Tab,Cor,CoordX,CoordY):-   getSimboloXY(Tab,vazio,CoordX,CoordY), !,
+canPlace(Tab,Cor,CoordX,CoordY):-   getSimboloXY(Tab,vazio,CoordX,CoordY), !,
                                         vizinho(Tab,Cor,CoordX,CoordY).
 
 addCorpo(Tab,Cor,CoordX,CoordY,TabRes):-    getNewIndex(Tab,Cor,0,ID), !,
-                                            canPlaceBoss(Tab,Cor,CoordX,CoordY),
+                                            canPlace(Tab,Cor,CoordX,CoordY),
                                             inserePeca(Tab,[ID,Cor,0,0],CoordX,CoordY,TabRes).
 /*---------------------------------*/

@@ -10,6 +10,18 @@ tabuleiro( [
            ]
           ).
 
+tabuleiro3( [
+            [zero,um,dois,tres,quatro],
+            [a,vazio,vazio,vazio,vazio,cinco],
+    		[b,vazio,vazio,vazio,vazio,vazio,seis],
+    		[c,vazio,vazio,vazio,vazio,vazio,vazio,sete],
+    		[d,vazio,[0,branco,1,1],[0,preto,1,1],vazio,vazio,vazio,vazio],
+			[e,#,vazio,vazio,vazio,vazio,vazio,vazio],
+    		[f,#,#,vazio,vazio,vazio,vazio,vazio],
+    	    [g,#,#,#,vazio,vazio,vazio,vazio]
+         ]
+        ).
+
 tabuleiro2( [
             [zero,um,dois,tres,quatro],
             [a,[1,branco,3,2],vazio,vazio,vazio,cinco],
