@@ -69,7 +69,7 @@ inserePeca([Line|Res],Peca,CoordX,CoordY,[Line|TabRes]):-   NewY is CoordY - 1,
                                                             inserePeca(Res,Peca,CoordX,NewY,TabRes).
 /*--------------------------------*/
 /*Mover um peca*/
-moverPeca(Tab,ID,Cor,Ori,TabRes) :- checkMov(Tab,ID,Cor,Ori,CoordX,CoordY,Peca), !,
+moverPeca(Tab,ID,Cor,Ori,TabRes) :- checkMov(Tab,ID,Cor,Ori,CoordX,CoordY,Peca),
                                     removePeca(Tab,ID,Cor,Res),
                                     inserePeca(Res,Peca,CoordX,CoordY,TabRes).
 /*--------------*/
@@ -92,8 +92,9 @@ atacar(jogo(A,B,Tab),ID1,Cor1,ID2,Cor2,Ori,jogo(A1,B1,TabRes)) :-   getSimboloXY
                                                                     maisGarras(jogo(A,B,Tab),G1,G2,ID1,Cor1,ID2,Cor2,Ori,jogo(A1,B1,TabRes)).
 
 capturar(jogo(A,B,Tab),ID,Cor,Ori,jogo(A1,B1,TabRes)):-     getSimboloXY(Tab,[ID,Cor,_,_],X,Y),
-                                                            oriDic(Ori,Ox,Oy), NewX is X + Ox, NewY is Y + Oy, !,
+                                                            oriDic(Ori,Ox,Oy), NewX is X + Ox, NewY is Y + Oy,
                                                             getSimboloXY(Tab,[IDinimigo,CorInimigo,_,_],NewX,NewY),
+                                                            Cor \= CorInimigo,
                                                             atacar(jogo(A,B,Tab),ID,Cor,IDinimigo,CorInimigo,Ori,jogo(A1,B1,TabRes)).
 /*-----------------------------------------*/
 /*Adicionar um corpo de um adaptoid*/
@@ -107,7 +108,12 @@ vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, Y is CoordY - 1, getSimboloXY
 canPlace(Tab,Cor,CoordX,CoordY):-   getSimboloXY(Tab,vazio,CoordX,CoordY), !,
                                         vizinho(Tab,Cor,CoordX,CoordY).
 
-addCorpo(Tab,Cor,CoordX,CoordY,TabRes):-    getNewIndex(Tab,Cor,0,ID), !,
-                                            canPlace(Tab,Cor,CoordX,CoordY),
+addCorpo(Tab,ID,Cor,Ori,TabRes):- getSimboloXY(Tab,[ID,Cor,_,_],CoordX,CoordY),
+                                  oriDic(Ori,Ox,Oy),
+                                  NewX is CoordX + Ox, NewY is CoordY + Oy,
+                                  canPlace(Tab,Cor,NewX,NewY),
+                                  addCorpo2(Tab,Cor,NewX,NewY,TabRes).
+
+addCorpo2(Tab,Cor,CoordX,CoordY,TabRes):-    getNewIndex(Tab,Cor,0,ID), write('Novo ID!: '), write(ID),
                                             inserePeca(Tab,[ID,Cor,0,0],CoordX,CoordY,TabRes).
 /*---------------------------------*/
