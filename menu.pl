@@ -21,7 +21,7 @@ welcome :-  clearScreen,
             write('|     David Azevedo up201405846                          |'), nl,
             write('|     Joao Ferreira up201404332                          |'), nl,
             write('|                                                        |'), nl,
-            write('|               Press any key to continue!               |'), nl,
+            write('|                Press enter to continue!                |'), nl,
             write(' -------------------------------------------------------- '), nl,
             get_char(_), startMenu.
 
@@ -42,13 +42,13 @@ startMenu :-    clearScreen,
                 write('|                                                        |'), nl,
                 write('|                                                        |'), nl,
                 write('|                                                        |'), nl,
-                write('|               Press any key to continue!               |'), nl,
+                write('|                Press enter to continue!                |'), nl,
                 write(' -------------------------------------------------------- '), nl,
                 get_char(_).
 
 testSwitch :-   read(A), (%(CONDITION -> if true ; if false)
-                A == 1 -> write('Escolheu 1');
-                A == 2 -> write('Escolheu 2');
+                (A == 1, 5 < 4) -> write('Escolheu 1');
+                (A == 2, 5 > 4) -> write('Escolheu 2');
                 A == 3 -> write('Escolheu 3');
                 write('You choose poorly')),
                 nl, testSwitch.

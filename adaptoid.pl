@@ -3,8 +3,10 @@
 :- include('testes.pl').
 :- include('logic.pl').
 :- include('utils.pl').
+:- include('ai.pl').
+:- include('menu.pl').
 
-init :- write('Comecando o jogo!'),tabuleiro3(Tab), asserta(jogo(0,0,Tab)), nl.
+init :- write('Comecando o jogo!'),tabuleiro(Tab), asserta(jogo(0,0,Tab)), nl.
 end :- retract(jogo(_,_,_)), write('Fim do Jogo!'), nl.
 
 desenharJogo(A,B,Tab) :-write('|Pontos| Branco(X) : '), write(A), write(' | Preto(O) : '), write(B), nl, desenharTabuleiro(Tab).
@@ -31,11 +33,13 @@ jogando(hh,Jogo) :- retract(jogo(A,B,Tab)), !,
 jogando(hh,_).
 
 %CPU
-jogando(hc,Jogo) :- retract(jogo(A,B,Tab)), !,
+jogando(hOp,Jogo) :- jogando(hc,op,Jogo).
+jogando(hRe,Jogo) :- jogando(hc,notOp,Jogo).
+jogando(hc,M,Jogo) :- retract(jogo(A,B,Tab)), !,
                     jogadaBranco(jogo(A,B,Tab),jogo(A1,B1,T1)), !,
-                    jogadaComputador(preto,jogo(A1,B1,T1),jogo(A2,B2,T2)),
+                    jogadaComputador(preto,M,jogo(A1,B1,T1),jogo(A2,B2,T2)),
                     asserta(jogo(A2,B2,T2)), Jogo = jogo(A2,B2,T2).
-jogando(hc,_).
+jogando(hc,_,_).
 %Fim CPU
 
 jogar(Modo) :- init, repeat, once(jogando(Modo,Jogo)), ganhou(Jogador,Jogo), imprimeVencedor(Jogador), end.
@@ -44,15 +48,6 @@ jogada(jogo(A,B,Tab),Cor,jogo(A3,B3,T3)):-  imprimeVez(Cor), !,
                                             movimento(jogo(A,B,Tab),Cor,jogo(A1,B1,T1)), !,
                                             evoluir(jogo(A1,B1,T1),Cor,jogo(A2,B2,T2)), !,
                                             famintos(jogo(A2,B2,T2),Cor,jogo(A3,B3,T3)).
-
-%CPU
-jogadaComputador(Cor, jogo(A,B,Tab),JogoF) :- desenharJogo(A,B,Tab), nl,
-                                              jogadaC(jogo(A,B,Tab), Cor, JogoF).
-
-jogadaC(JogoI, Cor, JogoF):-imprimeVez(Cor), !,
-                            lerRegraM(Cor,mover(_,_,_),JogoI,J1),
-                            lerRegraE(Cor,aG(_,_),J1,JogoF).
-%Fim CPU
 
 movimento(JI,Cor,JF) :- write('Escolha uma opcao - Mover : m | Capturar : c | Skip : s'), nl, !,
                         read(X), acao1(X,Regra), !, lerRegraM(Cor,Regra,JI,JF).

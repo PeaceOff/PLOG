@@ -51,3 +51,12 @@ ganhou(_,_,_,_) :- fail.
 
 somarPontos(branco,A,B,A1,B,N) :- A1 is A + N.
 somarPontos(preto,A,B,A,B1,N) :- B1 is B + N.
+
+getPecasByCor(jogo(_,_,Tab),Cor,NPecas) :-  findall(ID,getSimboloXY(Tab,[ID,Cor,_,_],_,_),Elementos),
+                                            length(Elementos,NPecas).
+
+starving(Tab,ID,Cor) :- getSimboloXY(Tab,[ID,Cor,G,P],X,Y), M is G + P, !,
+                        contaVazios(Tab,X,Y,Vazios), Res is Vazios - M, Res < 0.
+
+getStarvingNum(jogo(_,_,Tab),Cor,Res):- findall(ID,starving(Tab,ID,Cor),Elementos),
+                                        length(Elementos,Res).
