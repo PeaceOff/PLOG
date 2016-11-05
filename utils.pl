@@ -18,6 +18,17 @@ charDic('d',4).
 charDic('e',5).
 charDic('f',6).
 charDic('g',7).
+charDic('0',0).
+charDic('1',1).
+charDic('2',2).
+charDic('3',3).
+charDic('4',4).
+charDic('5',5).
+charDic('6',6).
+charDic('7',7).
+charDic('8',8).
+charDic('9',9).
+
 charDic(_,_) :- invalido.
 
 corInv(preto,branco).

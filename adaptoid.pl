@@ -9,7 +9,8 @@
 init :- write('Comecando o jogo!'),tabuleiro(Tab), asserta(jogo(0,0,Tab)), nl.
 end :- retract(jogo(_,_,_)), write('Fim do Jogo!'), nl.
 
-desenharJogo(A,B,Tab) :-write('|Pontos| Branco(X) : '), write(A), write(' | Preto(O) : '), write(B), nl, desenharTabuleiro(Tab).
+desenharJogo(A,B,Tab) :- clearScreen, write('|Pontos| Branco(X) : '), write(A), write(' | Preto(O) : '), write(B), nl, desenharTabuleiro(Tab).
+desenharJogo(jogo(A,B,Tab)) :- desenharJogo(A,B,Tab).
 imprimeVencedor(branco):- write('Jogador Branco Ganhou! Parabens!'), nl.
 imprimeVencedor(preto):- write('Jogador Preto Ganhou! Parabens!'), nl.
 imprimeVencedor(empate):- write('Ninguem Ganhou! Empate!'), nl.
@@ -32,18 +33,25 @@ jogando(hh,Jogo) :- retract(jogo(A,B,Tab)), !,
                     asserta(jogo(A2,B2,T2)), Jogo = jogo(A2,B2,T2).
 jogando(hh,_).
 
-%CPU
 jogando(hOp,Jogo) :- jogando(hc,op,Jogo).
 jogando(hRe,Jogo) :- jogando(hc,notOp,Jogo).
+jogando(opOp,Jogo):- jogando(cc,Jogo,op,op).
+jogando(opRe,Jogo):- jogando(cc,Jogo,op,notOp).
+jogando(reRe,Jogo):- jogando(cc,Jogo,notOp,notOp).
 jogando(hc,M,Jogo) :- retract(jogo(A,B,Tab)), !,
                     jogadaBranco(jogo(A,B,Tab),jogo(A1,B1,T1)), !,
                     jogadaComputador(preto,M,jogo(A1,B1,T1),jogo(A2,B2,T2)),
                     desenharJogo(A2,B2,T2),
                     asserta(jogo(A2,B2,T2)), Jogo = jogo(A2,B2,T2).
 jogando(hc,_,_).
-%Fim CPU
+jogando(cc,Jogo,M1,M2) :- retract(jogo(A,B,Tab)), !,
+                    jogadaComputador(branco,M1,jogo(A,B,Tab),jogo(A1,B1,T1)),
+                    jogadaComputador(preto,M2,jogo(A1,B1,T1),jogo(A2,B2,T2)),
+                    desenharJogo(A2,B2,T2), write('Prima /*|ENTER|*\\'), get_char(_),
+                    asserta(jogo(A2,B2,T2)), Jogo = jogo(A2,B2,T2).
+jogando(cc,_,_,_).
 
-jogar(Modo) :- init, repeat, once(jogando(Modo,Jogo)), ganhou(Jogador,Jogo), imprimeVencedor(Jogador), end.
+jogar(Modo) :- init, repeat, once(jogando(Modo,Jogo)), ganhou(Jogador,Jogo), desenharJogo(Jogo), imprimeVencedor(Jogador), end.
 
 jogada(jogo(A,B,Tab),Cor,jogo(A3,B3,T3)):-  imprimeVez(Cor), !, repeat,
                                             movimento(jogo(A,B,Tab),Cor,jogo(A1,B1,T1)),
@@ -89,15 +97,15 @@ lerOris(Npernas,OriList) :- write('Restam-lhe '), write(Npernas), write(' movime
                             read(Ori), (Ori = 's' -> OriList = [];
                             (oriDic(Ori,_,_), N1 is Npernas - 1, lerOris(N1,L), OriList = [Ori|L])).
 
-acao1(jogo(_,_,Tab),m,Regra):-  write('Indique a letra'), read(Cena), charDic(Cena,Y), nl, write('Indique o numero'), read(X), nl,
+acao1(jogo(_,_,Tab),m,Regra):-  lerPosicao(X,Y),
                                 getSimboloXY(Tab,[_,_,_,P],X,Y), lerOris(P,OriList), Regra = mover(X,Y,OriList).
-acao1(_,c,Regra):- write('Indique a letra'), read(Cena), charDic(Cena,Y), nl, write('Indique o numero'), read(X), nl,
-                write('Indique uma orientacao [0..5]'), read(Ori), oriDic(Ori,_,_), Regra = capturar(X,Y,Ori).
+acao1(_,c,Regra):-  lerPosicao(X,Y),
+                    write('Indique uma orientacao [0..5]'), read(Ori), oriDic(Ori,_,_), Regra = capturar(X,Y,Ori).
 acao1(_,s,s).
 acao1(_,_,_) :- invalido.
 
 
-acao2(p,Regra) :- write('Indique a letra'), read(Cena), charDic(Cena,Y), nl, write('Indique o numero'), read(X), nl, Regra = aP(X,Y).
+acao2(p,Regra) :- lerPosicao(X,Y), Regra = aP(X,Y).
 acao2(g,Regra) :- acao2(p,aP(X,Y)), Regra = aG(X,Y).
 acao2(c,Regra) :- acao2(p,aP(X,Y)), write('Indique uma orientacao [0..5]'),
                   read(Ori), oriDic(Ori,_,_), Regra = aC(X,Y,Ori).
