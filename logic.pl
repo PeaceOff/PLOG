@@ -105,8 +105,7 @@ vizinho(Tab,Cor,CoordX,CoordY) :- Y is CoordY + 1, getSimboloXY(Tab,[_,Cor,_,_],
 vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, getSimboloXY(Tab,[_,Cor,_,_],X,CoordY).
 vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, Y is CoordY - 1, getSimboloXY(Tab,[_,Cor,_,_],X,Y).
 
-canPlace(Tab,Cor,CoordX,CoordY):-   getSimboloXY(Tab,vazio,CoordX,CoordY), !,
-                                        vizinho(Tab,Cor,CoordX,CoordY).
+canPlace(Tab,Cor,CoordX,CoordY):-   getSimboloXY(Tab,vazio,CoordX,CoordY).
 
 addCorpo(Tab,ID,Cor,Ori,TabRes):- getSimboloXY(Tab,[ID,Cor,_,_],CoordX,CoordY),
                                   oriDic(Ori,Ox,Oy),

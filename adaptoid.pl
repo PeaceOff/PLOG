@@ -38,6 +38,7 @@ jogando(hRe,Jogo) :- jogando(hc,notOp,Jogo).
 jogando(hc,M,Jogo) :- retract(jogo(A,B,Tab)), !,
                     jogadaBranco(jogo(A,B,Tab),jogo(A1,B1,T1)), !,
                     jogadaComputador(preto,M,jogo(A1,B1,T1),jogo(A2,B2,T2)),
+                    desenharJogo(A2,B2,T2),
                     asserta(jogo(A2,B2,T2)), Jogo = jogo(A2,B2,T2).
 jogando(hc,_,_).
 %Fim CPU
