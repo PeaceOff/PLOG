@@ -69,6 +69,9 @@ inserePeca([Line|Res],Peca,CoordX,CoordY,[Line|TabRes]):-   NewY is CoordY - 1,
                                                             inserePeca(Res,Peca,CoordX,NewY,TabRes).
 /*--------------------------------*/
 /*Mover um peca*/
+moverPecaLista(Tab,_,_,[],Tab).
+moverPecaLista(Tab,ID,Cor,[Ori|Os],T1) :- oriDic(Ori,_,_), moverPeca(Tab,ID,Cor,Ori,T2), moverPecaLista(T2,ID,Cor,Os,T1).
+
 moverPeca(Tab,ID,Cor,Ori,TabRes) :- checkMov(Tab,ID,Cor,Ori,CoordX,CoordY,Peca),
                                     removePeca(Tab,ID,Cor,Res),
                                     inserePeca(Res,Peca,CoordX,CoordY,TabRes).
@@ -105,7 +108,7 @@ vizinho(Tab,Cor,CoordX,CoordY) :- Y is CoordY + 1, getSimboloXY(Tab,[_,Cor,_,_],
 vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, getSimboloXY(Tab,[_,Cor,_,_],X,CoordY).
 vizinho(Tab,Cor,CoordX,CoordY) :- X is CoordX - 1, Y is CoordY - 1, getSimboloXY(Tab,[_,Cor,_,_],X,Y).
 
-canPlace(Tab,Cor,CoordX,CoordY):-   getSimboloXY(Tab,vazio,CoordX,CoordY).
+canPlace(Tab,_,CoordX,CoordY):-   getSimboloXY(Tab,vazio,CoordX,CoordY).
 
 addCorpo(Tab,ID,Cor,Ori,TabRes):- getSimboloXY(Tab,[ID,Cor,_,_],CoordX,CoordY),
                                   oriDic(Ori,Ox,Oy),
@@ -113,6 +116,6 @@ addCorpo(Tab,ID,Cor,Ori,TabRes):- getSimboloXY(Tab,[ID,Cor,_,_],CoordX,CoordY),
                                   canPlace(Tab,Cor,NewX,NewY),
                                   addCorpo2(Tab,Cor,NewX,NewY,TabRes).
 
-addCorpo2(Tab,Cor,CoordX,CoordY,TabRes):-    getNewIndex(Tab,Cor,0,ID), write('Novo ID!: '), write(ID),
+addCorpo2(Tab,Cor,CoordX,CoordY,TabRes):-    getNewIndex(Tab,Cor,0,ID),
                                             inserePeca(Tab,[ID,Cor,0,0],CoordX,CoordY,TabRes).
 /*---------------------------------*/

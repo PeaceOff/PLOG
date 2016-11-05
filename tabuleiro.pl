@@ -15,7 +15,7 @@ tabuleiro3( [
             [a,vazio,vazio,vazio,vazio,cinco],
     		[b,vazio,vazio,vazio,vazio,vazio,seis],
     		[c,vazio,vazio,vazio,vazio,vazio,vazio,sete],
-    		[d,vazio,[0,branco,1,1],[0,preto,1,1],vazio,vazio,vazio,vazio],
+    		[d,vazio,[0,branco,5,1],vazio,vazio,vazio,[0,preto,0,3],vazio],
 			[e,#,vazio,vazio,vazio,vazio,vazio,vazio],
     		[f,#,#,vazio,vazio,vazio,vazio,vazio],
     	    [g,#,#,#,vazio,vazio,vazio,vazio]

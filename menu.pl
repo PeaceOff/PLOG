@@ -3,6 +3,8 @@ clearScreen :- clearConsole(50).
 clearConsole(0).
 clearConsole(N):- nl, N1 is N - 1, clearConsole(N1).
 
+%getOri(Ori) :- get_char(Ori), get_char(_).
+
 welcome :-  clearScreen,
             write(' -------------------------------------------------------- '), nl,
             write('|                   _             _        _     _       |'), nl,

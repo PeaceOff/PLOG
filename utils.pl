@@ -4,7 +4,6 @@ oriDic(2,1,1).
 oriDic(3,0,1).
 oriDic(4,-1,0).
 oriDic(5,-1,-1).
-oriDic(_,_,_) :- invalido.
 charDic('A',1).
 charDic('B',2).
 charDic('C',3).
@@ -57,11 +56,11 @@ somarPontos(preto,A,B,A,B1,N) :- B1 is B + N.
 getPecasByCor(jogo(_,_,Tab),Cor,NPecas) :-  findall(ID,getSimboloXY(Tab,[ID,Cor,_,_],_,_),Elementos),
                                             length(Elementos,NPecas).
 
-getGarraNum(jogo(_,_,Tab), Cor, N):-findall(Ng, (getSimboloXY(Tab,[_,Cor,Ng,_],_,_), Ng > 0) , Elementos),
-                                    length(Elementos,N).
+getGarraNum(jogo(_,_,Tab), Cor, N, Total):-findall(Ng, (getSimboloXY(Tab,[_,Cor,Ng,_],_,_), Ng > 0) , Elementos),
+                                    length(Elementos,N), somarLista(Elementos,Total).
 
-getPernaNum(jogo(_,_,Tab), Cor, N):-findall(Np, (getSimboloXY(Tab,[_,Cor,_,Np],_,_), Np > 0) , Elementos),
-                                    length(Elementos,N).
+getPernaNum(jogo(_,_,Tab), Cor, N, Total):-findall(Np, (getSimboloXY(Tab,[_,Cor,_,Np],_,_), Np > 0) , Elementos),
+                                    length(Elementos,N), somarLista(Elementos,Total).
 
 starving(Tab,ID,Cor) :- getSimboloXY(Tab,[ID,Cor,G,P],X,Y), M is G + P, !,
                         contaVazios(Tab,X,Y,Vazios), Res is Vazios - M, Res < 0.
@@ -70,4 +69,10 @@ getStarvingNum(jogo(_,_,Tab),Cor,Res):- findall(ID,starving(Tab,ID,Cor),Elemento
                                         length(Elementos,Res).
 
 getMoveu(T1,T2,Cor, Res):-findall(ID,(getSimboloXY(T1,[ID,Cor,_,_],X,Y), getSimboloXY(T2, vazio, X,Y) ), Elementos),
-                          length(Elementos,Res). 
+                          length(Elementos,Res).
+
+validarOri(OriList,P) :- validarOriAux(OriList,P,0).
+validarOriAux([O|[]],P,N):- N < P, oriDic(O,_,_).
+validarOriAux([Ori|Os],P,Natual):- Natual >= 0, Natual < P,oriDic(Ori,_,_), N1 is Natual + 1, validarOriAux(Os,P,N1).
+
+dist(X1,Y1,X,Y,Dist) :- S1 is X1 - X, S2 is Y1 - Y, Q1 is S1 * S1, Q2 is S2 * S2, Dist is Q1 + Q2.

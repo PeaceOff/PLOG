@@ -45,52 +45,56 @@ jogando(hc,_,_).
 
 jogar(Modo) :- init, repeat, once(jogando(Modo,Jogo)), ganhou(Jogador,Jogo), imprimeVencedor(Jogador), end.
 
-jogada(jogo(A,B,Tab),Cor,jogo(A3,B3,T3)):-  imprimeVez(Cor), !,
-                                            movimento(jogo(A,B,Tab),Cor,jogo(A1,B1,T1)), !,
+jogada(jogo(A,B,Tab),Cor,jogo(A3,B3,T3)):-  imprimeVez(Cor), !, repeat,
+                                            movimento(jogo(A,B,Tab),Cor,jogo(A1,B1,T1)),
+                                            desenharJogo(A1,B1,T1), !, repeat,
                                             evoluir(jogo(A1,B1,T1),Cor,jogo(A2,B2,T2)), !,
                                             famintos(jogo(A2,B2,T2),Cor,jogo(A3,B3,T3)).
 
 movimento(JI,Cor,JF) :- write('Escolha uma opcao - Mover : m | Capturar : c | Skip : s'), nl, !,
-                        read(X), acao1(X,Regra), !, lerRegraM(Cor,Regra,JI,JF).
+                        read(X), acao1(JI,X,Regra), !, lerRegraM(Cor,Regra,JI,JF).
 
-lerRegraM(_,s,Jogo,Jogo):- write('--Skip Movimento!'), nl.
+lerRegraM(_,s,Jogo,Jogo).
 
-lerRegraM(Cor,mover(X,Y,Ori),jogo(A,B,Tab),jogo(A,B,T1)) :- getSimboloXY(Tab,[ID,Cor,_,P],X,Y),
-                                                            oriDic(Ori,_,_),
-                                                            P > 0,
-                                                            moverPeca(Tab,ID,Cor,Ori,T1) , write('--Mover!'), write(X), write(Y), write(Ori), nl.
+lerRegraM(Cor,mover(X,Y,Ori),jogo(A,B,Tab),jogo(A,B,T1)) :- getSimboloXY(Tab,[ID,Cor,_,P],X,Y), P > 0,
+                                                            validarOri(Ori,P),
+                                                            moverPecaLista(Tab,ID,Cor,Ori,T1).
 
 lerRegraM(Cor,capturar(X,Y,Ori), jogo(A,B,Tab), JF) :-  getSimboloXY(Tab,[ID,Cor,G,_],X,Y),
                                                         G > 0,
-                                                        capturar(jogo(A,B,Tab),ID,Cor,Ori,JF) , write('--Capturar!'), nl.
+                                                        capturar(jogo(A,B,Tab),ID,Cor,Ori,JF).
 
 evoluir(Jogo,_,Jogo):- ganhou(_,Jogo).
 evoluir(JI,Cor,JF) :-   write('Escolha um opcao - Adicionar Perna : p | Adicionar Garra : g | Adicionar Corpo : c | Skip : s'), nl , !,
                         read(Acao), acao2(Acao,Regra), !, lerRegraE(Cor,Regra,JI,JF).
 
-lerRegraE(_,s,Jogo,Jogo):- write('----Skip Evoluir!'), nl.
+lerRegraE(_,s,Jogo,Jogo).
 lerRegraE(Cor,aP(X,Y),jogo(A,B,Tab),jogo(A,B,T1)):- getSimboloXY(Tab,[ID,Cor,G,P],X,Y),
                                                     (P + G) < 6,
-                                                    addPerna(Tab,Cor,ID,T1) , write('----Adicionar Perna!'), nl.
+                                                    addPerna(Tab,Cor,ID,T1).
 
 lerRegraE(Cor,aG(X,Y),jogo(A,B,Tab),jogo(A,B,T1)):- getSimboloXY(Tab,[ID,Cor,G,P],X,Y),
                                                     (P + G) < 6,
-                                                    addGarra(Tab,Cor,ID,T1) , write('----Adicionar Garra!'), nl.
+                                                    addGarra(Tab,Cor,ID,T1).
 
 
 lerRegraE(Cor,aC(X,Y,Ori),jogo(A,B,Tab),jogo(A,B,T1)):- getSimboloXY(Tab,[ID,Cor,_,_],X,Y),
-                                                        addCorpo(Tab,ID,Cor,Ori,T1) , write('----Adicionar Corpo!'), nl.
+                                                        addCorpo(Tab,ID,Cor,Ori,T1).
 
 famintos(Jogo,_,Jogo):- ganhou(_,Jogo).
 famintos(jogo(A,B,T),Cor,jogo(A1,B1,T1)) :- corInv(Cor,CI), removeEsfomeados(T,CI,Removidos,T1), somarPontos(Cor,A,B,A1,B1,Removidos).
 
+lerOris(0,[]).
+lerOris(Npernas,OriList) :- write('Restam-lhe '), write(Npernas), write(' movimento(s), indique uma orientacao[0...5] \'s\' para sair '),
+                            read(Ori), (Ori = 's' -> OriList = [];
+                            (oriDic(Ori,_,_), N1 is Npernas - 1, lerOris(N1,L), OriList = [Ori|L])).
 
-
-acao1(m,Regra):-write('Indique a letra'), read(Cena), charDic(Cena,Y), nl, write('Indique o numero'), read(X), nl,
-                write('Indique uma orientacao [0..5]'), read(Ori), oriDic(Ori,_,_), Regra = mover(X,Y,Ori).
-acao1(c,Regra):- acao1(m,mover(X,Y,Ori)), Regra = capturar(X,Y,Ori).
-acao1(s,s).
-acao1(_,_) :- invalido.
+acao1(jogo(_,_,Tab),m,Regra):-  write('Indique a letra'), read(Cena), charDic(Cena,Y), nl, write('Indique o numero'), read(X), nl,
+                                getSimboloXY(Tab,[_,_,_,P],X,Y), lerOris(P,OriList), Regra = mover(X,Y,OriList).
+acao1(_,c,Regra):- write('Indique a letra'), read(Cena), charDic(Cena,Y), nl, write('Indique o numero'), read(X), nl,
+                write('Indique uma orientacao [0..5]'), read(Ori), oriDic(Ori,_,_), Regra = capturar(X,Y,Ori).
+acao1(_,s,s).
+acao1(_,_,_) :- invalido.
 
 
 acao2(p,Regra) :- write('Indique a letra'), read(Cena), charDic(Cena,Y), nl, write('Indique o numero'), read(X), nl, Regra = aP(X,Y).
