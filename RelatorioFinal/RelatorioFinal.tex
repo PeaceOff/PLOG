@@ -52,7 +52,6 @@ Concluindo, ambos os estudantes orgulham-se agora do resultado obtido e do méto
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introdução}
 
-Descrever os objetivos e motivação do trabalho. Descrever num parágrafo breve a estrutura do relatório.
 Este projecto foi proposto no âmbito da unidade curricular de Programação em Lógica do Mestrado Integrado de Engenharia Informática e de Computação da Faculdade de Engenharia da Universidade do Porto. Consiste na adaptação de um jogo de tabuleiro para dois jogadores na linguagem Prolog. O tema escolhido foi o "Adaptoid" um jogo relativamente simples de compreender e aprender a jogar mas que a quantidade de opções disponíveis ao jogador fazem com que o jogo tenha uma complexidade muito superior relativo ao que aparenta.
 Este relatório tem a seguinte estrutura :
  \begin{itemize}
@@ -111,7 +110,15 @@ Para que o desenho de cada célula seja possível, para cada linha do conteúdo 
 \end{itemize}
 Foram utilizados símbolos especiais que apenas são usados como espaçamento, para que seja possível enquadrar as células no seu local. O predicado de visualização já se encontra 100\% desenvolvido sendo que recebe um tabuleiro no formato de lista de listas e procede ao desenho no mesmo na consola como se pode ver na figura ao lado.
 
-\subsection{Lista de Jogadas Válidas} Obtenção de uma lista de jogadas possíveis. Exemplo: \textit{valid\_moves(+Board, -ListOfMoves)}.
+\subsection{Lista de Jogadas Válidas} As jogadas possíveis são :
+
+\begin{itemize}
+    \item \textit{addPerna(+Board, +Cor, +ID, -NewBoard)}.
+    \item \textit{addGarra(+Board, +Cor, +ID, -NewBoard)}.
+    \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é feita no final de cada jogada.
+    \item \textit{capturar(+JogoInicial, +ID, +Cor, +Ori, -JogoFinal)}.
+    \item \textit{addCorpo(+Board, +ID, +Cor, +Ori, -NewBoard)}.
+\end{itemize}
 
 \subsection{Execução de Jogadas} Validação e execução de uma jogada num tabuleiro, obtendo o novo estado do jogo. Exemplo: \textit{move(+Move, +Board, -NewBoard)}.
 
