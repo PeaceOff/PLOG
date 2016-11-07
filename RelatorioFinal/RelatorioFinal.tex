@@ -99,11 +99,17 @@ Não é possível mover o adaptoid através de espaços que estejam ocupados, ap
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Lógica do Jogo}
 
-Descrever o projeto e implementação da lógica do jogo em Prolog, incluindo a forma de representação do estado do tabuleiro e sua visualização, execução de movimentos, verificação do cumprimento das regras do jogo, determinação do final do jogo e cálculo das jogadas a realizar pelo computador utilizando diversos níveis de jogo. Sugere-se a estruturação desta secção da seguinte forma:
+\subsection{Representação do Estado do Jogo}  Para representar o tabuleiro do jogo optámos por uma lista de listas, onde cada uma das listas define uma das linhas do tabuleiro e por consequência cada elemento dessa lista representa uma célula no nosso jogo,  para facilitar a pesquisa de casas adjacentes foi inserido no início de cada lista alguns átomos que mais tarde serão interpretados como espaços por forma a garantir a forma hexagonal definida pelos criadores do jogo. As peças do jogo, os “adaptoids”, são representados usando uma lista de 4 elementos ([Id,Cor,NPernas,NGarras]). Os ID têm como função facilitar na pesquisa das peças no tabuleiro. A Cor assume o valor ‘O’(white) ou ‘X’(black), e representa o jogador ao qual a peça pertence, uma vez que na consola do sicstus não é possível alterar a cor. O NPernas como o nome indica é o número de pernas que a peça possui, idem para o NGarras. Nota: Os átomos ‘a’,’b’,’c’,'d','e','f','g' e ‘#’ são usados para controlar a posição das casas do jogo relativa à lista que representa a linha do tabuleiro onde estas se encontram, ou seja, com a introdução destes símbolos é possível seguir a seguinte lógica: Para uma determinada célula na posição (x,y), a célula-vizinha imediatamente abaixo do lado esquerdo está na posição (x,y+1) e a célula imediatamente abaixo do lado direito está na posição (x+1,y+1). Neste pequeno exemplo, o jogador da equipa ‘X’(white) ganhou porque o jogador da equipa ‘O’(black) não possui mais nenhuma peça no tabuleiro. Também é possível ambos os jogadores terem peças no tabuleiro e um ganhar, mas neste caso o jogador vencedor alcançou primeiro os 5 pontos.
 
-\subsection{Representação do Estado do Jogo} Pode ser idêntico ao descrito no relatório intercalar.)
-
-\subsection{Visualização do Tabuleiro} (Pode ser idêntico ao descrito no relatório intercalar.)
+\subsection{Visualização do Tabuleiro} Originalmente as células do tabuleiro são redondas, mas para efeitos de visualização utilizando caracteres ASCII, estas são representadas como hexágonos. Com este formato, para ser possível o desenho do “adaptoid” contendo as suas garras e pernas seguiu-se a seguinte estratégia: Nesta célula é possível observar todas as posições possíveis para as garras(símbolo Y ) e pernas(símbolo L), este caso é impossível já que o número máximo de membros é 6, mas para efeitos de demonstração do funcionamento, é possível observar que as garras(Y) são desenhadas apenas no topo e no meio (caso sejam 6 garras no total), o mesmo acontece para as pernas. O símbolo B representa a cor do “adaptoid” e à sua volta está o número dessa peça.
+Para que o desenho de cada célula seja possível, para cada linha do conteúdo do tabuleiro são desenhadas 4 linhas no ecrã, sendo elas:
+\begin{itemize}
+    \item A linha de topo que contém o número de garras (até 5 garras).
+    \item A linha do meio que contém o sexto membro (garra/perna), a cor e  número da peça.
+    \item A linha de baixo que contém o número de pernas (até 5 pernas).
+    \item A linha de separação para ser possível uma melhor distinção entre células adjacentes.
+\end{itemize}
+Foram utilizados símbolos especiais que apenas são usados como espaçamento, para que seja possível enquadrar as células no seu local. O predicado de visualização já se encontra 100\% desenvolvido sendo que recebe um tabuleiro no formato de lista de listas e procede ao desenho no mesmo na consola como se pode ver na figura ao lado.
 
 \subsection{Lista de Jogadas Válidas} Obtenção de uma lista de jogadas possíveis. Exemplo: \textit{valid\_moves(+Board, -ListOfMoves)}.
 
