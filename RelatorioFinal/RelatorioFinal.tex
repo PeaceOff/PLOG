@@ -5,7 +5,8 @@
 \usepackage{indentfirst}
 \usepackage{graphicx}
 \usepackage{verbatim}
-
+\usepackage{wrapfig}
+\graphicspath{ {./img/} }
 
 \begin{document}
 
@@ -68,8 +69,32 @@ Este relatório tem a seguinte estrutura :
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{O Jogo Adaptoid}
 
-Adaptoid é um jogo de tabuleiro para dois jogadores, constituído por um tabuleiro hexagonal, que contém (37 espaços), e por um conjunto de criaturas denominadas de “adaptoid”. Cabe a cada jogador evoluir o seu “adaptoid” adicionando membros, garras e pernas, ao corpo do adaptoid. Os membros são fatores decisivos, pois fazem variar o comportamento do “adaptoid”. As garras definem o dano e as pernas a capacidade de movimento. Cada turno divide-se em 3 fases distintas, sendo elas, movimento, crescimento e alimentação. Durante a fase de movimento o jogador pode mover um dos seus “adaptoids”, o número de espaços percorridos depende do número de pernas desse “adaptoid”. Não é possível mover o adaptoid através de espaços que estejam ocupados, apenas é possível mover em direção a espaços vazios sem obstáculos e mover para o topo de um “adaptoid” oposto, para iniciar a captura. Na fase de crescimento o jogador pode optar por um de dois casos possíveis, ou cria um novo corpo adjacente a um dos seus “adaptoids” existentes, ou então adiciona uma perna, ou garra, a um dos seus “adaptoids” existentes no tabuleiro. Na fase de alimentação, é verificada em cada peça do inimigo se ela está com fome, ou seja, o número  de espaços vazios à sua volta terá que ser igual ou maior ao número de membros do “adaptoid”. No caso de fome, a peça inimiga morre, é removida e é atribuído um ponto ao jogador. Durante a captura o “adaptoid ”com mais garras ganha e o “adaptoid ” derrotado é removido do tabuleiro. Em caso do número de garras dos “adaptoids” ser igual, ambos são removidos e cada jogador recebe um ponto. As peças de “adaptoids” mortos poderão ser novamente usadas. O jogo termina quando um jogador chega aos 5 pontos ou quando um dos jogadores ficar sem nenhum “adaptoid” no tabuleiro.
+\begin{wrapfigure}{r}{0.22\textwidth} 
+    \centering
+    \includegraphics[width=0.22\textwidth]{adaptoid}
+    \caption{Imagem ilustratica de um "adaptoid"}
+\end{wrapfigure}
 
+
+Adaptoid é um jogo de tabuleiro para dois jogadores, constituído por um tabuleiro hexagonal, que contém (37 espaços), e por um conjunto de criaturas denominadas de “adaptoid”. Cabe a cada jogador evoluir o seu “adaptoid” adicionando membros, garras e pernas, ao corpo do adaptoid. Os membros são fatores decisivos, pois fazem variar o comportamento do “adaptoid”. As garras definem o dano e as pernas a capacidade de movimento. 
+
+\begin{wrapfigure}{l}{0.20\textwidth}
+    	\centering 
+	\vspace{-10pt}
+   	\includegraphics[width=0.20\textwidth]{adaptoidsDissecados}
+    	\caption{Corpo e membros de um "adaptoid"}
+\end{wrapfigure}
+
+Cada turno divide-se em 3 fases distintas, sendo elas, movimento, crescimento e alimentação. Durante a fase de movimento o jogador pode mover um dos seus “adaptoids”, o número de espaços percorridos depende do número de pernas desse “adaptoid”. 
+
+Não é possível mover o adaptoid através de espaços que estejam ocupados, apenas é possível mover em direção a espaços vazios sem obstáculos e mover para o topo de um “adaptoid” oposto, para iniciar a captura. Na fase de crescimento o jogador pode optar por um de dois casos possíveis, ou cria um novo corpo adjacente a um dos seus “adaptoids” existentes, ou então adiciona uma perna, ou garra, a um dos seus “adaptoids” existentes no tabuleiro. Na fase de alimentação, é verificada em cada peça do inimigo se ela está com fome, ou seja, o número  de espaços vazios à sua volta terá que ser igual ou maior ao número de membros do “adaptoid”. No caso de fome, a peça inimiga morre, é removida e é atribuído um ponto ao jogador. Durante a captura o “adaptoid ”com mais garras ganha e o “adaptoid ” derrotado é removido do tabuleiro. Em caso do número de garras dos “adaptoids” ser igual, ambos são removidos e cada jogador recebe um ponto. As peças de “adaptoids” mortos poderão ser novamente usadas. O jogo termina quando um jogador chega aos 5 pontos ou quando um dos jogadores ficar sem nenhum “adaptoid” no tabuleiro.
+
+
+\begin{figure}[h]
+\includegraphics[scale=1.0]{jogoDecorrer}
+\caption{Estado de um jogo de adaptoid}
+\centering
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Lógica do Jogo}
