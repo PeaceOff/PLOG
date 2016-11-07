@@ -12,7 +12,7 @@ addPernaAux([A|T],Cor,ID,Tr) :- addPernaAux(T,Cor,ID,T1), Tr = [A|T1].
 addPerna([],_,_,[]).
 addPerna([A|T],Cor,ID,Tr) :- addPernaAux(A,Cor,ID,LN1), addPerna(T,Cor,ID,LN2), Tr = [LN1|LN2].
 /*---------------------------------*/
-/*Funcao para verificar e remover os adaptoids que nao estam alimentados*/
+/*Predicados para verificar e remover os adaptoids que nao estam alimentados*/
 vizinhoVazio(T,X,Y,OffSetX,OffSetY,Res) :-  X1 is X + OffSetX, Y1 is Y + OffSetY,
                                             length(T,NL), Y1 < NL, nth0(Y1,T,LTemp),
                                             length(LTemp,CL), X1 < CL, !,
@@ -76,7 +76,7 @@ moverPeca(Tab,ID,Cor,Ori,TabRes) :- checkMov(Tab,ID,Cor,Ori,CoordX,CoordY,Peca),
                                     removePeca(Tab,ID,Cor,Res),
                                     inserePeca(Res,Peca,CoordX,CoordY,TabRes).
 /*--------------*/
-/*Funcoes para atacar e capturar um inimigo*/
+/*Predicados para atacar e capturar um inimigo*/
 maisGarras(jogo(A,B,Tab),G1,G2,ID1,Cor1,ID2,Cor2,Ori,jogo(A1,B1,TabRes)):-  G1 > G2, !,
                                                                             removePeca(Tab,ID2,Cor2,Res),
                                                                             moverPeca(Res,ID1,Cor1,Ori,TabRes),
