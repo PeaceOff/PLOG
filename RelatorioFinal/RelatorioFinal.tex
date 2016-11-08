@@ -89,7 +89,6 @@ Este relatório tem a seguinte estrutura :
     \caption{Imagem ilustratica de um "adaptoid"}
 \end{wrapfigure}
 
-
 Adaptoid é um jogo de tabuleiro para dois jogadores, constituído por um tabuleiro hexagonal, que contém (37 espaços), e por um conjunto de criaturas denominadas de “adaptoid”. Cabe a cada jogador evoluir o seu “adaptoid” adicionando membros, garras e pernas, ao corpo do adaptoid. Os membros são fatores decisivos, pois fazem variar o comportamento do “adaptoid”. As garras definem o dano e as pernas a capacidade de movimento.
 
 \begin{wrapfigure}{l}{0.20\textwidth}
@@ -149,17 +148,22 @@ Para que o desenho de cada célula seja possível, para cada linha do conteúdo 
 \FloatBarrier
 Foram utilizados símbolos especiais que apenas são usados como espaçamento, para que seja possível enquadrar as células no seu local. O predicado de visualização já se encontra 100\% desenvolvido sendo que recebe um tabuleiro no formato de lista de listas e procede ao desenho no mesmo na consola como se pode ver na figura ao lado.
 
-\subsection{Lista de Jogadas Válidas} As jogadas possíveis são :
-
+\subsection{Lista de Jogadas Válidas}Foram implementados predicados que definem as jogadas válidas, estes predicados implementam as jogadas propriamente ditas e validam no caso do utilizador, no caso do computador são usados para obter a lista de jogadas possíveis. As três regras que se seguem dizem respeito às diferentes fases de que cada jogada (Movimento(M), Evolução(E) e Alimentação(famintos)).
 \begin{itemize}
-    \item \textit{addPerna(+Board, +Cor, +ID, -NewBoard)}.
-    \item \textit{addGarra(+Board, +Cor, +ID, -NewBoard)}.
-    \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é feita no final de cada jogada.
-    \item \textit{capturar(+JogoInicial, +ID, +Cor, +Ori, -JogoFinal)}.
-    \item \textit{addCorpo(+Board, +ID, +Cor, +Ori, -NewBoard)}.
+    \item \textit{lerRegraM(+Cor,+Acao,+JogoInicial,-JogoFinal)} , as ações possíveis incluem \textit{mover(+X,+Y,+Ori)} e \textit{capturar(+X,+Y,+Ori)}.
+    \item \textit{lerRegraE(+Cor,+Acao,+JogoInicial,-JogoFinal)} , as ações incluem \textit{aP(+X,+Y)} para adicionar uma perna, \textit{aG(+X,+Y)} para adicionar uma garra e \textit{aC(+X,+Y,+Ori)} para adicionar um novo adaptoid.
+    \item \textit{famintos(+JogoInicial,+Cor,-JogoFinal)}.
 \end{itemize}
 
 \subsection{Execução de Jogadas} Validação e execução de uma jogada num tabuleiro, obtendo o novo estado do jogo. Exemplo: \textit{move(+Move, +Board, -NewBoard)}.
+\begin{itemize}
+    \item \textit{capturar(+JogoInicial, +ID, +Cor, +Ori, -JogoFinal)}.
+    \item \textit{moverPeca(+JogoInicial, +ID, +Cor, +Ori, -JogoFinal)}.
+    \item \textit{addPerna(+Board, +Cor, +ID, -NewBoard)}.
+    \item \textit{addGarra(+Board, +Cor, +ID, -NewBoard)}.
+    \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é feita no final de cada jogada.
+    \item \textit{addCorpo(+Board, +ID, +Cor, +Ori, -NewBoard)}.
+\end{itemize}
 
 \subsection{Avaliação do Tabuleiro} Avaliação do estado do jogo, que permitirá comparar a aplicação das diversas jogadas disponíveis. Exemplo: \textit{value(+Board, +Player, -Value)}.
 
