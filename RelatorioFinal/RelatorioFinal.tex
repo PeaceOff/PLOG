@@ -1,11 +1,14 @@
 \documentclass[a4paper]{article}
 
+\usepackage{tabularx}
 \usepackage[portuguese]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{indentfirst}
 \usepackage{graphicx}
 \usepackage{verbatim}
 \usepackage{wrapfig}
+\usepackage{booktabs}
+\usepackage{placeins}
 \graphicspath{ {./img/} }
 
 \begin{document}
@@ -117,12 +120,33 @@ Não é possível mover o adaptoid através de espaços que estejam ocupados, ap
 
 \subsection{Visualização do Tabuleiro} Originalmente as células do tabuleiro são redondas, mas para efeitos de visualização utilizando caracteres ASCII, estas são representadas como hexágonos. Com este formato, para ser possível o desenho do “adaptoid” contendo as suas garras e pernas seguiu-se a seguinte estratégia: Nesta célula é possível observar todas as posições possíveis para as garras(símbolo Y ) e pernas(símbolo L), este caso é impossível já que o número máximo de membros é 6, mas para efeitos de demonstração do funcionamento, é possível observar que as garras(Y) são desenhadas apenas no topo e no meio (caso sejam 6 garras no total), o mesmo acontece para as pernas. O símbolo B representa a cor do “adaptoid” e à sua volta está o número dessa peça.
 Para que o desenho de cada célula seja possível, para cada linha do conteúdo do tabuleiro são desenhadas 4 linhas no ecrã, sendo elas:
-\begin{itemize}
-    \item A linha de topo que contém o número de garras (até 5 garras).
-    \item A linha do meio que contém o sexto membro (garra/perna), a cor e  número da peça.
-    \item A linha de baixo que contém o número de pernas (até 5 pernas).
-    \item A linha de separação para ser possível uma melhor distinção entre células adjacentes.
-\end{itemize}
+
+\begin{table}[h!]
+  \centering
+  \caption{Legenda das camadas de uma célula.}
+  \label{tab:table1}
+ \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \begin{tabular}{ c |  P{9.8cm}}
+	\hline &
+	\\
+	\includegraphics[width=0.1\textwidth]{topo}
+           & A linha de topo que contém o número de garras (até 5 garras).
+	\\&
+	\\
+	
+	\includegraphics[width=0.1\textwidth]{meio}
+	& A linha do meio que contém o sexto membro (garra/perna), a cor e  número da peça.
+	\\
+
+	\includegraphics[width=0.1\textwidth]{baixo}
+	& A linha de baixo que contém o número de pernas (até 5 pernas).
+
+	\\
+	\includegraphics[width=0.06\textwidth]{separacao}
+	& A linha de separação para ser possível uma melhor distinção entre células adjacentes.
+	\end{tabular}
+\end{table}
+\FloatBarrier
 Foram utilizados símbolos especiais que apenas são usados como espaçamento, para que seja possível enquadrar as células no seu local. O predicado de visualização já se encontra 100\% desenvolvido sendo que recebe um tabuleiro no formato de lista de listas e procede ao desenho no mesmo na consola como se pode ver na figura ao lado.
 
 \subsection{Lista de Jogadas Válidas} As jogadas possíveis são :
