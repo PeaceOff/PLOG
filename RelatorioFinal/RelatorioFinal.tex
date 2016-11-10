@@ -46,7 +46,10 @@ O problema abordado consitiu na implementação do jogo de tabuleiro "Adaptoid" 
     \item Desenvolvimento de uma pseudo AI para as jogadas do computador.
     \item Design de um sistema simples de menus para completar um ambiente de jogo.
 \end{enumerate}
+
 Todos os objectivos foram cumpridos sendo que temos um jogo completo e jogável desenvolvido em Prolog. Desenvolver um jogo funcional numa linguagem nova com a qual apenas se teve contacto durante algumas semana não é fácil, pelo que o grupo no inicio encontrou algumas dificuldades. Após uma leitura extensiva dos slides facultados pelos docentes assim como informação disponível na web foi possível obter uma melhor percepção desta linguagem e paradigma de programação por forma a desenvolver uma aplicação.
+
+
 Concluindo, ambos os estudantes orgulham-se agora do resultado obtido e do método como tal foi alcançado, podemos também afirmar que o nosso conhecimento de Prolog aumentou consideravelmente.
 \newpage
 
@@ -115,7 +118,7 @@ Não é possível mover o adaptoid através de espaços que estejam ocupados, ap
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Lógica do Jogo}
 
-\subsection{Representação do Estado do Jogo}  Para representar o tabuleiro do jogo optámos por uma lista de listas, onde cada uma das listas define uma das linhas do tabuleiro e por consequência cada elemento dessa lista representa uma célula no nosso jogo,  para facilitar a pesquisa de casas adjacentes foi inserido no início de cada lista alguns átomos que mais tarde serão interpretados como espaços por forma a garantir a forma hexagonal definida pelos criadores do jogo. As peças do jogo, os “adaptoids”, são representados usando uma lista de 4 elementos ([Id,Cor,NPernas,NGarras]). Os ID têm como função facilitar na pesquisa das peças no tabuleiro. A Cor assume o valor ‘O’(white) ou ‘X’(black), e representa o jogador ao qual a peça pertence, uma vez que na consola do sicstus não é possível alterar a cor. O NPernas como o nome indica é o número de pernas que a peça possui, idem para o NGarras. 
+\subsection{Representação do Estado do Jogo}  Para representar o tabuleiro do jogo optámos por uma lista de listas, onde cada uma das listas define uma das linhas do tabuleiro e por consequência cada elemento dessa lista representa uma célula no nosso jogo,  para facilitar a pesquisa de casas adjacentes foi inserido no início de cada lista alguns átomos que mais tarde serão interpretados como espaços por forma a garantir a forma hexagonal definida pelos criadores do jogo. As peças do jogo, os “adaptoids”, são representados usando uma lista de 4 elementos ([Id,Cor,NPernas,NGarras]). Os ID têm como função facilitar na pesquisa das peças no tabuleiro. A Cor assume o valor ‘O’(white) ou ‘X’(black), e representa o jogador ao qual a peça pertence, uma vez que na consola do sicstus não é possível alterar a cor. O NPernas como o nome indica é o número de pernas que a peça possui, idem para o NGarras.
 
 \begin{figure}[h]
     \begin{center}
@@ -180,7 +183,7 @@ Foram utilizados símbolos especiais que apenas são usados como espaçamento, p
     \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é feita no final de cada jogada.
 \end{itemize}
 
-\subsection{Avaliação do Tabuleiro} 
+\subsection{Avaliação do Tabuleiro}
 
 A avaliação do estado do jogo é realizada no predicado  \textit{getValue(+JogoI, +Cor,+Pos, -Value)}, este predicado internamente usa outros predicados de avaliação, para que promova certos movimentos. Estes predicados são:
 
@@ -197,10 +200,11 @@ A avaliação do estado do jogo é realizada no predicado  \textit{getValue(+Jog
 \subsection{Final do Jogo} Foi criado o predicado \textit{ganhou(-Jogador,+Jogo)} que avalia se um dado jogo chegou ao fim, verificando as seguintes condições : algum dos jogadores alcançou os 5 pontos ou algum dos jogadores não possuí peças no tabuleiro. Este predicado é chamado em duas ocasiões, a primeira no fim de cada jogada simplesmente para saber se o jogo terminou, ou seja, se existe um vencedor, e uma segunda vez após ter terminado o \textit{loop} de jogar para se obter o estado de terminação (jogador vencedor ou empate) de forma a imprimir o resultado.
 
 \subsection{Jogada do Computador}
-A escolha da melhor jogada é feita no predicado: 
+A escolha da melhor jogada é feita no predicado:
 \begin{itemize}
 	\item \textit{escolheMelhorJogada(+JogoI,+Cor,+Modo,-JogoF)}.
 \end{itemize}
+
 O modo determina o nível de dificuldade do computador, tendo como opções disponíveis um modo de ataque (\textit{op}) e um modo de defesa (\textit{notOP}). Internamente o modo alterna entre \textit{getValue} e \textit{getValue2} que apenas mudam os multiplicadores para obter comportamentos diferentes.
 
 \subsection{Testes}
@@ -223,7 +227,8 @@ O módulo de interface principal divide-se em vários predicados sendo que cada 
         \caption{Menu principal.}
     \end{minipage}
 \end{figure}
-\\
+
+
 Os menus que o utilizador pode encontrar contêm:
 
 \begin{itemize}
@@ -231,7 +236,7 @@ Os menus que o utilizador pode encontrar contêm:
 	\item Especificação do jogo.
 	\item Escolha do tipo de jogo.
 	\item Escolha da dificuldade do computador.
-\end{itemize} 
+\end{itemize}
 
 \begin{figure}[h]
 
@@ -241,30 +246,28 @@ Os menus que o utilizador pode encontrar contêm:
 	\label{fig:figuramenu}
 
 \end{figure}
-No modo humano contra humano ou humano contra computador, quando chega à vez do utilizador, é apresentado um menu como o indicado na figura~\ref{fig:figuramenu}, indicando os passos que o utilizador deverá seguir para realizar a sua jogada.z
-\\
-Em modo computador contra computador, é apresentado ao utilizador o tabuleiro do resultado de cada ronda, sendo necessária a interação do utilizador para proceder à próxima ronda, terminando com um texto indicativo de vitória ou empate.
+No modo humano contra humano ou humano contra computador, durante a jogada do utilizador, é apresentado um menu como o indicado na figura~\ref{fig:figuramenu}, indicando os passos que o utilizador deverá seguir para realizar a sua jogada.
+
+Em modo computador contra computador, é apresentado ao utilizador o tabuleiro do resultado de cada ronda, sendo necessária a interação do utilizador para proceder à próxima ronda, terminando com um texto indicativo do resultado final.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Conclusões}
-O grupo vê positivamente o resultado final que obteve e os conhecimentos adquiridos durante o desenvolvimento do projeto. Reconhecemos que a linguagem Prolog é bastante útil para a resolução de problemas relacionados com lógica, como era o caso deste jogo de tabuleiro, entre outros problemas do mundo real. Nunca é demais lembrar o peso e o significado destes problemas, uma vez que o modelo estrutural aqui representado pode-nos levar a considerar a reestruturação dos modos de operação convencionais.
+O grupo vê positivamente o resultado final que obteve e os conhecimentos adquiridos durante o desenvolvimento do projeto. Reconhecemos que a linguagem Prolog é bastante útil para a resolução de problemas relacionados com lógica, como era o caso deste mesmo jogo de tabuleiro, entre outros problemas do mundo real. Nunca é demais lembrar o peso e o significado destes problemas, uma vez que o modelo estrutural aqui representado pode-nos levar a considerar a reestruturação dos modos de operação convencionais.
 \\
-\\
+
 O jogo Adaptoid mostrou-nos que apesar da sua simplicidade consegue ser um jogo bastante apelativo e um bom exercício cerebral.
 \\
+
+Foram encontradas algumas dificuldades durante a realização deste trabalho que com o auxilio do material disponibilizado pelos docentes, e ainda o material que se encontra online, foram possiveis de ser ultrapassados. Inicialmente não foi um projeto que nos apelou muito devido a ser um estilo "relativamente" novo de programação e ao qual não estamos habituados, isto significa que, durante os primeiros dias de impletamentação o grupo esteve um pouco perdido e sem saber o que fazer. Optámos por utilizar uma tarde somente na pesquisa de informação sobre o Prolog (de notar que este tempo foi reduzido devido às informações e dicas já apresentadas nas aulas teóricas). Após este periodo de adaptação, os estudantes conseguiram resolver o problema proposto de uma forma ágil, dedicada, empenhada e acima de tudo correta.
 \\
-Foram encontradas algumas dificuldades durante a realização deste trabalho que com o auxilio do material disponibilizado pelos docentes e também material que se encontra online foram possiveis de ser ultrapassados. Inicialmente não foi um projeto que nos apelou muito devido a ser um estilo "relativamente" novo de programação e com o qual não estamos habituados, isto significa que, durante os primeiros dias de impletamentação o grupo esteve um pouco perdido e sem saber o que fazer. Optámos por utilizar uma tarde somente na pesquisa de informação sobre o Prolog (de notar que este tempo foi reduzido devido às informações e dicas já apresentadas nas aulas teóricas). Após este periodo de adaptação, os estudantes conseguiram resolver o problema proposto de uma forma ágil, dedicada, empenhada e acima de tudo correta.
-\\
-\\
+
 Na nossa opinião, é importante referir que o modo de input não ficou da forma que o grupo mais gostaria, mas uma vez que é necessário tratar situações de erro humano achamos que a opção escolhida, apesar de não ser a mais funcional, é a mais robusta. Outro aspeto importante é a inteligência artificial, mas esta parte não recebeu uma importância tão elevada devido a ser alvo de estudo no próximo semestre.
 \\
-\\
+
 Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos horizontes no mundo da programação em lógica, ambos os estudantes estão gratos pela experência e orgulhosos pelo seu resultado.
-
-
 
 \clearpage
 %\addcontentsline{toc}{section}{Bibliografia}
@@ -284,8 +287,8 @@ Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos
   \begin{tabular}{ P{9.8cm}}
 	\hline
 	código
-	
-	
+
+
 	\end{tabular}
 \end{table}
 
@@ -297,8 +300,8 @@ Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos
   \begin{tabular}{ P{9.8cm}}
 	\hline
 	código
-	
-	
+
+
 	\end{tabular}
 \end{table}
 
@@ -310,8 +313,8 @@ Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos
   \begin{tabular}{ P{9.8cm}}
 	\hline
 	código
-	
-	
+
+
 	\end{tabular}
 \end{table}
 
@@ -323,8 +326,8 @@ Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos
   \begin{tabular}{ P{9.8cm}}
 	\hline
 	código
-	
-	
+
+
 	\end{tabular}
 \end{table}
 
@@ -337,8 +340,8 @@ Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos
   \begin{tabular}{ P{9.8cm}}
 	\hline
 	código
-	
-	
+
+
 	\end{tabular}
 \end{table}
 
@@ -352,8 +355,8 @@ Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos
   \begin{tabular}{ P{9.8cm}}
 	\hline
 	código
-	
-	
+
+
 	\end{tabular}
 \end{table}
 
@@ -366,10 +369,9 @@ Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos
   \begin{tabular}{ P{9.8cm}}
 	\hline
 	código
-	
-	
+
+
 	\end{tabular}
 \end{table}
 
 \end{document}
-
