@@ -11,6 +11,7 @@ end :- retract(jogo(_,_,_)), write('Fim do Jogo!'), nl.
 
 desenharJogo(A,B,Tab) :- clearScreen, write('|Pontos| Branco(X) : '), write(A), write(' | Preto(O) : '), write(B), nl, desenharTabuleiro(Tab).
 desenharJogo(jogo(A,B,Tab)) :- desenharJogo(A,B,Tab).
+
 imprimeVencedor(branco):- write('Jogador Branco Ganhou! Parabens!'), nl.
 imprimeVencedor(preto):- write('Jogador Preto Ganhou! Parabens!'), nl.
 imprimeVencedor(empate):- write('Ninguem Ganhou! Empate!'), nl.

@@ -132,7 +132,7 @@ Para que o desenho de cada célula seja possível, para cada linha do conteúdo 
            & A linha de topo que contém o número de garras (até 5 garras).
 	\\&
 	\\
-	
+
 	\includegraphics[width=0.1\textwidth]{meio}
 	& A linha do meio que contém o sexto membro (garra/perna), a cor e  número da peça.
 	\\
@@ -161,13 +161,13 @@ Foram utilizados símbolos especiais que apenas são usados como espaçamento, p
     \item \textit{moverPeca(+JogoInicial, +ID, +Cor, +Ori, -JogoFinal)}.
     \item \textit{addPerna(+Board, +Cor, +ID, -NewBoard)}.
     \item \textit{addGarra(+Board, +Cor, +ID, -NewBoard)}.
-    \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é feita no final de cada jogada.
     \item \textit{addCorpo(+Board, +ID, +Cor, +Ori, -NewBoard)}.
+    \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é feita no final de cada jogada.
 \end{itemize}
 
 \subsection{Avaliação do Tabuleiro} Avaliação do estado do jogo, que permitirá comparar a aplicação das diversas jogadas disponíveis. Exemplo: \textit{value(+Board, +Player, -Value)}.
 
-\subsection{Final do Jogo} Verificação do fim do jogo, com identificação do vencedor. \\Exemplo: \textit{game\_over(+Board, -Winner)}.
+\subsection{Final do Jogo} Foi criado o predicado \textit{ganhou(-Jogador,+Jogo)} que avalia se um dado jogo chegou ao fim, verificando as seguintes condições : algum dos jogadores alcançou os 5 pontos ou algum dos jogadores não possuí peças no tabuleiro. Este predicado é chamado em duas ocasiões, a primeira no fim de cada jogada simplesmente para saber se o jogo terminou, ou seja, se existe um vencedor, e uma segunda vez após ter terminado o \textit{loop} de jogar para se obter o estado de terminação (jogador vencedor ou empate) de forma a imprimir o resultado.
 
 \subsection{Jogada do Computador} Escolha da jogada a efetuar pelo computador, dependendo do nível de dificuldade. Por exemplo: \textit{choose\_move(+Level, +Board, -Move)}.
 
@@ -180,7 +180,20 @@ Descrever o módulo de interface com o utilizador em modo de texto.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusões}
-Que conclui deste projecto? Como poderia melhorar o trabalho desenvolvido?
+O grupo vê positivamente o resultado final que obteve e os conhecimentos adquiridos durante o desenvolvimento do projeto. Reconhecemos que a linguagem Prolog é bastante útil para a resolução de problemas relacionados com lógica, como era o caso deste jogo de tabuleiro, entre outros problemas do mundo real. Nunca é demais lembrar o peso e o significado destes problemas, uma vez que o modelo estrutural aqui representado pode-nos levar a considerar a reestruturação dos modos de operação convencionais.
+\\
+\\
+O jogo Adaptoid mostrou-nos que apesar da sua simplicidade consegue ser um jogo bastante apelativo e um bom exercício cerebral.
+\\
+\\
+Foram encontradas algumas dificuldades durante a realização deste trabalho que com o auxilio do material disponibilizado pelos docentes e também material que se encontra online foram possiveis de ser ultrapassados. Inicialmente não foi um projeto que nos apelou muito devido a ser um estilo "relativamente" novo de programação e com o qual não estamos habituados, isto significa que, durante os primeiros dias de impletamentação o grupo esteve um pouco perdido e sem saber o que fazer. Optámos por utilizar uma tarde somente na pesquisa de informação sobre o Prolog (de notar que este tempo foi reduzido devido às informações e dicas já apresentadas nas aulas teóricas). Após este periodo de adaptação, os estudantes conseguiram resolver o problema proposto de uma forma ágil, dedicada, empenhada e acima de tudo correta.
+\\
+\\
+Na nossa opinião, é importante referir que o modo de input não ficou da forma que o grupo mais gostaria, mas uma vez que é necessário tratar situações de erro humano achamos que a opção escolhida, apesar de não ser a mais funcional, é a mais robusta. Outro aspeto importante é a inteligência artificial, mas esta parte não recebeu uma importância tão elevada devido a ser alvo de estudo no próximo semestre.
+\\
+\\
+Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos horizontes no mundo da programação em lógica, ambos os estudantes estão gratos pela experência e orgulhosos pelo seu resultado.
+
 
 
 \clearpage
