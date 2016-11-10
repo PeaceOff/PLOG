@@ -115,7 +115,20 @@ Não é possível mover o adaptoid através de espaços que estejam ocupados, ap
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Lógica do Jogo}
 
-\subsection{Representação do Estado do Jogo}  Para representar o tabuleiro do jogo optámos por uma lista de listas, onde cada uma das listas define uma das linhas do tabuleiro e por consequência cada elemento dessa lista representa uma célula no nosso jogo,  para facilitar a pesquisa de casas adjacentes foi inserido no início de cada lista alguns átomos que mais tarde serão interpretados como espaços por forma a garantir a forma hexagonal definida pelos criadores do jogo. As peças do jogo, os “adaptoids”, são representados usando uma lista de 4 elementos ([Id,Cor,NPernas,NGarras]). Os ID têm como função facilitar na pesquisa das peças no tabuleiro. A Cor assume o valor ‘O’(white) ou ‘X’(black), e representa o jogador ao qual a peça pertence, uma vez que na consola do sicstus não é possível alterar a cor. O NPernas como o nome indica é o número de pernas que a peça possui, idem para o NGarras. Nota: Os átomos ‘a’,’b’,’c’,'d','e','f','g' e ‘\#’ são usados para controlar a posição das casas do jogo relativa à lista que representa a linha do tabuleiro onde estas se encontram, ou seja, com a introdução destes símbolos é possível seguir a seguinte lógica: Para uma determinada célula na posição (x,y), a célula-vizinha imediatamente abaixo do lado esquerdo está na posição (x,y+1) e a célula imediatamente abaixo do lado direito está na posição (x+1,y+1). Neste pequeno exemplo, o jogador da equipa ‘X’(white) ganhou porque o jogador da equipa ‘O’(black) não possui mais nenhuma peça no tabuleiro. Também é possível ambos os jogadores terem peças no tabuleiro e um ganhar, mas neste caso o jogador vencedor alcançou primeiro os 5 pontos.
+\subsection{Representação do Estado do Jogo}  Para representar o tabuleiro do jogo optámos por uma lista de listas, onde cada uma das listas define uma das linhas do tabuleiro e por consequência cada elemento dessa lista representa uma célula no nosso jogo,  para facilitar a pesquisa de casas adjacentes foi inserido no início de cada lista alguns átomos que mais tarde serão interpretados como espaços por forma a garantir a forma hexagonal definida pelos criadores do jogo. As peças do jogo, os “adaptoids”, são representados usando uma lista de 4 elementos ([Id,Cor,NPernas,NGarras]). Os ID têm como função facilitar na pesquisa das peças no tabuleiro. A Cor assume o valor ‘O’(white) ou ‘X’(black), e representa o jogador ao qual a peça pertence, uma vez que na consola do sicstus não é possível alterar a cor. O NPernas como o nome indica é o número de pernas que a peça possui, idem para o NGarras. 
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.5]{posicoesRelativas}
+        \caption{Posições relativas a uma célula central}
+        \centering
+    \end{center}
+\end{figure}
+Nota: Os átomos ‘a’,’b’,’c’,'d','e','f','g' e ‘\#’ são usados para controlar a posição das casas do jogo relativa à lista que representa a linha do tabuleiro onde estas se encontram, ou seja, com a introdução destes símbolos é possível seguir a seguinte lógica: Para uma determinada célula na posição (x,y), a célula-vizinha imediatamente abaixo do lado esquerdo está na posição (x,y+1) e a célula imediatamente abaixo do lado direito está na posição (x+1,y+1). Neste pequeno exemplo, o jogador da equipa ‘X’(white) ganhou porque o jogador da equipa ‘O’(black) não possui mais nenhuma peça no tabuleiro. Também é possível ambos os jogadores terem peças no tabuleiro e um ganhar, mas neste caso o jogador vencedor alcançou primeiro os 5 pontos.
+
+
+
+\newpage
 
 \subsection{Visualização do Tabuleiro} Originalmente as células do tabuleiro são redondas, mas para efeitos de visualização utilizando caracteres ASCII, estas são representadas como hexágonos. Com este formato, para ser possível o desenho do “adaptoid” contendo as suas garras e pernas seguiu-se a seguinte estratégia: Nesta célula é possível observar todas as posições possíveis para as garras(símbolo Y ) e pernas(símbolo L), este caso é impossível já que o número máximo de membros é 6, mas para efeitos de demonstração do funcionamento, é possível observar que as garras(Y) são desenhadas apenas no topo e no meio (caso sejam 6 garras no total), o mesmo acontece para as pernas. O símbolo B representa a cor do “adaptoid” e à sua volta está o número dessa peça.
 Para que o desenho de cada célula seja possível, para cada linha do conteúdo do tabuleiro são desenhadas 4 linhas no ecrã, sendo elas:
@@ -155,6 +168,8 @@ Foram utilizados símbolos especiais que apenas são usados como espaçamento, p
     \item \textit{famintos(+JogoInicial,+Cor,-JogoFinal)}.
 \end{itemize}
 
+\newpage
+
 \subsection{Execução de Jogadas} Validação e execução de uma jogada num tabuleiro, obtendo o novo estado do jogo. Exemplo: \textit{move(+Move, +Board, -NewBoard)}.
 \begin{itemize}
     \item \textit{capturar(+JogoInicial, +ID, +Cor, +Ori, -JogoFinal)}.
@@ -165,20 +180,75 @@ Foram utilizados símbolos especiais que apenas são usados como espaçamento, p
     \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é feita no final de cada jogada.
 \end{itemize}
 
-\subsection{Avaliação do Tabuleiro} Avaliação do estado do jogo, que permitirá comparar a aplicação das diversas jogadas disponíveis. Exemplo: \textit{value(+Board, +Player, -Value)}.
+\subsection{Avaliação do Tabuleiro} 
+
+A avaliação do estado do jogo é realizada no predicado  \textit{getValue(+JogoI, +Cor,+Pos, -Value)}, este predicado internamente usa outros predicados de avaliação, para que promova certos movimentos. Estes predicados são:
+
+\begin{itemize}
+    \item \textit{getValueByPoints(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo os pontos ganhos nessa jogada, sendo M a pontuação.
+    \item \textit{getValueByPecas(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo do número de peças , sendo M a pontuação.
+    \item \textit{getValueByStarving(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo do número de peças que possam ser perdidas posteriormente devido à condição de fome, sendo M a pontuação.
+    \item \textit{getValueByPernas(+JogoI, +Cor, +Pos, -Value, +M1, +M2)}. Atribui um valor dependendo do número de garras e o número de adaptoids com garras, sendo M1 a pontuação de elementos com pernas e M2 o numero total de pernas.
+    \item \textit{getValueByGarras(+JogoI, +Cor, +Pos, -Value, +M1, +M2)}. Atribui um valor dependendo do número de garras e o número de adaptoids com garra, sendo M1 a pontuação de elementos com garras e M2 o numero total de garras.
+    \item \textit{getValueByMovimento(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo do número de pernas e o número de adaptoids com pernas, sendo M a pontuação.
+    \item \textit{getValueByCloser(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo da próximidade e possibilidade de ataque a um inimigo, sendo M a pontuação.
+\end{itemize}
 
 \subsection{Final do Jogo} Foi criado o predicado \textit{ganhou(-Jogador,+Jogo)} que avalia se um dado jogo chegou ao fim, verificando as seguintes condições : algum dos jogadores alcançou os 5 pontos ou algum dos jogadores não possuí peças no tabuleiro. Este predicado é chamado em duas ocasiões, a primeira no fim de cada jogada simplesmente para saber se o jogo terminou, ou seja, se existe um vencedor, e uma segunda vez após ter terminado o \textit{loop} de jogar para se obter o estado de terminação (jogador vencedor ou empate) de forma a imprimir o resultado.
 
-\subsection{Jogada do Computador} Escolha da jogada a efetuar pelo computador, dependendo do nível de dificuldade. Por exemplo: \textit{choose\_move(+Level, +Board, -Move)}.
+\subsection{Jogada do Computador}
+A escolha da melhor jogada é feita no predicado: 
+\begin{itemize}
+	\item \textit{escolheMelhorJogada(+JogoI,+Cor,+Modo,-JogoF)}.
+\end{itemize}
+O modo determina o nível de dificuldade do computador, tendo como opções disponíveis um modo de ataque (\textit{op}) e um modo de defesa (\textit{notOP}). Internamente o modo alterna entre \textit{getValue} e \textit{getValue2} que apenas mudam os multiplicadores para obter comportamentos diferentes.
+
+\subsection{Testes}
+
+Foram realizados alguns testes durante a fase de desenvolvimento, para garantir a funcionalidade dos predicados implementados.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Interface com o Utilizador}
 
-Descrever o módulo de interface com o utilizador em modo de texto.
+O módulo de interface principal divide-se em vários predicados sendo que cada um indica um menu. Este design foi desenvolvido a pensar no utilizador, para que seja possivel uma navegação mais intuitiva entre os menus.
+\begin{figure}[h]
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[scale=0.5]{menuPrincipal}
+        \caption{Menu de início.}
+    \end{minipage}
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[scale=0.5]{menuEscolha}
+        \caption{Menu principal.}
+    \end{minipage}
+\end{figure}
+\\
+Os menus que o utilizador pode encontrar contêm:
+
+\begin{itemize}
+	\item Instruções (tutorial).
+	\item Especificação do jogo.
+	\item Escolha do tipo de jogo.
+	\item Escolha da dificuldade do computador.
+\end{itemize} 
+
+\begin{figure}[h]
+
+    	\centering
+     	\includegraphics[scale=0.5]{ingame1}
+	\caption{Menu de jogo.}
+	\label{fig:figuramenu}
+
+\end{figure}
+No modo humano contra humano ou humano contra computador, quando chega à vez do utilizador, é apresentado um menu como o indicado na figura~\ref{fig:figuramenu}, indicando os passos que o utilizador deverá seguir para realizar a sua jogada.z
+\\
+Em modo computador contra computador, é apresentado ao utilizador o tabuleiro do resultado de cada ronda, sendo necessária a interação do utilizador para proceder à próxima ronda, terminando com um texto indicativo de vitória ou empate.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Conclusões}
 O grupo vê positivamente o resultado final que obteve e os conhecimentos adquiridos durante o desenvolvimento do projeto. Reconhecemos que a linguagem Prolog é bastante útil para a resolução de problemas relacionados com lógica, como era o caso deste jogo de tabuleiro, entre outros problemas do mundo real. Nunca é demais lembrar o peso e o significado destes problemas, uma vez que o modelo estrutural aqui representado pode-nos levar a considerar a reestruturação dos modos de operação convencionais.
 \\
@@ -205,6 +275,101 @@ Concluindo, foi um projeto bastante interessante e educativo que nos abriu novos
 \newpage
 \appendix
 \section{Nome do Anexo}
-Código Prolog implementado devidamente comentado e outros elementos úteis que não sejam essenciais ao relatório.
+
+\begin{table}[h!]
+  \centering
+  \caption{adaptoid.pl}
+  \label{tab:table}
+ \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \begin{tabular}{ P{9.8cm}}
+	\hline
+	código
+	
+	
+	\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \caption{ai.pl}
+  \label{tab:table}
+ \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \begin{tabular}{ P{9.8cm}}
+	\hline
+	código
+	
+	
+	\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \caption{logic.pl}
+  \label{tab:table}
+ \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \begin{tabular}{ P{9.8cm}}
+	\hline
+	código
+	
+	
+	\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \caption{menu.pl}
+  \label{tab:table}
+ \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \begin{tabular}{ P{9.8cm}}
+	\hline
+	código
+	
+	
+	\end{tabular}
+\end{table}
+
+
+\begin{table}[h!]
+  \centering
+  \caption{tabuleiro.pl}
+  \label{Ficheiro}
+ \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \begin{tabular}{ P{9.8cm}}
+	\hline
+	código
+	
+	
+	\end{tabular}
+\end{table}
+
+
+
+\begin{table}[h!]
+  \centering
+  \caption{testes.pl}
+  \label{tab:table}
+ \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \begin{tabular}{ P{9.8cm}}
+	\hline
+	código
+	
+	
+	\end{tabular}
+\end{table}
+
+
+\begin{table}[h!]
+  \centering
+  \caption{utils.pl}
+  \label{tab:table}
+ \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+  \begin{tabular}{ P{9.8cm}}
+	\hline
+	código
+	
+	
+	\end{tabular}
+\end{table}
 
 \end{document}
+
