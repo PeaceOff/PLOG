@@ -62,7 +62,7 @@
 \newpage
 
 \section*{Resumo}
-O problema abordado consitiu na implementação do jogo de tabuleiro "Adaptoid" na linguagem Prolog, o que nos representou como sendo um novo desafio, visto que, o grupo não estava familiarizado com este paradigma de programação em lógica. Os objectivos do projecto incluiram : permitir três modos de utilização (Humano/Humano, Humano/Computador, Computador/Computador), incluir dois níveis de jogo para o computador, interface adequada em modo de texto. O trabalho foi elaborado com base em 5 passos fundamentais implementados pela seguinte ordem :
+O problema abordado consitiu na implementação do jogo de tabuleiro "Adaptoid" na linguagem Prolog, o que nos representou como sendo um novo desafio, visto que, o grupo não estava familiarizado com este paradigma de programação em lógica. Os objectivos do projecto incluiram : permitir três modos de utilização (Humano/Humano, Humano/Computador, Computador/Computador), incluir dois níveis de jogo para o computador e uma interface adequada em modo de texto. O trabalho foi elaborado com base em 5 passos fundamentais implementados pela seguinte ordem :
 \begin{enumerate}
     \item Representação do tabuleiro em Prolog usando códigos ASCII.
     \item Implementação das regras do jogo em predicados lógicos.
@@ -71,7 +71,7 @@ O problema abordado consitiu na implementação do jogo de tabuleiro "Adaptoid" 
     \item Design de um sistema simples de menus para completar um ambiente de jogo.
 \end{enumerate}
 
-Todos os objectivos foram cumpridos sendo que temos um jogo completo e jogável desenvolvido em Prolog. Desenvolver um jogo funcional numa linguagem nova com a qual apenas se teve contacto durante algumas semana não é fácil, pelo que o grupo no inicio encontrou algumas dificuldades. Após uma leitura extensiva dos slides facultados pelos docentes assim como informação disponível na web foi possível obter uma melhor percepção desta linguagem e paradigma de programação por forma a desenvolver uma aplicação.
+Todos os objectivos foram cumpridos sendo que temos um jogo completo e jogável desenvolvido em Prolog. Desenvolver um jogo funcional numa linguagem nova com a qual apenas se teve contacto durante algumas semanas não é fácil, pelo que o grupo no inicio encontrou algumas dificuldades. Após uma leitura extensiva dos slides facultados pelos docentes assim como informação disponível na web foi possível obter uma melhor percepção desta linguagem e paradigma de programação por forma a desenvolver uma aplicação.
 
 
 Concluindo, ambos os estudantes orgulham-se agora do resultado obtido e do método como tal foi alcançado, podemos também afirmar que o nosso conhecimento de Prolog aumentou consideravelmente.
@@ -116,7 +116,7 @@ Este relatório tem a seguinte estrutura :
     \caption{Imagem ilustratica de um "adaptoid"}
 \end{wrapfigure}
 
-Adaptoid é um jogo de tabuleiro para dois jogadores, constituído por um tabuleiro hexagonal, que contém (37 espaços), e por um conjunto de criaturas denominadas de “adaptoid”. Cabe a cada jogador evoluir o seu “adaptoid” adicionando membros, garras e pernas, ao corpo do adaptoid. Os membros são fatores decisivos, pois fazem variar o comportamento do “adaptoid”. As garras definem o dano e as pernas a capacidade de movimento.
+Adaptoid é um jogo de tabuleiro para dois jogadores, constituído por um tabuleiro hexagonal, que contém 37 espaços, e por um conjunto de criaturas denominadas de “adaptoid”. Cabe a cada jogador evoluir o seu “adaptoid” adicionando membros, garras e pernas, ao corpo do adaptoid. Os membros são fatores decisivos, pois fazem variar o comportamento do “adaptoid”. As garras definem o dano e as pernas a capacidade de movimento.
 
 \begin{wrapfigure}{l}{0.20\textwidth}
     	\centering
@@ -146,7 +146,7 @@ Não é possível mover o adaptoid através de espaços que estejam ocupados, ap
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[scale=0.5]{posicoesRelativas}
+        \includegraphics[scale=1]{posicoesRelativas}
         \caption{Posições relativas a uma célula central}
         \centering
     \end{center}
@@ -157,7 +157,7 @@ Nota: Os átomos ‘a’,’b’,’c’,'d','e','f','g' e ‘\#’ são usados 
 
 \newpage
 
-\subsection{Visualização do Tabuleiro} Originalmente as células do tabuleiro são redondas, mas para efeitos de visualização utilizando caracteres ASCII, estas são representadas como hexágonos. Com este formato, para ser possível o desenho do “adaptoid” contendo as suas garras e pernas seguiu-se a seguinte estratégia: Nesta célula é possível observar todas as posições possíveis para as garras(símbolo Y ) e pernas(símbolo L), este caso é impossível já que o número máximo de membros é 6, mas para efeitos de demonstração do funcionamento, é possível observar que as garras(Y) são desenhadas apenas no topo e no meio (caso sejam 6 garras no total), o mesmo acontece para as pernas. O símbolo B representa a cor do “adaptoid” e à sua volta está o número dessa peça.
+\subsection{Visualização do Tabuleiro} Originalmente as células do tabuleiro são redondas, mas para efeitos de visualização utilizando caracteres ASCII, estas são representadas como hexágonos. Com este formato, para ser possível o desenho do “adaptoid” contendo as suas garras e pernas seguiu-se a seguinte estratégia: Nesta célula é possível observar todas as posições possíveis para as garras(símbolo Y ) e pernas(símbolo L), este caso é impossível já que o número máximo de membros é 6, mas para efeitos de demonstração do funcionamento, é possível observar que as garras(Y) são desenhadas apenas no topo e no meio (caso sejam 6 garras no total), o mesmo acontece para as pernas. O simbolo X representa a cor do “adaptoid”. Foram utilizados símbolos especiais que apenas são usados como espaçamento, para que seja possível enquadrar as células no seu local. 
 Para que o desenho de cada célula seja possível, para cada linha do conteúdo do tabuleiro são desenhadas 4 linhas no ecrã, sendo elas:
 
 \begin{table}[h!]
@@ -186,7 +186,7 @@ Para que o desenho de cada célula seja possível, para cada linha do conteúdo 
 	\end{tabular}
 \end{table}
 \FloatBarrier
-Foram utilizados símbolos especiais que apenas são usados como espaçamento, para que seja possível enquadrar as células no seu local. O predicado de visualização já se encontra 100\% desenvolvido sendo que recebe um tabuleiro no formato de lista de listas e procede ao desenho no mesmo na consola como se pode ver na figura ao lado.
+
 
 \subsection{Lista de Jogadas Válidas}Foram implementados predicados que definem as jogadas válidas, estes predicados implementam as jogadas propriamente ditas e validam no caso do utilizador, no caso do computador são usados para obter a lista de jogadas possíveis. As três regras que se seguem dizem respeito às diferentes fases de que cada jogada (Movimento(M), Evolução(E) e Alimentação(famintos)).
 \begin{itemize}
@@ -197,14 +197,14 @@ Foram utilizados símbolos especiais que apenas são usados como espaçamento, p
 
 \newpage
 
-\subsection{Execução de Jogadas} Validação e execução de uma jogada num tabuleiro, obtendo o novo estado do jogo. Exemplo: \textit{move(+Move, +Board, -NewBoard)}.
+\subsection{Execução de Jogadas} Os predicados que implementam as regras e opções do jogo são os que se seguem :
 \begin{itemize}
     \item \textit{capturar(+JogoInicial, +ID, +Cor, +Ori, -JogoFinal)}.
     \item \textit{moverPeca(+JogoInicial, +ID, +Cor, +Ori, -JogoFinal)}.
     \item \textit{addPerna(+Board, +Cor, +ID, -NewBoard)}.
     \item \textit{addGarra(+Board, +Cor, +ID, -NewBoard)}.
     \item \textit{addCorpo(+Board, +ID, +Cor, +Ori, -NewBoard)}.
-    \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é feita no final de cada jogada.
+    \item \textit{esfomeados(+OriginalBoard, +BoardCopy, +Cor, -Nremovidos, -NewBoard)} esta função não é usada diretamente pelo utilizador mas é chamada no final de cada jogada.
 \end{itemize}
 
 \subsection{Avaliação do Tabuleiro}\label{evalTab}
@@ -212,12 +212,12 @@ Foram utilizados símbolos especiais que apenas são usados como espaçamento, p
 A avaliação do estado do jogo é realizada no predicado  \textit{getValue(+JogoI, +Cor,+Pos, -Value)}, este predicado internamente usa outros predicados de avaliação, para que promova certos movimentos. Estes predicados são:
 
 \begin{itemize}
-    \item \textit{getValueByPoints(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo os pontos ganhos nessa jogada, sendo M a pontuação.
+    \item \textit{getValueByPoints(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo dos pontos ganhos nessa jogada, sendo M a pontuação.
     \item \textit{getValueByPecas(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo do número de peças , sendo M a pontuação.
     \item \textit{getValueByStarving(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo do número de peças que possam ser perdidas posteriormente devido à condição de fome, sendo M a pontuação.
-    \item \textit{getValueByPernas(+JogoI, +Cor, +Pos, -Value, +M1, +M2)}. Atribui um valor dependendo do número de garras e o número de adaptoids com garras, sendo M1 a pontuação de elementos com pernas e M2 o numero total de pernas.
+    \item \textit{getValueByPernas(+JogoI, +Cor, +Pos, -Value, +M1, +M2)}. Atribui um valor dependendo do número de pernas e o número de adaptoids com pernas, sendo M1 a pontuação de elementos com pernas e M2 o numero total de pernas.
     \item \textit{getValueByGarras(+JogoI, +Cor, +Pos, -Value, +M1, +M2)}. Atribui um valor dependendo do número de garras e o número de adaptoids com garra, sendo M1 a pontuação de elementos com garras e M2 o numero total de garras.
-    \item \textit{getValueByMovimento(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo do número de pernas e o número de adaptoids com pernas, sendo M a pontuação.
+    \item \textit{getValueByMovimento(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor no caso de uma qualquer peça se mexa, promovendo assim a movimentação, sendo M a pontuação.
     \item \textit{getValueByCloser(+JogoI, +Cor, +Pos, -Value, +M)}. Atribui um valor dependendo da próximidade e possibilidade de ataque a um inimigo, sendo M a pontuação.
 \end{itemize}
 
@@ -287,7 +287,7 @@ O grupo vê positivamente o resultado final que obteve e os conhecimentos adquir
 O jogo Adaptoid mostrou-nos que apesar da sua simplicidade consegue ser um jogo bastante apelativo e um bom exercício cerebral.
 \\
 
-Foram encontradas algumas dificuldades durante a realização deste trabalho que com o auxilio do material disponibilizado pelos docentes, e ainda o material que se encontra online, foram possiveis de ser ultrapassados. Inicialmente não foi um projeto que nos apelou muito devido a ser um estilo "relativamente" novo de programação e ao qual não estamos habituados, isto significa que, durante os primeiros dias de impletamentação o grupo esteve um pouco perdido e sem saber o que fazer. Optámos por utilizar uma tarde somente na pesquisa de informação sobre o Prolog (de notar que este tempo foi reduzido devido às informações e dicas já apresentadas nas aulas teóricas). Após este periodo de adaptação, os estudantes conseguiram resolver o problema proposto de uma forma ágil, dedicada, empenhada e acima de tudo correta.
+Foram encontradas algumas dificuldades durante a realização deste trabalho que com o auxilio do material disponibilizado pelos docentes, e ainda o material que se encontra online, foram possiveis de ser ultrapassadas. Inicialmente não foi um projeto que nos apelou muito devido a ser um estilo "relativamente" novo de programação e ao qual não estamos habituados. Optámos por utilizar uma tarde somente na pesquisa de informação sobre o Prolog (de notar que este tempo foi reduzido devido às informações e dicas já apresentadas nas aulas teóricas). Após este periodo de adaptação, os estudantes conseguiram resolver o problema proposto de uma forma ágil, dedicada, empenhada e acima de tudo correta.
 \\
 
 Na nossa opinião, é importante referir que o modo de \textit{input} não ficou da forma que o grupo mais gostaria, mas uma vez que é necessário tratar situações de erro humano achamos que a opção escolhida, apesar de não ser a mais funcional, é a mais robusta. Outro aspeto importante é a inteligência artificial, mas esta parte não recebeu uma importância tão elevada devido a ser alvo de estudo no próximo semestre.
