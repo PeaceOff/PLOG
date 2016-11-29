@@ -1,0 +1,27 @@
+Segundo trabalho de plog
+
+>Restricoes
+
+> Lista para cada dia da semana com as disciplinas desse dia.
+> Cada disciplina tem de aparecer na lista 1 a 4 vezes.
+> 2 testes por disciplina por periodo de aulas que decorrem 
+num conjunto de semanas especificos.
+> Max 2 testes por semana, nao podem estar em dias consecutivos.
+> TPC por dia, max 2 disciplinas.
+> Pelo menos 1 dia por semana nao pode ter tpc (dia ter de ser 
+sempre igual).
+> Por disciplina, tpc #< nAulas/2
+
+
+Inputs
+	> Horarios
+	> Numero maximo de tpc por disciplina e por dia
+	> Numero de turmas e disciplinas variaveis (Listas)
+
+Outputs
+	> Calendario dos tpcs
+	> Calendario dos testes
+Devera incluir data dos testes de cada turma/disciplina e os dias
+que os professores podem marcar tpcs.
+Teste realizados por diferentes turmas a uma mesma disciplina devem
+ser o mais proximo possivel.
