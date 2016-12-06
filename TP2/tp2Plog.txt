@@ -4,11 +4,11 @@ Segundo trabalho de plog
 
 > Lista para cada dia da semana com as disciplinas desse dia.
 > Cada disciplina tem de aparecer na lista 1 a 4 vezes.
-> 2 testes por disciplina por periodo de aulas que decorrem 
+> 2 testes por disciplina por periodo de aulas que decorrem
 num conjunto de semanas especificos.
 > Max 2 testes por semana, nao podem estar em dias consecutivos.
 > TPC por dia, max 2 disciplinas.
-> Pelo menos 1 dia por semana nao pode ter tpc (dia ter de ser 
+> Pelo menos 1 dia por semana nao pode ter tpc (dia ter de ser
 sempre igual).
 > Por disciplina, tpc #< nAulas/2
 
@@ -17,6 +17,7 @@ Inputs
 	> Horarios
 	> Numero maximo de tpc por disciplina e por dia
 	> Numero de turmas e disciplinas variaveis (Listas)
+	> Intervalo de exames ? 
 
 Outputs
 	> Calendario dos tpcs
