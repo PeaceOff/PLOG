@@ -14,10 +14,10 @@ sempre igual).
 
 
 Inputs
-	> Horarios
+	> Horarios (Por turma por dia)
 	> Numero maximo de tpc por disciplina e por dia
 	> Numero de turmas e disciplinas variaveis (Listas)
-	> Intervalo de exames ? 
+	> Intervalo de exames ?
 
 Outputs
 	> Calendario dos tpcs
