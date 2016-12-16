@@ -1,0 +1,171 @@
+% This is LLNCS.DEM the demonstration file of
+% the LaTeX macro package from Springer-Verlag
+% for Lecture Notes in Computer Science,
+% version 2.4 for LaTeX2e as of 16. April 2010
+%
+\documentclass{llncs}
+%
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{makeidx}  % allows for indexgeneration
+
+%
+
+\begin{document}
+
+%
+\frontmatter          % for the preliminaries
+%
+\pagestyle{headings}  % switches on printing of running heads
+%
+\title{Ano Escolar}
+\subtitle{Resolução de Problemas de Desisão utilizando\\
+Programação em Lógica com Restrições}
+%
+\titlerunning{Ano Escola}  % abbreviated title (for running head)
+%                                     also used for the TOC unless
+%                                     \toctitle is used
+%
+\author{Daviz Azevedo \and João Ferreira}
+%
+\authorrunning{Daviz Azevedo \and João Ferreira} % abbreviated author list (for running head)
+%
+\institute{Faculdade de Engenharia da Universidade do Porto\\
+Rua Roberto Frias, sn, 4200-465 Porto, Portugal}
+
+\maketitle              % typeset the title of the contribution
+
+\begin{abstract} %
+
+
+
+Deve contextualizar e resumir o trabalho, salientando o objetivo, o
+método utilizado e fazendo referência aos principais resultados e à principal conclusão que
+esses resultados permitem obter. \dots
+\keywords{computational geometry, graph theory, Hamilton cycles}
+\end{abstract}
+%
+\section{Introdução}
+%
+Descrição dos objetivos e motivação do trabalho, referência
+sucinta ao problema em análise (idealmente, referência a outros trabalhos sobre o mesmo
+problema e sua abordagem), e descrição sucinta da estrutura do resto do artigo.
+
+\section{Descrição do Problema}
+%
+Descrever com detalhe o problema de otimização ou decisão em análise.
+
+\section{Abordagem}
+%
+Descrever com detalhe o problema de otimização ou decisão em análise.
+
+\subsection{Variáveis de Decisão}
+Descrever as variáveis de decisão e os seus domínios.
+
+\subsection{Restrições}
+ Descrever as restrições rígidas e flexíveis do problema e a sua implementação utilizando o SICStus Prolog.
+
+\subsection{ Função de Avaliação}
+Descrever, quando for o caso, a forma de avaliar a solução obtida e a sua implementação utilizando o SICStus Prolog.
+
+\subsection{Estratégia de Pesquisa}
+Descrever a estratégia de etiquetagem
+(labeling) utilizada ou implementada, nomeadamente no que diz respeito à ordenação
+de variáveis e valores.
+
+\section{Visualização da Solução}
+Explicar os predicados que permitem visualizar a solução em modo de texto
+
+\section{Resultados}
+Demonstrar exemplos de aplicação em instâncias do problema com
+diferentes complexidades e analisar os resultados obtidos. Devem ser utilizadas formas
+convenientes para apresentação dos resultados (tabelas e/ou gráficos).
+
+\section{Conclusões e Trabalho Futuro}
+ Que conclusões retira deste projeto? O que mostram os resultados obtidos? Quais as vantagens e limitações da
+solução proposta? Como poderia melhorar o trabalho desenvolvido?
+
+\begin{figure}
+\vspace{2.5cm}
+\caption{This is the caption of the figure displaying a white eagle and
+a white horse on a snow field}
+\end{figure}
+
+\begin{table}
+\caption{This is the example table taken out of {\it The
+\TeX{}book,} p.\,246}
+\begin{center}
+\begin{tabular}{r@{\quad}rl}
+\hline
+\multicolumn{1}{l}{\rule{0pt}{12pt}
+                   Year}&\multicolumn{2}{l}{World population}\\[2pt]
+\hline\rule{0pt}{12pt}
+8000 B.C.  &     5,000,000& \\
+  50 A.D.  &   200,000,000& \\
+1650 A.D.  &   500,000,000& \\
+1945 A.D.  & 2,300,000,000& \\
+1980 A.D.  & 4,400,000,000& \\[2pt]
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{equation}
+\begin{array}{rcl}
+  \dot{x}&=&JH' (x)\\
+  x(0)&=&x (T)
+\end{array}
+\end{equation}
+
+
+\begin{proposition}
+Assume $H'(0)=0$ and $ H(0)=0$. Set:
+\begin{equation}
+  \delta := \liminf_{x\to 0} 2 N (x) \left\|x\right\|^{-2}\ .
+  \label{eq:one}
+\end{equation}
+
+If $\gamma < - \lambda < \delta$,
+the solution $\overline{u}$ is non-zero:
+\begin{equation}
+  \overline{x} (t) \ne 0\ \ \ \forall t\ .
+\end{equation}
+\end{proposition}
+
+
+\paragraph{Notes and Comments.}
+The results in this section are a
+refined version of \cite{clar:eke};
+the minimality result of Proposition
+14 was the first of its kind.
+
+To understand the nontriviality conditions, such as the one in formula
+(\ref{eq:four}), one may think of a one-parameter family
+$x_{T}$, $T\in \left(2\pi\omega^{-1}, 2\pi b_{\infty}^{-1}\right)$
+of periodic solutions, $x_{T} (0) = x_{T} (T)$,
+with $x_{T}$ going away to infinity when $T\to 2\pi \omega^{-1}$,
+which is the period of the linearized system at 0.
+
+%
+% ---- Bibliography ----
+%
+\begin{thebibliography}{5}
+%
+\bibitem {url} 
+SWI-Prolog,
+\url{http://www.swi-prolog.org}
+\bibitem {url} 
+SICStus-Prolog,
+\url{https://sicstus.sics.se}
+
+
+\end{thebibliography}
+\clearpage
+
+\section*{Anexo}
+\subsection*{Código fonte}
+
+Bla Bla
+
+
+\end{document}
