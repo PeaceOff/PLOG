@@ -31,20 +31,17 @@ tpcs(Semana, NS, NTPC, TPCs, DiaLivre):-
 
 %
 %Limitar os TPCs a dois
-limitarTPCs3([LastE|[]],Semana,R):-
-  nth1(Semana, LastE, N1),
-  N1 #= 1  #<=> R.
+limitarTPCs3([],_,0).
 
-limitarTPCs3([Disciplina| Ds], Semana, R):-
-  limitarTPCs3(Ds, Semana, R1),
+limitarTPCs3([Disciplina| Ds], Semana, R):- !,
   nth1(Semana, Disciplina, N1),
-  N1 #= 1  #<=> M,
-  R #= R1 + M.
+  R #= R1 + N1,
+  limitarTPCs3(Ds, Semana, R1).
 
 limitarTPCs2(_, _, S, NS):- S > NS, !.
 limitarTPCs2(Dia, NTPC, Semana, NS):- Semana =< NS, !,
-  limitarTPCs3(Dia, Semana, R),
   R #=< NTPC,
+  limitarTPCs3(Dia, Semana, R),
   S2 is Semana + 1,
   limitarTPCs2(Dia, NTPC, S2, NS).
 
