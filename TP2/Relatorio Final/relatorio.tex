@@ -37,51 +37,88 @@ Rua Roberto Frias, sn, 4200-465 Porto, Portugal}
 
 \begin{abstract} %
 
+O objetivo deste trabalho é a criação de um programa, em Programação em Lógica com Restrições, capaz de marcar trabalhos de casa e testes para um dado ano, restritos a certas condições.
 
+Ao longo deste documento será descrito o desenvolvimento do trabalho realizado e os resultados obtidos.
 
-Deve contextualizar e resumir o trabalho, salientando o objetivo, o
-método utilizado e fazendo referência aos principais resultados e à principal conclusão que
-esses resultados permitem obter. \dots
-\keywords{computational geometry, graph theory, Hamilton cycles}
 \end{abstract}
 %
 \section{Introdução}
 %
-Descrição dos objetivos e motivação do trabalho, referência
-sucinta ao problema em análise (idealmente, referência a outros trabalhos sobre o mesmo
-problema e sua abordagem), e descrição sucinta da estrutura do resto do artigo.
+Devido à complexidade combinatória existente no planeamento de um Ano Escolar, é necessária uma solução optima que permita obter da melhor forma um plano de aulas ágil e eficaz.
+
+Este trabalho tem como objetivo, para um dado Ano Escolar, marcar os trabalhos de casa e os testes para diferentes turmas e disciplinas, dependendo de variáveis definidas pelo utilizador.
+Neste documento está descrito detalhadamente o problema, uma abordagem de resolução do problema e uma análise sobre a mesma. Também será discutida a estratégia de pesquisa, os predicados de visualização e filamente uma conclusão geral sobre o trabalho.
+
 
 \section{Descrição do Problema}
 %
-Descrever com detalhe o problema de otimização ou decisão em análise.
+O problema de otimização escolhido foi o Ano Escolar, neste problema é proposto que, o programa desenvolvido , seja capaz de marcar trabalhos de casa e testes para um número indefinido de turmas e de semanas. Em relação aos trabalhos de casa, para cada turma existe um dia livre e o número de TPC só pode ser metade do número de ocorrências da disciplina não podendo existir mais que um número determinado de TPC's no mesmo dia. Em relação aos testes, cada disciplina tem dois testes, decorrendo num número de semanas especifico (meio e fim do período) e o número máximo de testes é dois por semana, sendo que não existem testes em dias consecutivos.
 
 \section{Abordagem}
 %
+Num primeiro ato de abordagem ao problema, o problema foi dividido em dois subproblemas, a marcação dos trabalhos de casa e a marcação dos testes. 
+Para a marcação dos trabalhos de casa, foi utilizada uma estrutura de modo a limitar as variáveis utilizadas por disciplina, foi criado uma lista que contém os dias da semana, cada dia contem listas por disciplina com comprimento igual ao número de semanas para indicar em que semanas existem TPCs ou não naquela disciplina daquele dia da semana. A razão pela qual foi optada esta  estrutura, foi numa tentativa de otimizar o espaço para representar os dias em que é possivél marcar trabalhos de casa para certa disciplina.
+
 Descrever com detalhe o problema de otimização ou decisão em análise.
 
 \subsection{Variáveis de Decisão}
+Em relação aos trabalhos de casa, as variáveis de decisão são: 
+
+\begin{enumerate}
+\item Dia Livre de Domínio [1,5], que representa um dos dias úteis da semana.
+\item Lista de TPCs por disciplina de Domínio[0,1], que representa se existe ou não trabalho de casa em determinada semana, determinada pela sua posição.
+\end{enumerate}
+
+A lista de TPCs por disciplina, é um conceito simples, mas ligeiramente difícil de explicar, como foi descrito na secção anterior, cada disciplina de um determinado dia, tem associado uma lista, de tamanho igual ao número de semanas de aulas, em que cada posição da lista representa o número da semana e o seu conteúdo indica se existe ou não trabalho de casa, 1 em caso positivo 0 em caso negativo.
+
 Descrever as variáveis de decisão e os seus domínios.
 
 \subsection{Restrições}
+Na prespetiva dos trabalhos de casa, as restrições aplicadas são:
+
+\begin{enumerate}
+\item Para cada disciplina de um determinado dia, o número de trabalhos de casa tem que ser igual à metade do número de semanas de aulas.
+
+Utilizando a estrutura descrita nas últimas secções, esta restrição faz-se simplesmente em prolog, utilizando o predicado count(1, Lista, \#=, Semanas/2) em que Lista representa, por disciplina de um determinado dia, as semanas em que existe TPC e Semanas o número total de semanas.
+
+\item Para cada dia, o número de trabalhos de casa não pode superar uma variável definida pelo utilizador.
+
+Para a implementação desta restrição, foram criados vários predicados com o intuito de, somar os nésimos elementos de um conjunto de listas, e verificar se esse valor é inferior ou igual ao número máximo de TPC's por dia. 
+\end{enumerate}
+
  Descrever as restrições rígidas e flexíveis do problema e a sua implementação utilizando o SICStus Prolog.
 
 \subsection{ Função de Avaliação}
 Descrever, quando for o caso, a forma de avaliar a solução obtida e a sua implementação utilizando o SICStus Prolog.
 
 \subsection{Estratégia de Pesquisa}
+
 Descrever a estratégia de etiquetagem
 (labeling) utilizada ou implementada, nomeadamente no que diz respeito à ordenação
 de variáveis e valores.
 
 \section{Visualização da Solução}
+O predicado que permite a visualização dos trabalhos de casa utiliza uma determinada turma, e os respetivos trabalhos de casa e representa da seguinte forma:
+O nome do dia da semana, se o dia é livre ou não, seguido das disciplinas e cada disciplina indica as semanas em que existe TPC. Tal pode ser observado, com mais clareza na seguinte imagem.
+
+Este predicado é iterado várias vezes dependendo do número de turmas existentes.
+
 Explicar os predicados que permitem visualizar a solução em modo de texto
 
 \section{Resultados}
+
 Demonstrar exemplos de aplicação em instâncias do problema com
 diferentes complexidades e analisar os resultados obtidos. Devem ser utilizadas formas
 convenientes para apresentação dos resultados (tabelas e/ou gráficos).
 
 \section{Conclusões e Trabalho Futuro}
+Este projeto premitiu esclarecer vários conceitos relacionados com a programação em lógica com restrições, foi possivél, para o grupo, obter uma visão mais detalhada sobre este paradigma assim como a sua importância na resolução de diferentes problemas de otimização/decisão. Também permitiu a precepção da importância da propagação das restrições de modo a melhorar o desempenho neste tipo de problemas.
+
+
+Em relação aos trabalhos de casa, devido à estrutura proposta para operar os dados foi possível otimizar a nivél de espaço o número de trabalhos de casa marcados, diminuindo consequentemente, o espaço de procura. A limitação trazida por esta estrutura é que, o plano escolar terá que ser tido em conta com semanas completas.  De modo a melhorar a especificação dos trabalhos de casa, poderão ser implementadas mais variáveis, de modo a fornecer mais flexibilidade no momento da pesquisa, como por exemplo, o dia livre ser variável de semana para semana, a utilização de listas de diferença de modo a melhorar o desempenho de como é feita a concatenação de listas, entre outros.
+
+
  Que conclusões retira deste projeto? O que mostram os resultados obtidos? Quais as vantagens e limitações da
 solução proposta? Como poderia melhorar o trabalho desenvolvido?
 
