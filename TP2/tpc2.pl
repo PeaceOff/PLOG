@@ -4,7 +4,7 @@
 tpc2_disciplinas([1,2,3,4,5]).
 tpc2_disciplinas2([1,2,3,4,5]).
 tpc2_semana1([ [1,2,3] , [4,3] , [3,5] , [3,2] , [3,2,5] ]).
-tpc2_semana2([ [1], [2,1]  , [1,3] , [4] , [5] ]).
+tpc2_semana2([ [2,1], [1] , [1,3] , [4] , [5] ]).
 
 pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC, TPCs, DiaLivre):-
   length(Disciplinas, Ndis),
@@ -22,7 +22,10 @@ pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC, TPCs, DiaLivre):-
 
 marca_tpcs(Semana, Disciplinas, Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre):-
   Dias is NS * 5,
-  domain([DiaLivre],1,1),
+  limitDia(OcorrenciasDias, Res),
+  list_to_fdset(Res, Set),
+  write(Res),
+  DiaLivre in_set Set,
   criarListagemPDisciplina(NS, Dias, DiaLivre, Ocorrencias, OcorrenciasDias, TPCs),
 %write('FIM'). testeA(Semana, Disciplinas, Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre):-
   %criarRectangulos(TPCs, Rects),
@@ -34,7 +37,17 @@ marca_tpcs(Semana, Disciplinas, Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, Di
   labeling([], K).
 
 
+limitDia1([],A, A).
+limitDia1([[K] | Rs],Dia, T2):-member(K, Dia), !,
+  select(K, Dia, T1),
+  limitDia1(Rs,T1, T2).
 
+limitDia1([A | Rs],Days, T2):- !,
+  limitDia1(Rs, Days, T2).
+
+
+limitDia(Ocurrencias, Res):-
+  limitDia1(Ocurrencias, [1,2,3,4,5], Res).
 
 flat([],[]).
 flat([T|Ts], Rs):-
