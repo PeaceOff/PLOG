@@ -54,11 +54,6 @@ limitarTPCs1([Dia|Ds], NTPC, NS, DiaLivre):-
 limitarTPCs(Semana, NTPC, NS, DiaLivre):-
   limitarTPCs1(Semana, NTPC, NS, DiaLivre).
 
-%getResults
-flat([],[]).
-flat([T|Ts], Rs):-
-  flat(Ts, R1),
-  append(T, R1,Rs).
 
 %bla
 constroiLabels2([_ | Ds], NS, livre, [A | As]):-
@@ -120,14 +115,14 @@ printDisciplinas([Dis| Ds]):-
   printDisciplinas(Ds).
 
 printTPCResultAux1([],[],_,_).
-printTPCResultAux1([Dia|Ds], [TDia|TDs], Ns, Ns):- !,
+printTPCResultAux1([Dia|Ds], [_|TDs], Ns, Ns):- !,
   semana(Ns, Semana),
   write(Semana), write(': Dia Livre'),nl,
   N2 is Ns + 1,
   printDisciplinas(Dia),
   printTPCResultAux1(Ds, TDs, Ns, N2).
 
-printTPCResultAux1([Dia|Ds], [TDia|TDs], DiaLivre, Ns):-
+printTPCResultAux1([Dia|Ds], [TDia|TDs], _, Ns):-
   semana(Ns, Semana),
   write(Semana), nl,
   N2 is Ns + 1,

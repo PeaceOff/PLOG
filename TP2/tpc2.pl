@@ -1,10 +1,7 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
+:- include('utils.pl').
 
-tpc2_disciplinas([1,2,3,4,5]).
-tpc2_disciplinas2([1,2,3,4,5]).
-tpc2_semana1([ [1,2,3] , [4,3] , [3,5] , [3,2] , [3,2,5] ]).
-tpc2_semana2([ [2,1], [1] , [1,3] , [4] , [5] ]).
 
 pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC, TPCs, DiaLivre):-
   length(Disciplinas, Ndis),
@@ -12,7 +9,7 @@ pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC, TPCs, DiaLivre):-
 %  write('Ocorrencias'), write(Ocorrencias), nl,
 %  write('ODia'), write(OcorrenciasDias), nl,
 %  desenvolveOcorrencias(OcurrDias, OcorrenciasDias, Ns, Ndis).
-  marca_tpcs(Semana, Disciplinas, Ocorrencias, OcorrenciasDias, Ns, NTPC, TPCs, DiaLivre),
+  marca_tpcs(Ocorrencias, OcorrenciasDias, Ns, NTPC, TPCs, DiaLivre),
 %  write('Resultado'), nl,
   print_tpc1(Semana, TPCs, DiaLivre).
 
@@ -20,7 +17,7 @@ pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC, TPCs, DiaLivre):-
 %desenvolveOcorrencias([O | Os], [R | Rs], Ns, Ndis):-
 
 
-marca_tpcs(Semana, Disciplinas, Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre):-
+marca_tpcs(Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre):-
   Dias is NS * 5,
   limitDia(OcorrenciasDias, Res),
   list_to_fdset(Res, Set),
@@ -42,17 +39,12 @@ limitDia1([[K] | Rs],Dia, T2):-member(K, Dia), !,
   select(K, Dia, T1),
   limitDia1(Rs,T1, T2).
 
-limitDia1([A | Rs],Days, T2):- !,
+limitDia1([_ | Rs],Days, T2):- !,
   limitDia1(Rs, Days, T2).
 
 
 limitDia(Ocurrencias, Res):-
   limitDia1(Ocurrencias, [1,2,3,4,5], Res).
-
-flat([],[]).
-flat([T|Ts], Rs):-
-  flat(Ts, R1),
-  append(T, R1,Rs).
 
 
 adicionaRects([L | []], Rs, [A | Rs]):-
@@ -138,17 +130,6 @@ calculaOcorrencias(Semana, Ocurr, OcurrDias, Ndis):-
   calculaOcorrencias1(Semana, Ocurr, OcurrDias, Ndis, 1).
 
 %print tpcs
-
-nome_semana(1, 'Segunda').
-nome_semana(2, 'Terca  ').
-nome_semana(3, 'Quarta ').
-nome_semana(4, 'Quinta ').
-nome_semana(5, 'Sexta').
-nome_discip(1,'matematica').
-nome_discip(2,'portugues ').
-nome_discip(3,'historia  ').
-nome_discip(4,'ciencias  ').
-nome_discip(5,'artes     ').
 
 translate(0, 5).
 translate(N, N).
