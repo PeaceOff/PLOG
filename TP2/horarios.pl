@@ -1,6 +1,9 @@
-:- include('tpcs.pl').
-:- include('tpc2.pl').
-:- include('utils.pl').
+:- use_module(library(clpfd)).
+:- use_module(library(lists)).
+:- ensure_loaded('tpcs.pl').
+:- ensure_loaded('tpc2.pl').
+:- ensure_loaded('utils.pl').
+:- ensure_loaded('testes.pl').
 
 disciplina(1,'Matematica').
 disciplina(2,'Portugues ').
@@ -37,7 +40,17 @@ teste_turma2([[3,2,1],[2,4,1],[2,2,1],[1,2,3,4,5],[2,3,1]]).
 
 teste_turmas1([
               [[1,2,3],[4,2,3],[5,2,1],[3,4,2],[2,3,1]],
-              [[3,2,1],[2,4,1],[2,2,1],[1,2,3,4,5],[2,3,1]],
+              [[3,2,1],[2,4,1],[2,5,1],[3,4,5],[2,3,1]],
               [[1,2,3],[4,2,3],[5,2,1],[2,3,1],[3,4,2]],
               [[5,2,1],[4,2,3],[1,2,3],[3,4,2],[2,3,1]]
             ]).
+
+
+plogDivertido(NSemanas,NumeroTPCs) :-
+    teste_turmas1(Horarios),
+    write('|          TESTES          |'), nl, nl,
+    resolveTestesPorFavor(Horarios,5,NSemanas),
+    nl , nl , write('|           TPCS           |'), nl, nl,
+    get_char(_),
+    tpc2_disciplinas(Disciplinas),
+    calculaTpcs(Horarios,1,Disciplinas, NSemanas, NumeroTPCs,2).

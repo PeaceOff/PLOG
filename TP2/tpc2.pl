@@ -1,15 +1,17 @@
-:- use_module(library(clpfd)).
-:- use_module(library(lists)).
-:- include('utils.pl').
+calculaTpcs([],_,_,_,_,_) :- !.
+calculaTpcs([Turma|Ts],NTurma, Disciplinas, Semanas, NumeroTPCs,MaxTpcs):-
+    write(' Turma '), write(NTurma), nl,
+    N1 is NTurma + 1, !,
+  pre_marca_tpcs(Turma, Disciplinas, Semanas, NumeroTPCs,MaxTpcs, _, _), get_char(_),
+  calculaTpcs(Ts,N1, Disciplinas, Semanas, NumeroTPCs,MaxTpcs).
 
-
-pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC, TPCs, DiaLivre):-
+pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC,MaxTpcs, TPCs, DiaLivre):-
   length(Disciplinas, Ndis),
   calculaOcorrencias(Semana, Ocorrencias, OcorrenciasDias, Ndis),
 %  write('Ocorrencias'), write(Ocorrencias), nl,
 %  write('ODia'), write(OcorrenciasDias), nl,
 %  desenvolveOcorrencias(OcurrDias, OcorrenciasDias, Ns, Ndis).
-  marca_tpcs(Ocorrencias, OcorrenciasDias, Ns, NTPC, TPCs, DiaLivre),
+  marca_tpcs(Ocorrencias, OcorrenciasDias, Ns, NTPC, TPCs, DiaLivre,MaxTpcs),
 %  write('Resultado'), nl,
   print_tpc1(Semana, TPCs, DiaLivre).
 
@@ -17,13 +19,12 @@ pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC, TPCs, DiaLivre):-
 %desenvolveOcorrencias([O | Os], [R | Rs], Ns, Ndis):-
 
 
-marca_tpcs(Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre):-
+marca_tpcs(Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre,MaxTpcs):-
   Dias is NS * 5,
   limitDia(OcorrenciasDias, Res),
   list_to_fdset(Res, Set),
-  write(Res),
   DiaLivre in_set Set,
-  criarListagemPDisciplina(NS, Dias, DiaLivre, Ocorrencias, OcorrenciasDias, TPCs),
+  criarListagemPDisciplina(NS, Dias, DiaLivre, Ocorrencias, OcorrenciasDias, TPCs,MaxTpcs),
 %write('FIM'). testeA(Semana, Disciplinas, Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre):-
   %criarRectangulos(TPCs, Rects),
   criarTasks(TPCs, Tasks),
@@ -92,15 +93,15 @@ aplicarDominio([V | Ls], DomainSet, DiaLivre):-
   ((V mod 5) #= DiasDaSemana mod 5 ) #/\ ((V mod 5) #\= DiaLivre mod 5) ),
   aplicarDominio(Ls, DomainSet, DiaLivre).
 
-criarListagemPDisciplina(_, _, _, [], [], []).
-criarListagemPDisciplina(NumeroSemanas, Dias, DiaLivre, [Ocurr | Os], [OcurrD | Ocurrs], [TPC | Ts]):-
-  criarListagemPDisciplina(NumeroSemanas, Dias, DiaLivre, Os, Ocurrs, Ts),
+criarListagemPDisciplina(_, _, _, [], [], [],_).
+criarListagemPDisciplina(NumeroSemanas, Dias, DiaLivre, [Ocurr | Os], [OcurrD | Ocurrs], [TPC | Ts],MaxTpcs):-
+  criarListagemPDisciplina(NumeroSemanas, Dias, DiaLivre, Os, Ocurrs, Ts,MaxTpcs),
   Total is Ocurr * NumeroSemanas,
   length(TPC, Total),
   list_to_fdset(OcurrD, Set),
   domain(TPC, 0, Dias),
   aplicarDominio(TPC, Set, DiaLivre),
-  Mid is div(Total, 2),
+  Mid is div(Total,MaxTpcs),
   MidP1 is Mid + 1,
   nvalue(MidP1, TPC),
   count(0, TPC, #=, Mid).
