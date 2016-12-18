@@ -216,8 +216,7 @@ Em relação ao segundo predicado, por ter estas condições em conta e pelas va
 
 \subsection{ Testes}
 
-Foram realizados 5 testes diferentes cada um deles com uma combinação diferente de complexidade, todos os resultados obtidos através dos métodos de estatisticas encontram-se nas imagens abaixo.
-
+Foram realizados 5 testes diferentes cada um deles com uma combinação diferente de complexidade, todos os resultados obtidos através dos métodos de estatisticas encontram-se nas imagens abaixo. Como é possível observar, o predicado que foi implementado é bastante rápido a encontrar uma solução, mesmo para problemas de grandes dimensões como é o caso da Figura \ref{reference}. Desde que hajam semanas suficientes para marcar os testes todos, e os horários se encontrem bem elaborados, isto é, as disciplinas que são dadas apenas 1 vez por semana não estejam todas no mesmo dia por exemplo, o predicado encontra uma solução ótima para o problema de uma forma muito ágil e eficaz. De notar ainda que a Figura \ref{refme} demorou um pouco mais uma vez que o espaço temporal era menor (10 semanas) em relação ao número de turmas e disciplinas.
 \begin{figure}
 \centering
     \begin{minipage}{0.45\textwidth}
@@ -229,6 +228,7 @@ Foram realizados 5 testes diferentes cada um deles com uma combinação diferent
     \centering
     \includegraphics[width=0.9\textwidth]{10Semanas_13Turmas_5Disciplinas}
     \caption{10 Semanas, 13 Turmas e 5 Disciplinas}
+    \label{refme}
     \end{minipage}\hfill
 \end{figure}
 \FloatBarrier
@@ -252,12 +252,13 @@ Foram realizados 5 testes diferentes cada um deles com uma combinação diferent
 \centering
 \includegraphics[width=0.45\textwidth]{25Semanas_12Turmas_7Disciplinas}
 \caption{25 Semanas, 12 Turmas e 7 Disciplinas}
+\label{reference}
 \end{figure}
 \FloatBarrier
+\clearpage
 
-\section{Conclusões e Trabalho Futuro}
-Este projeto premitiu esclarecer vários conceitos relacionados com a programação em lógica com restrições, foi possivél, para o grupo, obter uma visão mais detalhada sobre este paradigma assim como a sua importância na resolução de diferentes problemas de otimização/decisão. Também permitiu a precepção da importância da propagação das restrições de modo a melhorar o desempenho neste tipo de problemas.
-
+\section{Conclusões}
+Este projeto premitiu esclarecer vários conceitos relacionados com a programação em lógica com restrições, foi possivel, para o grupo, obter uma visão mais detalhada sobre este paradigma assim como a sua importância na resolução de diferentes problemas de otimização/decisão. Permitiu ainda uma melhor precepção sobre a importância da propagação das restrições de modo a melhorar o desempenho neste tipo de problemas.
 
 Em relação aos trabalhos de casa:
 
@@ -265,76 +266,16 @@ Conclui-se que o primeiro predicado, devido à estrutura proposta para operar os
 
 Conclui-se que o segundo predicado, devido à sua estrutura, foi capaz de minimizar o número de dias utilizados para marcar TPC's e foi possível a adaptação do predicado comulative, referênciado anteriormente. Em comparação com o primeiro predicado, utiliza uma estrutura muito mais flexivel, fácil de iterar, melhorias poderiam passar, por melhorar a procura do dia livre, esta procura é um fator importante no momento da pesquisa por soluções, um dia bem escolhido, já facilita bastante a marcação dos TPC's, a limitação realizada pelo grupo ainda é um bocado simplista, escolhendo os melhores dias para casos simples.
 
+Em relação aos testes:
 
- Que conclusões retira deste projeto? O que mostram os resultados obtidos? Quais as vantagens e limitações da
-solução proposta? Como poderia melhorar o trabalho desenvolvido
+Além do que já foi referido nos parágrafos anteriores, podemos concluir que a forma como modulámos um problema e a estrutura que utilizámos para o representar representa um peso significativo no desempenho da solução encontrada pelo solver do sicstus. Uma vez que a estrutura nos facilitou a aplicação das restrições assim como reduzir imenso o dominio das variaveis, foi possível obter-se um predicado que nos resolve um problema do dia-a-dia numa pequenissima fração de segundo. Possui uma implementação muito fácil de compreender do ponto de vista lógico e muito flexivel no ponto de vista de acrescentar mais restrições. Um dos maiores desafios neste problema assim como no problemas dos trabalhos de casa foi a geração de uma estrutura de dados em prolog que visava a fácil intrepertação e manipulação das variaveis de dominio por forma a resolver os problemas da maneira mais rápida e eficiente possível.
 
-
-
-\begin{figure}
-\vspace{2.5cm}
-\caption{This is the caption of the figure displaying a white eagle and
-a white horse on a snow field}
-\end{figure}
-
-\begin{table}
-\caption{This is the example table taken out of {\it The
-\TeX{}book,} p.\,246}
-\begin{center}
-\begin{tabular}{r@{\quad}rl}
-\hline
-\multicolumn{1}{l}{\rule{0pt}{12pt}
-                   Year}&\multicolumn{2}{l}{World population}\\[2pt]
-\hline\rule{0pt}{12pt}
-8000 B.C.  &     5,000,000& \\
-  50 A.D.  &   200,000,000& \\
-1650 A.D.  &   500,000,000& \\
-1945 A.D.  & 2,300,000,000& \\
-1980 A.D.  & 4,400,000,000& \\[2pt]
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-
-\begin{equation}
-\begin{array}{rcl}
-  \dot{x}&=&JH' (x)\\
-  x(0)&=&x (T)
-\end{array}
-\end{equation}
-
-
-\begin{proposition}
-Assume $H'(0)=0$ and $ H(0)=0$. Set:
-\begin{equation}
-  \delta := \liminf_{x\to 0} 2 N (x) \left\|x\right\|^{-2}\ .
-  \label{eq:one}
-\end{equation}
-
-If $\gamma < - \lambda < \delta$,
-the solution $\overline{u}$ is non-zero:
-\begin{equation}
-  \overline{x} (t) \ne 0\ \ \ \forall t\ .
-\end{equation}
-\end{proposition}
-
-
-\paragraph{Notes and Comments.}
-The results in this section are a
-refined version of \cite{clar:eke};
-the minimality result of Proposition
-14 was the first of its kind.
-
-To understand the nontriviality conditions, such as the one in formula
-(\ref{eq:four}), one may think of a one-parameter family
-$x_{T}$, $T\in \left(2\pi\omega^{-1}, 2\pi b_{\infty}^{-1}\right)$
-of periodic solutions, $x_{T} (0) = x_{T} (T)$,
-with $x_{T}$ going away to infinity when $T\to 2\pi \omega^{-1}$,
-which is the period of the linearized system at 0.
+O grupo sente-se orgulhoso com o resultado alcançado e capaz de afirmar, que se encontra familiarizado com o paradigma da programação em lógica com restrições para a resolução de problemas complexos e de otimização.
 
 %
 % ---- Bibliography ----
 %
+\pagebreak
 \begin{thebibliography}{5}
 %
 \bibitem {url}
@@ -343,10 +284,11 @@ SWI-Prolog,
 \bibitem {url}
 SICStus-Prolog,
 \url{https://sicstus.sics.se}
-
+\bibitem {url}
+Effective Modeling with Constraints - Roman Barták,
+\url{http://link.springer.com/chapter/10.1007\%2F11415763\_10}
 
 \end{thebibliography}
-\clearpage
 
 \section*{Anexo}
 \subsection*{Código fonte}
