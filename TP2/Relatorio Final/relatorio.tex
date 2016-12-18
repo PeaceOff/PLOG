@@ -11,9 +11,21 @@
 
 \usepackage{graphicx}
 \usepackage{placeins}
+\usepackage{verbatim}
+\usepackage{listings}
 \setcounter{secnumdepth}{3}
 \graphicspath{ {./img/} }
-%
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{
+\end{list}}
 
 \begin{document}
 
@@ -290,10 +302,748 @@ Effective Modeling with Constraints - Roman Barták,
 
 \end{thebibliography}
 
+\appendix
 \section*{Anexo}
 \subsection*{Código fonte}
 
-Bla Bla
+\noindent
+{\it horarios.pl}
+\begin{changemargin}{-3cm}{-4cm}
+\begin{verbatim}
+
+:- use_module(library(clpfd)).
+:- use_module(library(lists)).
+:- ensure_loaded('tpcs.pl').
+:- ensure_loaded('tpc2.pl').
+:- ensure_loaded('utils.pl').
+:- ensure_loaded('testes.pl').
+:- ensure_loaded('statistics.pl').
+
+disciplina(1,'Matematica').
+disciplina(2,'Portugues ').
+disciplina(3,'Historia  ').
+disciplina(4,'Ciencias  ').
+disciplina(5,'Artes     ').
+disciplina(6,'EVT       ').
+disciplina(7,'Ingles    ').
+
+semana(1,'Segunda').
+semana(2,'Terca').
+semana(3,'Quarta').
+semana(4,'Quinta').
+semana(5,'Sexta').
+
+%teste2.pl
+nome_semana(1, 'Segunda').
+nome_semana(2, 'Terca  ').
+nome_semana(3, 'Quarta ').
+nome_semana(4, 'Quinta ').
+nome_semana(5, 'Sexta  ').
+
+nome_discip(1,'Matematica').
+nome_discip(2,'Portugues ').
+nome_discip(3,'Historia  ').
+nome_discip(4,'Ciencias  ').
+nome_discip(5,'Artes     ').
+nome_discip(6,'EVT       ').
+nome_discip(7,'Ingles    ').
+
+tpc2_disciplinas([1,2,3,4,5]).
+tpc2_disciplinas2([1,2,3,4,5]).
+tpc2_disciplinas3([1,2,3,4,5,6]).
+tpc2_disciplinas4([1,2,3,4,5,6,7]).
+tpc2_semana1([ [1,2,3] , [4,3] , [3,5] , [3,2] , [3,2,5] ]).
+tpc2_semana2([ [2,1], [1] , [1,3] , [4] , [5] ]).
+
+teste_turma1([[1,2,3],[4,2,3],[5,2,1],[3,4,2],[2,3,1]]).
+teste_turma2([[3,2,1],[2,4,1],[2,2,1],[1,2,3,4,5],[2,3,1]]).
+
+teste_turmas1([%4 turmas e 5 disciplinas Funciona nos tpcs tambem
+              [[1,2,3],[4,2,3],[5,2,1],[3,4,2],[2,3,1]],
+              [[3,2,1],[2,4,1],[2,5,1],[3,4,5],[2,3,1]],
+              [[1,2,3],[4,2,3],[5,2,1],[2,3,1],[3,4,2]],
+              [[5,2,1],[4,2,3],[1,2,3],[3,4,2],[2,3,1]]
+            ]).
+
+teste_turmas2([%13 turmas e 5 disciplinas - Funciona nos tpcs tambem
+              [[1,2,3],[4,2,3],[5,2,1],[3,4,2],[2,3,1]],
+              [[3,2,1],[2,4,1],[2,5,1],[3,4,5],[2,3,1]],
+              [[1,2,3],[4,2,3],[5,2,1],[2,3,1],[3,4,2]],
+              [[5,2,1],[4,2,3],[1,2,3],[3,4,2],[2,3,1]],
+              [[1,2,3],[4,2,3],[5,2,1],[3,4,2],[2,3,1]],
+              [[3,2,1],[2,4,1],[2,5,1],[3,4,5],[2,3,1]],
+              [[1,2,3],[4,2,3],[5,2,1],[2,3,1],[3,4,2]],
+              [[1,2,3],[4,2,3],[5,2,1],[3,4,2],[2,3,1]],
+              [[3,2,1],[2,4,1],[2,5,1],[3,4,5],[2,3,1]],
+              [[1,2,3],[4,2,3],[5,2,1],[2,3,1],[3,4,2]],
+              [[1,2,3],[4,2,3],[5,2,1],[3,4,2],[2,3,1]],
+              [[3,2,1],[2,4,1],[2,5,1],[3,4,5],[2,3,1]],
+              [[1,2,3],[4,2,3],[5,2,1],[2,3,1],[3,4,2]]
+            ]).
+
+teste_turmas3([%4 turmas e 6 disciplinas
+              [[1,2,3,5],[2,4,6,3],[1,5,2],[3,4,2],[4,6,1]],
+              [[1,5,2],[3,4,2],[4,6,1],[1,2,3,5],[2,4,6,3]],
+              [[1,2,3,5],[4,6,1],[2,4,6,3],[1,5,2],[3,4,2]],
+              [[3,4,2],[4,6,1],[1,2,3,5],[2,4,6,3],[1,5,2]]
+            ]).
+
+teste_turmas4([%12 turmas e 7 disciplinas
+              [[1,2,6,3,5],[2,4,6,3],[1,5,2,7],[7,3,4,2],[7,4,6,1]],
+              [[7,1,5,2],[7,3,4,2],[7,4,6,1],[1,2,3,5],[2,4,6,3]],
+              [[1,2,3,5],[7,4,6,1],[2,4,6,3],[1,5,2,7],[6,3,4,2]],
+              [[3,4,2,6],[7,4,6,1],[1,2,3,5],[2,4,6,3],[7,1,5,2]],
+              [[1,2,6,3,5],[2,4,6,3],[1,5,2,7],[7,3,4,2],[7,4,6,1]],
+              [[7,1,5,2],[7,3,4,2],[7,4,6,1],[1,2,3,5],[2,4,6,3]],
+              [[1,2,3,5],[7,4,6,1],[2,4,6,3],[1,5,2,7],[6,3,4,2]],
+              [[3,4,2,6],[7,4,6,1],[1,2,3,5],[2,4,6,3],[7,1,5,2]],
+              [[1,2,6,3,5],[2,4,6,3],[1,5,2,7],[7,3,4,2],[7,4,6,1]],
+              [[7,1,5,2],[7,3,4,2],[7,4,6,1],[1,2,3,5],[2,4,6,3]],
+              [[1,2,3,5],[7,4,6,1],[2,4,6,3],[1,5,2,7],[6,3,4,2]],
+              [[3,4,2,6],[7,4,6,1],[1,2,3,5],[2,4,6,3],[7,1,5,2]]
+            ]).
+
+trabalhoPratico2(NSemanas,NumeroTPCs) :-
+    teste_turmas1(Horarios),
+    write('|          TESTES          |'), nl, nl,
+    resolveTestesPorFavor(Horarios,5,NSemanas),%Numero de Disciplinas
+    nl , nl , write('|           TPCS           |'), nl, nl,
+    get_char(_),
+    tpc2_disciplinas(Disciplinas),
+    calculaTpcs(Horarios,1,Disciplinas, NSemanas, NumeroTPCs,2).
+
+trabalhoPratico22(NSemanas,NumeroTPCs) :-
+    teste_turmas2(Horarios),
+    write('|          TESTES          |'), nl, nl,
+    resolveTestesPorFavor(Horarios,5,NSemanas),%Numero de Disciplinas
+    nl , nl , write('|           TPCS           |'), nl, nl,
+    get_char(_),
+    tpc2_disciplinas(Disciplinas),
+    calculaTpcs(Horarios,1,Disciplinas, NSemanas, NumeroTPCs,2).
+
+trabalhoPratico23(NSemanas,NumeroTPCs) :-%TPCS 4.
+    teste_turmas3(Horarios),
+    write('|          TESTES          |'), nl, nl,
+    resolveTestesPorFavor(Horarios,6,NSemanas),%Numero de Disciplinas
+    nl , nl , write('|           TPCS           |'), nl, nl,
+    get_char(_),
+    tpc2_disciplinas3(Disciplinas),
+    calculaTpcs(Horarios,1,Disciplinas, NSemanas, NumeroTPCs,2).
+
+trabalhoPratico24(NSemanas,NumeroTPCs) :-%TPCS 4.
+    teste_turmas4(Horarios),
+    write('|          TESTES          |'), nl, nl,
+    resolveTestesPorFavor(Horarios,7,NSemanas),%Numero de Disciplinas
+    nl , nl , write('|           TPCS           |'), nl, nl,
+    get_char(_),
+    tpc2_disciplinas4(Disciplinas),
+    calculaTpcs(Horarios,1,Disciplinas, NSemanas, NumeroTPCs,2).
 
 
+\end{verbatim}
+\end{changemargin}
+
+\noindent
+{\it testes.pl}
+\begin{changemargin}{-3cm}{-4cm}
+\begin{verbatim}
+
+resolveTestesPorFavor(Horarios,NDisciplinas,NSemanas) :-
+    solution(Horarios,NDisciplinas,NSemanas,Testes), !,
+    printResults(Testes,1,1).
+
+solution(Horarios,NDisciplinas,NSemanas,Testes) :-
+    %Construcao dos dominios e das variaveis
+    length(Horarios,NTurmas),
+    buildTestes(NSemanas,NTurmas,NDisciplinas,Testes),
+    Intervalo is 3 * NDisciplinas,%Intervalo da zona dos testes.
+    MeioIntervalo is div(Intervalo,2),
+    DiasTotais is NSemanas * 5,
+    MetadeDias is div(DiasTotais,2),
+    Min1 is MetadeDias - MeioIntervalo,
+    Max1 is MetadeDias + MeioIntervalo,
+    Min2 is DiasTotais - Intervalo,
+    Max2 is DiasTotais, %Ultimo Dia
+    Min1 > 1, Min2 > 1, %Falha mais rapido se nao for possivel
+    solveTurma(Testes,Horarios,Min1,Max1,Min2,Max2),%Aplicacao das restricoes
+    /*%Calcular distancia do uma disciplina entre turmas (deprecated)
+    constroiEstrutura(Testes,NDisciplinas,DisciplinaTeste),
+    getSum(DisciplinaTeste,Somas),
+    sum(Somas,#=,DistTotal),% A logica e se a soma de todos os valores for a menor possivel eles vao ficar todos o mais junto possivel.
+    */
+    flat(Testes,Nivel1), flat(Nivel1,Vars),
+    reset_timer,
+    labeling([],Vars),%Solver
+    print_time,
+    fd_statistics.
+
+% Recebe uma lista de listas e devolve uma lista em que cada elemento é a soma dos elementos de cada uma das listas
+getSum([],[]) :- !.
+getSum([Disciplina|Ds],Somas) :-
+    getSum(Ds,D1),
+    sum(Disciplina,#=,Soma),
+    Somas = [Soma|D1].
+
+/*Passa da estrutura de testes para uma estrutura que facilita a minimizacao dos testes de turmas diferentes para uma mesma disciplina*/
+constroiPorDisciplinaAux([],_,_,[]) :- !.
+constroiPorDisciplinaAux([Turma|Ts],IndexD,IndexT,Res) :-
+    constroiPorDisciplinaAux(Ts,IndexD,IndexT,R1),
+    getDataTurmaPorDisciplinaTeste(Turma,IndexD,IndexT,Data),
+    Res = [Data|R1].
+
+constroiPorDisciplina(_,I1,I2,_,[]) :- I1 is I2 + 1, !.
+constroiPorDisciplina(Testes,IndexD,NDisciplinas,IndexT,Res) :-
+    NewIndex is IndexD + 1,
+    constroiPorDisciplina(Testes,NewIndex,NDisciplinas,IndexT,R1),
+    constroiPorDisciplinaAux(Testes,IndexD,IndexT,R2),%Devolve a lista por disciplina
+    Res = [R2|R1].
+
+constroiEstrutura(Testes,NDisciplinas,Res) :-
+    constroiPorDisciplina(Testes,1,NDisciplinas,1,Testes1),
+    constroiPorDisciplina(Testes,1,NDisciplinas,2,Testes2),
+    append(Testes1,Testes2,Res).
+
+getDataTurmaPorDisciplinaTeste(Turma,IndexDisciplina,IndexTeste,Data) :-
+    nth1(IndexDisciplina,Turma,Testes),
+    nth1(IndexTeste,Testes,Data).
+/*************************************************************************/
+
+/*Resolucao para todos os testes de todas as turmas*/
+solveTurma(Testes,Horarios,Min1,Max1,Min2,Max2) :-
+    teste1PorTurma(Testes,Min1,Max1,Testes1),
+    teste2PorTurma(Testes,Min2,Max2,Testes2),
+    solveTurmaAux(Testes1,Horarios),
+    solveTurmaAux(Testes2,Horarios).
+
+solveTurmaAux([],[]) :- !.
+solveTurmaAux([Testes|Ts],[Horario|Hs]):-
+    solveTesteForTurma(Testes,Horario),
+    solveTurmaAux(Ts,Hs).
+
+/***********Resolve para uma turma***********/
+solveTesteForTurma(Testes,Horario):-
+    length(Testes,Ndis),
+    calculaOcorrencias(Horario, _, OcurrDias, Ndis),
+    diaDisciplina(Testes,OcurrDias),
+    all_distinct(Testes),
+    semTestesSeguidos(Testes),
+    restringe2PorSemana(Testes).
+
+%Resolve o problema de o teste ter de ser marcado num dia em que haja aula da disciplina
+diaDisciplina([],[]) :- !.
+diaDisciplina([Teste|Ts],[Disciplina|Ds]) :-
+    list_to_fdset(Disciplina,DomainSet),
+    Dia in_set DomainSet,
+    Teste mod 5 #= Dia mod 5,
+    diaDisciplina(Ts,Ds).
+
+%Predicado que restringe a não haver testes em dias seguidos
+semTestesSeguidos(Testes) :-
+    buildTasks(Testes,1,Tasks),
+    cumulative(Tasks,[limit(5)]).
+
+%Constroi as tasks para o predicado semTestesSeguidos/1
+buildTasks([],_,[]) :- !.
+buildTasks([T|Ts],Index,Res) :-
+    I1 is Index + 1,
+    buildTasks(Ts,I1,R1),
+    Tdepois #= T + 1,%A resposta passa por se o mod for 1 ou 0 (Segunda e sexta)
+    Tantes #= T - 1,%e entao Tantes e Tdepois serao igual a T
+    Res = [task(Tantes,_,Tdepois,5,Index)|R1].
+
+%Verifica se a cada tres valores exitem pelo menos 2 diferentes e garante assim o max de 2 testes por semana
+checkTrios([_,_]) :- !.
+checkTrios([A,B,C|Ts]) :-
+    nvalue(2,[A,B,C]),
+    checkTrios([B,C|Ts]).
+
+%Restringe os testes a 2 por semana
+restringe2PorSemana(Testes) :-
+    converteSemana(Testes,Res),
+    msort(Res,Sorted),
+    checkTrios(Sorted).
+
+%Converte uma lista de dias totais numa lista de semanas
+converteSemana([],[]) :- !.
+converteSemana([DiaTotal|Ds],Res) :-
+    converteSemana(Ds,R1),
+    DiaTmp #= DiaTotal - 1,
+    Tmp #= DiaTmp div 5,
+    Sem #= Tmp + 1,
+    Res = [Sem|R1].
+/*************************************************/
+
+/*Devolve uma lista por turma para o 1 testes com as datas dos testes por disciplina*/
+teste1PorTurma([],_,_,[]) :- !.
+teste1PorTurma([Turma|Ts],MinBound,MaxBound,Res) :-
+    teste1PorTurmaAux(Turma,MinBound,MaxBound,Testes),
+    teste1PorTurma(Ts,MinBound,MaxBound,R1),
+    Res = [Testes|R1].
+
+teste1PorTurmaAux([],_,_,[]) :- !.
+teste1PorTurmaAux([[A,_]|Ds],MinBound,MaxBound,Res) :-
+    domain([A],MinBound,MaxBound),
+    teste1PorTurmaAux(Ds,MinBound,MaxBound,R1), Res = [A|R1].
+/*****************************************/
+
+/*Devolve uma lista por turma para o 2 testes com as datas dos testes por disciplina*/
+teste2PorTurma([],_,_,[]) :- !.
+teste2PorTurma([Turma|Ts],MinBound,MaxBound,Res) :-
+    teste2PorTurmaAux(Turma,MinBound,MaxBound,Testes),
+    teste2PorTurma(Ts,MinBound,MaxBound,R1),
+    Res = [Testes|R1].
+
+teste2PorTurmaAux([],_,_,[]) :- !.
+teste2PorTurmaAux([[_,A]|Ds],MinBound,MaxBound,Res) :-
+    domain([A],MinBound,MaxBound),
+    teste2PorTurmaAux(Ds,MinBound,MaxBound,R1), Res = [A|R1].
+/*****************************************/
+
+%Estrutura numero 1 para os testes
+buildTestesAux([],_).
+buildTestesAux([D|Ds],NSemanas) :-
+    D = [_,_],
+    MaxDias is NSemanas * 5,
+    domain(D,1,MaxDias),
+    buildTestesAux(Ds,NSemanas).
+buildTestesDisc(_,_,[]).
+buildTestesDisc(NSemanas,NDisciplinas,[L|Ls]) :-
+    length(L,NDisciplinas),
+    buildTestesAux(L,NSemanas),
+    buildTestesDisc(NSemanas,NDisciplinas,Ls).
+buildTestes(NSemanas,NTurmas,NDisciplinas,Res) :-
+    length(Res,NTurmas),
+    buildTestesDisc(NSemanas,NDisciplinas,Res).
+
+/*HELPERS*/
+%Sort que nao elimina duplicados
+msort(Keys, KeysS) :-
+   keys_pairs(Keys, Pairs), % pairs_keys(Pairs, Keys)
+   keysort(Pairs, PairsS),
+   pairs_keys(PairsS, KeysS).
+
+keys_pairs([], []).
+keys_pairs([K|Ks], [K-_|Ps]) :-
+   keys_pairs(Ks, Ps).
+
+pairs_keys([], []).
+pairs_keys([K-_|Ps],[K|Ks]) :-
+   pairs_keys(Ps, Ks).
+
+
+/*PRINTERS*/
+
+printDisciplina(Testes,NDisciplina) :-
+    format("    Disciplina ~w:", [NDisciplina]), nl,
+    format("    Teste 1 - Dia ~w | Teste 2 - Dia ~w",Testes), nl, !.
+
+printTurma([],_,_) :- !.
+printTurma([Disciplina|Ds],NTurma,NDisciplina) :-
+    printDisciplina(Disciplina,NDisciplina),
+    D1 is NDisciplina + 1, !,
+    printTurma(Ds,NTurma,D1).
+
+printResults([],_,_) :- !.
+printResults([Turma|Ts],NTurma,NDisciplina) :-
+    format("Turma ~w:",[NTurma]), nl,
+    printTurma(Turma,NTurma,NDisciplina),
+    N1 is NTurma + 1, !,
+    printResults(Ts,N1,NDisciplina).
+
+
+\end{verbatim}
+\end{changemargin}
+
+\noindent
+{\it tpcs.pl}
+\begin{changemargin}{-3cm}{-4cm}
+\begin{verbatim}
+
+:- use_module(library(clpfd)).
+:- use_module(library(lists)).
+
+testeSemana([[1,2],[3,4],[5,4],[3,2,4],[1,2,3]]).
+
+%analisar turma
+turmaTPCs([Turma|Ts], Semanas, MaximoTPCs):-
+  turmaTPCs1([Turma|Ts], 1, Semanas, MaximoTPCs).
+
+turmaTPCs1([], _, _, _).
+turmaTPCs1([Turma|Ts], N, Semanas, MaximoTPCs):-
+  write('------------------'), nl,
+  write('Turma: '), write(N), nl, !,
+  tpcs(Turma, Semanas, MaximoTPCs, TPCs, DiaLivre), !,
+  printTPCResult(Turma, TPCs, DiaLivre),
+  get_char(_),
+  N2 is N + 1, !,
+  turmaTPCs1(Ts, N2, Semanas, MaximoTPCs).
+
+
+
+%Adicionar razao de tpc por disciplina.
+tpcs(Semana, NS, NTPC, TPCs, DiaLivre):-
+  domain([DiaLivre],1,5),
+  domain([RTPC],NTPC,NTPC),
+  constroiLabels(Semana, NS, DiaLivre, TPCs),
+  limitarTPCs(TPCs, RTPC, NS, DiaLivre),
+  flat(TPCs,  ResultMid),
+  flat(ResultMid, Results),
+  labeling([],Results).
+
+%
+%Limitar os TPCs a dois
+limitarTPCs3([],_,0).
+
+limitarTPCs3([Disciplina| Ds], Semana, R):- !,
+  nth1(Semana, Disciplina, N1),
+  R #= R1 + N1,
+  limitarTPCs3(Ds, Semana, R1).
+
+limitarTPCs2(_, _, S, NS):- S > NS, !.
+limitarTPCs2(Dia, NTPC, Semana, NS):- Semana =< NS, !,
+  R #=< NTPC,
+  limitarTPCs3(Dia, Semana, R),
+  S2 is Semana + 1,
+  limitarTPCs2(Dia, NTPC, S2, NS).
+
+limitarTPCs1([], _, _, _).
+limitarTPCs1([Dia|Ds], NTPC, NS, DiaLivre):-
+  limitarTPCs2(Dia, NTPC, 1, NS),
+  limitarTPCs1(Ds, NTPC,NS,DiaLivre).
+
+
+limitarTPCs(Semana, NTPC, NS, DiaLivre):-
+  limitarTPCs1(Semana, NTPC, NS, DiaLivre).
+
+
+%bla
+constroiLabels2([_ | Ds], NS, livre, [A | As]):-
+  length(A, NS),
+  domain(A, 0, 0),
+  constroiLabels2(Ds, NS, livre, As).
+
+constroiLabels2([_ | Ds], NS, ocupado, [A | As]):-
+  length(A, NS),
+  domain(A, 0, 1),
+  NK is div(NS,2),
+  count(1, A, #=, NK),
+  constroiLabels2(Ds, NS, ocupado, As).
+
+constroiLabels2([], _, _, []).
+
+
+constroiLabels1([Dia | Ds], N, NS, DiaLivre, [A|As]):- N \= DiaLivre, !,
+  length(Dia, Disciplinas), length(A, Disciplinas),
+  constroiLabels2(Dia, NS, ocupado, A),
+  N1 is N + 1,
+  constroiLabels1(Ds, N1, NS, DiaLivre, As).
+
+constroiLabels1([Dia | Ds], N, NS, N, [A|As]):- !,
+  length(Dia, Disciplinas), length(A, Disciplinas),
+  constroiLabels2(Dia, NS, livre, A),
+  N1 is N + 1,
+  constroiLabels1(Ds, N1, NS, N, As).
+
+constroiLabels1([], _, _, _, []).
+
+constroiLabels(Semana, NS, DiaLivre, Array):-
+  length(Array, 5),
+  constroiLabels1(Semana, 1, NS, DiaLivre, Array).
+
+%prints
+
+printTPCResultTPC([]).
+printTPCResultTPC([1|Es]):-
+  write('X '),
+  printTPCResultTPC(Es).
+
+printTPCResultTPC([0|Es]):-
+  write('_ '),
+  printTPCResultTPC(Es).
+
+printTPCResultAux2([],[]).
+printTPCResultAux2([Dis| Ds], [Tpc| Ts]):-
+  disciplina(Dis,DisNome),
+  write('    '), write(DisNome), nl,
+  write('    '), write('   TPC: '),
+  printTPCResultTPC(Tpc), nl,
+  printTPCResultAux2(Ds,Ts).
+
+printDisciplinas([]).
+printDisciplinas([Dis| Ds]):-
+  disciplina(Dis,DisNome),
+  write('    '), write(DisNome), nl,
+  printDisciplinas(Ds).
+
+printTPCResultAux1([],[],_,_).
+printTPCResultAux1([Dia|Ds], [_|TDs], Ns, Ns):- !,
+  semana(Ns, Semana),
+  write(Semana), write(': Dia Livre'),nl,
+  N2 is Ns + 1,
+  printDisciplinas(Dia),
+  printTPCResultAux1(Ds, TDs, Ns, N2).
+
+printTPCResultAux1([Dia|Ds], [TDia|TDs], _, Ns):-
+  semana(Ns, Semana),
+  write(Semana), nl,
+  N2 is Ns + 1,
+  printTPCResultAux2(Dia, TDia),
+  printTPCResultAux1(Ds, TDs, Ns, N2).
+
+printTPCResult(Turma, TPCs, DiaLivre):-
+  printTPCResultAux1(Turma, TPCs, DiaLivre, 1).
+
+
+\end{verbatim}
+\end{changemargin}
+
+\noindent
+{\it tpc2.pl}
+\begin{changemargin}{-3cm}{-4cm}
+\begin{verbatim}
+
+calculaTpcs([],_,_,_,_,_) :- !.
+calculaTpcs([Turma|Ts],NTurma, Disciplinas, Semanas, NumeroTPCs,MaxTpcs):-
+    write(' Turma '), write(NTurma), nl,
+    N1 is NTurma + 1, !,
+  pre_marca_tpcs(Turma, Disciplinas, Semanas, NumeroTPCs,MaxTpcs, _, _), get_char(_),
+  calculaTpcs(Ts,N1, Disciplinas, Semanas, NumeroTPCs,MaxTpcs).
+
+pre_marca_tpcs(Semana, Disciplinas, Ns, NTPC,MaxTpcs, TPCs, DiaLivre):-
+  length(Disciplinas, Ndis),
+  calculaOcorrencias(Semana, Ocorrencias, OcorrenciasDias, Ndis),
+%  write('Ocorrencias'), write(Ocorrencias), nl,
+%  write('ODia'), write(OcorrenciasDias), nl,
+%  desenvolveOcorrencias(OcurrDias, OcorrenciasDias, Ns, Ndis).
+  marca_tpcs(Ocorrencias, OcorrenciasDias, Ns, NTPC, TPCs, DiaLivre,MaxTpcs),
+%  write('Resultado'), nl,
+  print_tpc1(Semana, TPCs, DiaLivre).
+
+
+%desenvolveOcorrencias([O | Os], [R | Rs], Ns, Ndis):-
+
+
+marca_tpcs(Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre,MaxTpcs):-
+  Dias is NS * 5,
+  limitDia(OcorrenciasDias, Res),
+  list_to_fdset(Res, Set),
+  DiaLivre in_set Set,
+  criarListagemPDisciplina(NS, Dias, DiaLivre, Ocorrencias, OcorrenciasDias, TPCs,MaxTpcs),
+%write('FIM'). testeA(Semana, Disciplinas, Ocorrencias, OcorrenciasDias, NS, NTPC, TPCs, DiaLivre):-
+  %criarRectangulos(TPCs, Rects),
+  criarTasks(TPCs, Tasks),
+  cumulative(Tasks, [limit(NTPC)]),
+  %disjoint2(Rects, [ bounding_box([0,0], [Dias, NTPC]) ]),%wrap(0,Dias,0, NTPC)]),
+  flat(TPCs, Result),
+  K = [DiaLivre | Result], !,
+  labeling([], K).
+
+
+limitDia1([],A, A).
+limitDia1([[K] | Rs],Dia, T2):-member(K, Dia), !,
+  select(K, Dia, T1),
+  limitDia1(Rs,T1, T2).
+
+limitDia1([_ | Rs],Days, T2):- !,
+  limitDia1(Rs, Days, T2).
+
+
+limitDia(Ocurrencias, Res):-
+  limitDia1(Ocurrencias, [1,2,3,4,5], Res).
+
+
+adicionaRects([L | []], Rs, [A | Rs]):-
+  L #\= 0 #<=> M,
+  domain([Temp], 1,2),
+  A = f(L, M, Temp, M).
+
+adicionaRects([L | Ls], Rs, [R | T1]):-
+  adicionaRects(Ls, Rs, T1),
+  L #\= 0 #<=> M,
+  domain([Temp], 1,2),
+  R = f(L, M, Temp, M).
+
+
+criarRectangulos([], []).
+criarRectangulos([TPC | Ts], Rects):-
+  criarRectangulos(Ts, R1),
+  adicionaRects(TPC, R1, Rects).
+
+%asdasd
+
+adicionaTasks([L | []], Rs, [A | Rs]):-
+  L #\= 0 #<=> M,
+  length(Rs, ID),
+  A = task(L, M, _, M, ID).
+
+adicionaTasks([L | Ls], Rs, [R | T1]):-
+  adicionaTasks(Ls, Rs, T1),
+  L #\= 0 #<=> M,
+  length(Rs, ID),
+  R = task(L, M, _, M, ID).
+
+
+criarTasks([], []).
+criarTasks([TPC | Ts], Rects):-
+  criarTasks(Ts, R1),
+  adicionaTasks(TPC, R1, Rects).
+
+%asdd
+
+aplicarDominio([], _, _).
+aplicarDominio([V | Ls], DomainSet, DiaLivre):-
+  DiasDaSemana in_set DomainSet,
+  (V #=< 0) #\/ ( (V #> 0) #/\
+  ((V mod 5) #= DiasDaSemana mod 5 ) #/\ ((V mod 5) #\= DiaLivre mod 5) ),
+  aplicarDominio(Ls, DomainSet, DiaLivre).
+
+criarListagemPDisciplina(_, _, _, [], [], [],_).
+criarListagemPDisciplina(NumeroSemanas, Dias, DiaLivre, [Ocurr | Os], [OcurrD | Ocurrs], [TPC | Ts],MaxTpcs):-
+  criarListagemPDisciplina(NumeroSemanas, Dias, DiaLivre, Os, Ocurrs, Ts,MaxTpcs),
+  Total is Ocurr * NumeroSemanas,
+  length(TPC, Total),
+  list_to_fdset(OcurrD, Set),
+  domain(TPC, 0, Dias),
+  aplicarDominio(TPC, Set, DiaLivre),
+  Mid is div(Total,MaxTpcs),
+  MidP1 is Mid + 1,
+  nvalue(MidP1, TPC),
+  count(0, TPC, #=, Mid).
+
+
+
+calculaOcorrencias3(Ls, N, Dia, 1, Vs, RVs):- member(N, Ls), RVs = [Dia | Vs].
+calculaOcorrencias3(Ls, N, _, 0, Vs, Vs):- \+ member(N, Ls).
+
+calculaOcorrencias2([], _, 6, 0, []).
+calculaOcorrencias2([Dia|Ds], N, Day, V, VD):-
+  calculaOcorrencias2(Ds, N, Dia2, V2, VD2),
+  Day is Dia2 - 1,
+  calculaOcorrencias3(Dia, N, Day, R, VD2, VD),
+  V is V2 + R.
+
+calculaOcorrencias1(_, [], [], Ndis, N):- Ndis < N, !.
+calculaOcorrencias1(Semana, Ocurr, OcurrDias, Ndis, N):- N =< Ndis, !,
+  N2 is N + 1,
+  calculaOcorrencias2(Semana, N, _, V, VD),
+  calculaOcorrencias1(Semana, O2, OD2, Ndis, N2),
+  OcurrDias = [VD|OD2],
+  Ocurr = [V|O2].
+
+
+calculaOcorrencias(Semana, Ocurr, OcurrDias, Ndis):-
+  calculaOcorrencias1(Semana, Ocurr, OcurrDias, Ndis, 1).
+
+%print tpcs
+
+translate(0, 5).
+translate(N, N).
+
+
+print_discp([]).
+print_discp([D | Ds]):-
+  nome_discip(D, N),
+  write('    '), write(N), nl,
+  print_discp(Ds).
+
+print_horario([], _).
+print_horario([S | Ss], Ns):-
+  nome_semana(Ns, SS),
+  write(SS), nl,
+  print_discp(S),
+  N2 is Ns + 1,
+  print_horario(Ss, N2).
+
+print_tpcPorDisciplina2([],_).
+print_tpcPorDisciplina2([0 | Vs], S):- !,
+  print_tpcPorDisciplina2(Vs,S).
+print_tpcPorDisciplina2([N | Vs], S):-
+  Kappa = div(N, 5),
+  K1 is Kappa + 1,
+  K1 \= S, !,
+  nl, write(' Semana '), write(K1), write(' '),
+  Mod = mod(N, 5),
+  Mod2 is Mod,
+  translate(Mod2,Mod3),
+  nome_semana(Mod3, Nome2),
+  write(Nome2), write(' '),
+  print_tpcPorDisciplina2(Vs, K1).
+
+print_tpcPorDisciplina2([N | Vs], S):-
+  Mod = mod(N, 5),
+  Mod2 is Mod,
+  translate(Mod2,Mod3),
+  nome_semana(Mod3, Nome2),
+  write(Nome2), write(' '),
+  print_tpcPorDisciplina2(Vs, S).
+
+
+print_tpcPorDisciplina([],_).
+print_tpcPorDisciplina([TPC | Ts], Ns):-
+  nome_discip(Ns, Nome), nl, nl,
+  write('TPC:'), write(Nome),
+  print_tpcPorDisciplina2(TPC, 0),
+  N2 is Ns + 1,
+  print_tpcPorDisciplina(Ts,N2).
+
+
+print_tpc1(Semana, TPCs, DiaLivre):-
+  print_horario(Semana, 1),
+  nome_semana(DiaLivre, NomeDiaSemana),
+  write('Dia Livre: ') , write(NomeDiaSemana), nl,
+  get_char(_),
+  print_tpcPorDisciplina(TPCs, 1) , nl.
+
+
+\end{verbatim}
+\end{changemargin}
+
+\noindent
+{\it utils.pl}
+\begin{changemargin}{-3cm}{-4cm}
+\begin{verbatim}
+
+flat([],[]).
+flat([T|Ts], Rs):-
+  flat(Ts, R1),
+  append(T, R1,Rs).
+
+
+\end{verbatim}
+\end{changemargin}
+
+\noindent
+{\it statistics.pl}
+\begin{changemargin}{-3cm}{-4cm}
+\begin{verbatim}
+
+:- use_module(library(clpfd)).
+
+problem(Vars) :-
+	length(Vars,10),
+	domain(Vars,1,100),
+
+	all_distinct(Vars),
+
+	Vars = [V|Vs],
+	maximum(V,Vars),
+	sum(Vs,#=,V),
+
+	reset_timer,
+	labeling([],Vars),
+%	labeling([down],Vars),
+	print_time,
+	fd_statistics.
+
+
+
+reset_timer :- statistics(walltime,_).
+print_time :-
+	statistics(walltime,[_,T]),
+	TS is ((T//10)*10)/1000,
+	nl, write('Time: '), write(TS), write('s'), nl, nl.
+
+
+\end{verbatim}
+\end{changemargin}
 \end{document}
