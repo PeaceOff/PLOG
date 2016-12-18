@@ -1,10 +1,3 @@
-horario([
-          [[1,2,3],[4,2,3],[5,2,1],[3,4,2],[2,3,1]],
-          [[3,2,1],[2,4,1],[2,2,1],[1,2,3,4,5],[2,3,1]],
-          [[1,2,3],[4,2,3],[5,2,1],[2,3,1],[3,4,2]],
-          [[5,2,1],[4,2,3],[1,2,3],[3,4,2],[2,3,1]]
-        ]).
-
 resolveTestesPorFavor(Horarios,NDisciplinas,NSemanas) :-
     solution(Horarios,NDisciplinas,NSemanas,Testes), !,
     printResults(Testes,1,1).
@@ -29,7 +22,10 @@ solution(Horarios,NDisciplinas,NSemanas,Testes) :-
     sum(Somas,#=,DistTotal),% A logica e se a soma de todos os valores for a menor possivel eles vao ficar todos o mais junto possivel.
     */
     flat(Testes,Nivel1), flat(Nivel1,Vars),
-    labeling([],Vars).%Solver
+    reset_timer,
+    labeling([],Vars),%Solver
+    print_time,
+    fd_statistics.
 
 % Recebe uma lista de listas e devolve uma lista em que cada elemento é a soma dos elementos de cada uma das listas
 getSum([],[]) :- !.
@@ -100,14 +96,7 @@ semTestesSeguidos(Testes) :-
 buildTasks([],_,[]) :- !.
 buildTasks([T|Ts],Index,Res) :-
     I1 is Index + 1,
-    buildTasks(Ts,I1,R1),%!!!Falta ver o caso em que um é na sexta e outra é na segunda!!!
-    /*
-    ((((T mod 5) #= 0) #/\ Tdepois #= T #/\ Tantes #= T - 1))
-    #\/
-    ((((T mod 5) #= 1) #/\ Tantes #= T #/\ Tdepois #= T + 1))
-    #\/
-    (((T mod 5) #> 1) #/\ Tantes #= T - 1 #/\ Tdepois #= T + 1),
-    */
+    buildTasks(Ts,I1,R1),
     Tdepois #= T + 1,%A resposta passa por se o mod for 1 ou 0 (Segunda e sexta)
     Tantes #= T - 1,%e entao Tantes e Tdepois serao igual a T
     Res = [task(Tantes,_,Tdepois,5,Index)|R1].
