@@ -8,7 +8,9 @@
 \usepackage[portuguese]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{makeidx}  % allows for indexgeneration
-
+\usepackage{graphicx}
+\setcounter{secnumdepth}{3}
+\graphicspath{ {./img/} }
 %
 
 \begin{document}
@@ -58,25 +60,44 @@ O problema de otimização escolhido foi o Ano Escolar, neste problema é propos
 \section{Abordagem}
 %
 Num primeiro ato de abordagem ao problema, o problema foi dividido em dois subproblemas, a marcação dos trabalhos de casa e a marcação dos testes. 
-Para a marcação dos trabalhos de casa, foi utilizada uma estrutura de modo a limitar as variáveis utilizadas por disciplina, foi criado uma lista que contém os dias da semana, cada dia contem listas por disciplina com comprimento igual ao número de semanas para indicar em que semanas existem TPCs ou não naquela disciplina daquele dia da semana. A razão pela qual foi optada esta  estrutura, foi numa tentativa de otimizar o espaço para representar os dias em que é possivél marcar trabalhos de casa para certa disciplina.
+
+Para a marcação dos trabalhos de casa, foram realizados dois perdicados que resolvem o problema de dois pontos de vista diferente.
+
+Para o primeiro predicado dos trabalhos de casa, foi utilizada uma estrutura de modo a limitar as variáveis utilizadas por disciplina, foi criada uma lista que contém os dias da semana, cada dia contem listas por disciplina com comprimento igual ao número de semanas para indicar, em que semanas existem ou não TPCs, naquela disciplina, daquele dia da semana. A razão pela qual foi optada esta  estrutura, foi numa tentativa de otimizar o espaço para representar os dias em que é possivél marcar trabalhos de casa para certa disciplina.
+\newline
+
+Para o segundo predicado dos trabalhos de casa, foi utilizada uma lista, onde cada index, indica a disciplina, e o elemento contido nesse index é um array de tamanho igual ao número de ocorrências dessa disciplina, ao longo do período de aulas. Esta estrutura permite ter em atenção a totalidade de ocorrências de uma dada disciplina, permitindo distribuir de melhor forma os trabalhos de casa.
 
 Descrever com detalhe o problema de otimização ou decisão em análise.
 
 \subsection{Variáveis de Decisão}
+
+
 Em relação aos trabalhos de casa, as variáveis de decisão são: 
 
+Para o primeiro predicado:
 \begin{enumerate}
 \item Dia Livre de Domínio [1,5], que representa um dos dias úteis da semana.
 \item Lista de TPCs por disciplina de Domínio[0,1], que representa se existe ou não trabalho de casa em determinada semana, determinada pela sua posição.
 \end{enumerate}
 
-A lista de TPCs por disciplina, é um conceito simples, mas ligeiramente difícil de explicar, como foi descrito na secção anterior, cada disciplina de um determinado dia, tem associado uma lista, de tamanho igual ao número de semanas de aulas, em que cada posição da lista representa o número da semana e o seu conteúdo indica se existe ou não trabalho de casa, 1 em caso positivo 0 em caso negativo.
+A lista de TPCs por disciplina, é um conceito simples, mas ligeiramente difícil de explicar, como foi descrito na secção anterior, cada disciplina de um determinado dia, tem associada uma lista, de tamanho igual ao número de semanas de aulas, em que cada posição da lista representa o número da semana e o seu conteúdo indica se existe ou não trabalho de casa, 1 em caso positivo 0 em caso negativo.
+
+
+Para o segundo predicado:
+\begin{enumerate}
+\item Dia Livre de Domínio [1,5], que representa um dos dias úteis da semana.
+\item Lista de Dias com TPC por disciplina de Domínio[0, DiasSemana ], que representa os dias em que existe trabalhos de casa, um valor maior que zero indica o dia do TPC.
+\end{enumerate}
+
+
 
 Descrever as variáveis de decisão e os seus domínios.
 
 \subsection{Restrições}
 Na prespetiva dos trabalhos de casa, as restrições aplicadas são:
 
+Para o primeiro predicado:
 \begin{enumerate}
 \item Para cada disciplina de um determinado dia, o número de trabalhos de casa tem que ser igual à metade do número de semanas de aulas.
 
@@ -87,26 +108,85 @@ Utilizando a estrutura descrita nas últimas secções, esta restrição faz-se 
 Para a implementação desta restrição, foram criados vários predicados com o intuito de, somar os nésimos elementos de um conjunto de listas, e verificar se esse valor é inferior ou igual ao número máximo de TPC's por dia. 
 \end{enumerate}
 
+Para o segundo predicado:
+\begin{enumerate}
+\item Para cada lista de TPC's por disciplina, o número de ocorrências do número zero ( indicativo de que não existem trabalhos de casa) tem que ser igual à metade do número de ocorrêcias da disciplina, ao longo do ano (Esta razão pode ser presonalizada pelo utilizador).
+Cada elemento desta lista é restrito para os dias em que ocorre a disciplina associada, como pode ser observado na seguinte condição:
+\begin{equation}
+\begin{array}{rcl}
+ E &\subseteq& TPCList \\
+ (E mod 5) &\subseteq& Ocurrs
+\end{array}
+\end{equation}
+
+Onde ~$TPCList$ é a referida, lista de TPC's por disciplina, ~$E$ é um elemento dessa lista e ~$Ocurrs$ é uma lista que contém os dias da semana em que hà essa disciplina.
+
+
+
+\item Para cada dia o número de trabalhos de casa não pode superar um máximo.
+Esta restrição foi implementada numa prespetiva de tarefas, neste caso, cada tarefa tem duração e custo únitários e pretende-se descobrir os tempos iniciais de cada tarefa de modo a que nunca ultrapasse os recursos disponíveis : (limite máximo de tpc's). 
+\begin{equation}
+\begin{array}{rcl}
+ comulative( Tasks, [limit(N_{TPCs})])
+\end{array}
+\end{equation}
+Para isso foi utilizado o predicado comulative, acima representado, que recebe um conjunto de tasks e como parâmetero options foi utilizado limit( número máximo de tpcs).
+
+\end{enumerate}
+
  Descrever as restrições rígidas e flexíveis do problema e a sua implementação utilizando o SICStus Prolog.
 
-\subsection{ Função de Avaliação}
-Descrever, quando for o caso, a forma de avaliar a solução obtida e a sua implementação utilizando o SICStus Prolog.
-
 \subsection{Estratégia de Pesquisa}
+
+Em relação aos trabalhos de casa, em ambos os predicados foi utilizada uma chamada ao labeling por defeito.
 
 Descrever a estratégia de etiquetagem
 (labeling) utilizada ou implementada, nomeadamente no que diz respeito à ordenação
 de variáveis e valores.
 
 \section{Visualização da Solução}
+Em relação aos trabalhos de casa:
+Para o primeiro predicado:
 O predicado que permite a visualização dos trabalhos de casa utiliza uma determinada turma, e os respetivos trabalhos de casa e representa da seguinte forma:
-O nome do dia da semana, se o dia é livre ou não, seguido das disciplinas e cada disciplina indica as semanas em que existe TPC. Tal pode ser observado, com mais clareza na seguinte imagem.
+O nome do dia da semana, se o dia é livre ou não, seguido das disciplinas e cada disciplina indica as semanas em que existe TPC. Tal pode ser observado, com mais clareza na seguinte imagem:
 
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{tpc1}
+\caption{Representação dos TPC's de uma disciplina}
+\end{figure}
+
+%PICTURE!
 Este predicado é iterado várias vezes dependendo do número de turmas existentes.
+
+Para o segundo predicado:
+É iterada a solução por disciplina e é imprimida a disciplina, o conjunto de semanas em que existe teste e o(s) respetivo(s) dia(s) da semana, tal pode ser observado na imagem seguinte:
+%Picture!
+\begin{figure}
+\centering
+\includegraphics[]{tpc2}
+\caption{Representação dos TPC's de uma disciplina}
+\end{figure}
 
 Explicar os predicados que permitem visualizar a solução em modo de texto
 
 \section{Resultados}
+
+\subsection{ Trabalhos de Casa}
+
+Para comparação dos dois perdicados, foram executados para a mesma turma, cada turma possiu 5 disciplinas distintas, um número variável de semanas, com limite de 2 trabalhos de casa por dia. Seguem-se a seguir os resultados.
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{g1}
+\includegraphics[width=0.5\textwidth]{g2}
+\caption{Testes executados em ambos predicados}
+\end{figure}
+
+Como é possível obervar o primeiro predicado teve um tempo de execução muito superior ao segundo, isto deve-se ao facto do uso de variáveis de domínio binárias e também por não se preócupar com o número de ocorrências da disciplina ao longo da semana, já que apenas marca TPC's para metade das semanas de aula de uma disciplina de um determinado dia.
+Em relação ao segundo predicado, por ter estas condições em conta e pelas variáveis não estarem instânciadas de forma binária, quanto maior o número de semanas, relfete-se o aumento exponencial do tempo.
+
+
+\subsection{ Testes}
 
 Demonstrar exemplos de aplicação em instâncias do problema com
 diferentes complexidades e analisar os resultados obtidos. Devem ser utilizadas formas
@@ -116,11 +196,17 @@ convenientes para apresentação dos resultados (tabelas e/ou gráficos).
 Este projeto premitiu esclarecer vários conceitos relacionados com a programação em lógica com restrições, foi possivél, para o grupo, obter uma visão mais detalhada sobre este paradigma assim como a sua importância na resolução de diferentes problemas de otimização/decisão. Também permitiu a precepção da importância da propagação das restrições de modo a melhorar o desempenho neste tipo de problemas.
 
 
-Em relação aos trabalhos de casa, devido à estrutura proposta para operar os dados foi possível otimizar a nivél de espaço o número de trabalhos de casa marcados, diminuindo consequentemente, o espaço de procura. A limitação trazida por esta estrutura é que, o plano escolar terá que ser tido em conta com semanas completas.  De modo a melhorar a especificação dos trabalhos de casa, poderão ser implementadas mais variáveis, de modo a fornecer mais flexibilidade no momento da pesquisa, como por exemplo, o dia livre ser variável de semana para semana, a utilização de listas de diferença de modo a melhorar o desempenho de como é feita a concatenação de listas, entre outros.
+Em relação aos trabalhos de casa:
+
+Conclui-se que o primeiro predicado, devido à estrutura proposta para operar os dados foi possível otimizar a nivél de espaço o número de trabalhos de casa marcados, diminuindo consequentemente, o espaço de procura. A limitação trazida por esta estrutura é que, o plano escolar terá que ser tido em conta com semanas completas.  De modo a melhorar a especificação dos trabalhos de casa, poderão ser implementadas mais variáveis, de modo a fornecer mais flexibilidade no momento da pesquisa, como por exemplo, o dia livre ser variável de semana para semana, a utilização de listas de diferença de modo a melhorar o desempenho de como é feita a concatenação de listas, entre outros.
+
+Conclui-se que o segundo predicado, devido à sua estrutura, foi capaz de minimizar o número de dias utilizados para marcar TPC's e foi possível a adaptação do predicado comulative, referênciado anteriormente. Em comparação com o primeiro predicado, utiliza uma estrutura muito mais flexivel, fácil de iterar, melhorias poderiam passar, por melhorar a procura do dia livre, esta procura é um fator importante no momento da pesquisa por soluções, um dia bem escolhido, já facilita bastante a marcação dos TPC's, a limitação realizada pelo grupo ainda é um bocado simplista, escolhendo os melhores dias para casos simples.
 
 
  Que conclusões retira deste projeto? O que mostram os resultados obtidos? Quais as vantagens e limitações da
-solução proposta? Como poderia melhorar o trabalho desenvolvido?
+solução proposta? Como poderia melhorar o trabalho desenvolvido
+
+
 
 \begin{figure}
 \vspace{2.5cm}
