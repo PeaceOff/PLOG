@@ -62,14 +62,14 @@ Ao longo deste documento será descrito o desenvolvimento do trabalho realizado,
 \section{Introdução}
 %
 Devido à complexidade combinatória existente no planeamento de um Ano Escolar, é necessária uma solução optima que permita obter da melhor forma um plano de aulas ágil e eficaz.
-
+ 
 Este trabalho tem como objetivo, para um dado Ano Escolar, marcar os trabalhos de casa e os testes para diferentes turmas e disciplinas, dependendo de variáveis definidas pelo utilizador.
-Neste documento está descrito detalhadamente o problema, uma abordagem de resolução do problema e uma análise sobre a mesma. Também será discutida a estratégia de pesquisa, os predicados de visualização e filamente uma conclusão geral sobre o trabalho.
+Neste documento está descrito detalhadamente o problema, uma abordagem de resolução do problema e uma análise sobre a mesma. Também será discutida a estratégia de pesquisa, os predicados de visualização e finalmente uma conclusão geral sobre o trabalho.
 
 
 \section{Descrição do Problema}
 %
-O problema de otimização escolhido foi o Ano Escolar, neste problema é proposto que, o programa desenvolvido , seja capaz de marcar trabalhos de casa e testes para um número indefinido de turmas e de semanas. Em relação aos trabalhos de casa, para cada turma existe um dia livre e o número de TPC só pode ser metade do número de ocorrências da disciplina não podendo existir mais que um número determinado de TPC's no mesmo dia. Em relação aos testes, cada disciplina tem dois testes, decorrendo num número de semanas especifico (meio e fim do período) e o número máximo de testes é dois por semana, sendo que não existem testes em dias consecutivos.
+O problema de otimização escolhido foi o Ano Escolar, neste problema é proposto que, o programa desenvolvido, seja capaz de marcar trabalhos de casa e testes para um número indefinido de turmas e de semanas. Em relação aos trabalhos de casa, para cada turma existe um dia livre e o número de TPC só pode ser metade do número de ocorrências da disciplina, não podendo existir mais que um número determinado de TPC's no mesmo dia. Em relação aos testes, cada disciplina tem dois testes, decorrendo num número de semanas especifico (meio e fim do período) e o número máximo de testes é dois por semana, sendo que não existem testes em dias consecutivos.
 
 \section{Abordagem}
 %
@@ -77,10 +77,10 @@ Num primeiro ato de abordagem ao problema, o problema foi dividido em dois subpr
 
 Para a marcação dos trabalhos de casa, foram realizados dois perdicados que resolvem o problema de dois pontos de vista diferente.
 
-Para o primeiro predicado dos trabalhos de casa, foi utilizada uma estrutura de modo a limitar as variáveis utilizadas por disciplina, foi criada uma lista que contém os dias da semana, cada dia contem listas por disciplina com comprimento igual ao número de semanas para indicar, em que semanas existem ou não TPCs, naquela disciplina, daquele dia da semana. A razão pela qual foi optada esta  estrutura, foi numa tentativa de otimizar o espaço para representar os dias em que é possivél marcar trabalhos de casa para certa disciplina.
+Para o primeiro predicado dos trabalhos de casa, foi utilizada uma estrutura de modo a limitar as variáveis utilizadas por disciplina, foi criada uma lista que contém os dias da semana, cada dia contem listas por disciplina com comprimento igual ao número de semanas, para indicar, em que semanas existem ou não TPCs, naquela disciplina, daquele dia da semana. A razão pela qual foi optada esta  estrutura, foi numa tentativa de otimizar o espaço para representar os dias em que é possivél marcar trabalhos de casa para certa disciplina.
 \newline
 
-Para o segundo predicado dos trabalhos de casa, foi utilizada uma lista, onde cada index, indica a disciplina, e o elemento contido nesse index é um array de tamanho igual ao número de ocorrências dessa disciplina, ao longo do período de aulas. Esta estrutura permite ter em atenção a totalidade de ocorrências de uma dada disciplina, permitindo distribuir de melhor forma os trabalhos de casa.
+Para o segundo predicado dos trabalhos de casa, foi utilizada uma lista, onde cada index, indica a disciplina, e o elemento contido nesse index é um array de tamanho igual ao número de ocorrências, ao longo do período de aulas. Esta estrutura permite ter em atenção a totalidade de ocorrências de uma dada disciplina, permitindo distribuir de melhor forma os trabalhos de casa.
 
 No problema dos testes, optamos  por escolher uma estrutura que segue o seguinte formato : Uma lista de listas, onde cada lista representa uma turma, a lista da turma por sua vez tem uma lista para cada disciplina que por sua vez tem uma lista de dois elementos, a data do primeiro teste e a data do segundo (dia total, ou seja, semana * 5 + dia da semana). Achamos que esta seria uma boa estrutura uma vez que é organizada, direta e facilita a realização da maioria das restrições.
 
@@ -103,7 +103,7 @@ Para o segundo predicado:
 \end{enumerate}
 
 %
-Em relação aos testes, existem 2 tipos de variaveis de dominios as variaveis para o primeiro teste e as variaveis para o segundo, no inicio da resolução do problema é calculado o intervalo para os primeiros testes e os segundos, que são representados como [Min1,Max1,Min2,Max2], estes valores representa (como dia total), o inicio e o fim de cada ronda de testes.
+Em relação aos testes, existem 2 tipos de variaveis de dominios, as variaveis para o primeiro teste e as variaveis para o segundo, no inicio da resolução do problema é calculado o intervalo para os primeiros testes e os segundos, que são representados como [Min1,Max1,Min2,Max2], estes valores representa (como dia total), o inicio e o fim de cada ronda de testes.
 
 \begin{enumerate}
 \item Dia Teste 1 de Domínio [Min1,Max1], que representa o primeiro intervalo dos testes.
@@ -122,7 +122,7 @@ Utilizando a estrutura descrita nas últimas secções, esta restrição faz-se 
 
 \item Para cada dia, o número de trabalhos de casa não pode superar uma variável definida pelo utilizador.
 
-Para a implementação desta restrição, foram criados vários predicados com o intuito de, somar os nésimos elementos de um conjunto de listas, e verificar se esse valor é inferior ou igual ao número máximo de TPC's por dia.
+Para a implementação desta restrição, foram criados vários predicados com o intuito de, somar os n-ésimos elementos de um conjunto de listas, e verificar se esse valor é inferior ou igual ao número máximo de TPC's por dia.
 \end{enumerate}
 
 Para o segundo predicado:
@@ -145,7 +145,7 @@ Esta restrição foi implementada numa prespetiva de tarefas, neste caso, cada t
  comulative( Tasks, [limit(N_{TPCs})])
 \end{array}
 \end{equation}
-Para isso foi utilizado o predicado comulative, acima representado, que recebe um conjunto de tasks e como parâmetero options foi utilizado limit( número máximo de tpcs).
+Para isso foi utilizado o predicado comulative, acima representado, que recebe um conjunto de tasks e como parâmetero options, foi utilizado limit( número máximo de tpcs).
 
 \end{enumerate}
 
@@ -163,11 +163,11 @@ Nos Testes, as restrições são:
 
 Para a primeira restrição, a solução elaborada consiste em converter os dias nas semanas correspondentes através do predicado mod/2, a restrição é feita sobre os valores dessa lista, indicando que nenhum valor pode ocorrer mais do que 2 vezes na lista com o uso do predicado nvalue/2, a lista das semanas é ordenada sem eliminar os duplicados e para cada conjunto de 3 valores consecutivos é aplicado o predicado por forma a garantir que existem pelo menos 2 valores diferentes nesses três elementos.
 
-Para garantir que não haviam dois testes no mesmo dia foi utilizado o predicado all\_distinct/1. O predicado cumulative/2 foi utilizado para restringir os testes a não ficarem em dias consecutivos para isto foi criado um predicado que gerava as tasks e o principio básico foi que "cada teste começa no dia anterior é realizado no próprio dia e acaba no dia seguinte", ou seja, cada teste tem um custo de 3 dias sendo que o dia do meio é o dia em que este é realizado.
+Para garantir que não haviam dois testes no mesmo dia foi utilizado o predicado all\_distinct/1. O predicado cumulative/2 foi utilizado para restringir os testes a não ficarem em dias consecutivos, para isto foi criado um predicado que gerava as tasks e o principio básico foi que, "cada teste começa no dia anterior é realizado no próprio dia e acaba no dia seguinte", ou seja, cada teste tem um custo de 3 dias sendo que o dia do meio é o dia em que este é realizado.
 
 Para diminuir a distancia entre os testes de uma mesma disciplina para as diferentes turmas foram usadas duas estratégias, a primeira estratégia foi somar os dias dos testes para cada disciplina e minimizar essa forma, para isso definimos uma estrutura que é uma lista de listas onde cada lista elemento representa um teste de uma disciplina e cada um dos seus elementos representa o dia para as diferentes turmas, com esta estrutura feita e os valores somados, utilizamos a opção de minimize/2 no labeling por forma a encontrar a opção melhor. Devido ao elevado número de combinações quando temos muitas , turmas, disciplinas, semanas, etc. optámos por utilizar a nossa estrutura inicial já referida para minimizar as distância resolvendo as variavéis começando o mais a esquerda possível (leftmost), isto funciona uma vez que as disciplinas são resolvidas por onde para cada uma das turmas, sendo que a ordem é global, portanto a ordem de disciplina pela qual cada turma realiza um teste é sempre a mesma e é sempre encontrado o valor mais cedo possível para essa realização, sendo que a distância dos testes entre as turmas para a mesma disciplina são as menores que o solver como encontrar cumprindo as restriçoes. Por vezes esta solução não é a mais otimizada, mas sim uma das mais otimizadas, optámos por trocar este pequeno detalhe em prol de uma melhor performance para a procura em casos de dimensões superiores.
 
-Por fim, apesar de não ser o caso na faculdade, no caso dos ensinos básico e secundário, os testes são realizados durante uma aula, o que implica que para o teste ser possível de ser realizado a turma deverá ter aula dessa disciplina nesse mesmo dia, portanto, apessar de não ser mencionado no enunciado o grupo decidiu implementar essa restrição. Esta restrição foi usada foi primeiro lugar uma vez que restringe imediatamente os dias que podem ser escolhidos. O principio aqui é : criar uma lista com uma lista para cada disciplina que contem os dias da semana em que a turma tem essa disciplina. Com esta lista restringimos os dominios dos dias dos testes para cada disciplinas convertendo cada lista no set usando o predicado list\_to\_fdset/2  e aplicando a restrinção ao dia - Dia in\_set DomainSet.
+Por fim, apesar de não ser o caso na faculdade, no caso dos ensinos básico e secundário, os testes são realizados durante uma aula, o que implica que para o teste ser possível de ser realizado a turma deverá ter aula dessa disciplina nesse mesmo dia, portanto, apessar de não ser mencionado no enunciado o grupo decidiu implementar essa restrição. Esta restrição foi usada foi primeiro lugar uma vez que restringe imediatamente os dias que podem ser escolhidos. O principio aqui é : criar uma lista, com uma lista para cada disciplina que contem os dias da semana em que a turma tem essa disciplina. Com esta lista restringimos os dominios dos dias dos testes para cada disciplina convertendo cada lista no set usando o predicado list\_to\_fdset/2  e aplicando a restrinção ao dia - Dia in\_set DomainSet.
 
 
 \subsection{Estratégia de Pesquisa}
@@ -179,7 +179,7 @@ Foi utilizada uma chamada ao labeling por defeito em todos os predicados de proc
 Em relação aos trabalhos de casa:
 Para o primeiro predicado:
 O predicado que permite a visualização dos trabalhos de casa utiliza uma determinada turma, e os respetivos trabalhos de casa e representa da seguinte forma:
-O nome do dia da semana, se o dia é livre ou não, seguido das disciplinas e cada disciplina indica as semanas em que existe TPC. Tal pode ser observado, com mais clareza na seguinte imagem:
+O nome do dia da semana, se o dia é livre ou não, seguido das disciplinas, cada disciplina indica as semanas em que existe TPC. Tal pode ser observado, com mais clareza na seguinte imagem:
 
 \begin{figure}
 \centering
@@ -214,7 +214,7 @@ Na imagem é possível observar o output da solução encontrada para 2 turmas c
 
 \subsection{ Trabalhos de Casa}
 
-Para comparação dos dois perdicados, foram executados para a mesma turma, cada turma possiu 5 disciplinas distintas, um número variável de semanas, com limite de 2 trabalhos de casa por dia. Seguem-se a seguir os resultados.
+Para comparação dos dois perdicados, foram executados para a mesma turma(cada turma com 5 disciplinas distintas) um número variável de semanas, com limite de 2 trabalhos de casa por dia. Seguem-se a seguir os resultados.
 
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{g1}
@@ -223,7 +223,7 @@ Para comparação dos dois perdicados, foram executados para a mesma turma, cada
 \end{figure}
 \FloatBarrier
 
-Como é possível obervar o primeiro predicado teve um tempo de execução muito superior ao segundo, isto deve-se ao facto do uso de variáveis de domínio binárias e também por não se preócupar com o número de ocorrências da disciplina ao longo da semana, já que apenas marca TPC's para metade das semanas de aula de uma disciplina de um determinado dia.
+Como é possível obervar o primeiro predicado teve um tempo de execução muito superior ao segundo, isto deve-se ao facto do uso de variáveis de domínio binárias e também por não se preocupar com o número de ocorrências da disciplina ao longo da semana, já que apenas marca TPC's para metade das semanas de aula de uma disciplina de um determinado dia.
 Em relação ao segundo predicado, por ter estas condições em conta e pelas variáveis não estarem instânciadas de forma binária, quanto maior o número de semanas, relfete-se o aumento exponencial do tempo.
 
 \subsection{ Testes}
